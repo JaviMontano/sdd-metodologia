@@ -1,0 +1,28 @@
+{
+  "name": "sdd-metodologia",
+  "version": "3.0.0",
+  "description": "SDD \u2014 Spec Driven Development by MetodologIA. Specification-driven AI development with cryptographic BDD verification, autonomous heartbeat sentinel, insights engine, and Neo-Swiss lifecycle dashboard. Powered by IIC/kit.",
+  "author": {
+    "name": "Javier Monta\u00f1o \u00b7 MetodologIA",
+    "url": "https://metodologia.dev"
+  },
+  "homepage": "https://github.com/intent-integrity-chain/kit",
+  "repository": "https://github.com/JaviMontano/iic-metodologia",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "intent-integrity",
+    "specification-driven",
+    "bdd-verification",
+    "dashboard",
+    "metodologia",
+    "neo-swiss",
+    "ai-development",
+    "claude-code",
+    "heartbeat",
+    "sentinel",
+    "insights",
+    "rag-memory",
+    "filesystem",
+    "workspace"
+  ]
+}
