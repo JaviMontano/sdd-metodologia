@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230A122A'/%3E%3Cstop offset='100%25' stop-color='%2313315C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='10' fill='url(%23g)'/%3E%3Crect x='10' y='12' width='4' height='12' rx='.5' fill='%23FFF'/%3E%3Crect x='16' y='12' width='4' height='8' rx='.5' fill='%23FFF'/%3E%3Crect x='16' y='22' width='4' height='2' rx='.5' fill='%23FFF'/%3E%3Crect x='22' y='12' width='4' height='6' rx='.5' fill='%23FFF'/%3E%3Crect x='22' y='20' width='4' height='4' rx='.5' fill='%23FFF'/%3E%3Ccircle cx='18' cy='8' r='2' fill='%23FFD700'/%3E%3C/svg%3E">
   <title>Specifications &mdash; SDD ALM</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/search.js" defer></script>
   <script src="shared/data.js"></script>
   <script src="shared/filter.js" defer></script>
+  <script src="shared/i18n.js" defer></script>
   <script src="shared/nav.js" defer></script>
   <script src="shared/footer.js" defer></script>
   <style>
@@ -114,14 +116,15 @@
     .sdd-chip.active { background: rgba(255,215,0,0.12); border-color: #FFD700; color: #FFD700; }
 
     /* ── FR Drill-Down Detail Panel ──────────────────────── */
-    .req-table tbody tr { cursor:pointer; }
+    .req-table tbody tr:not(.fr-detail) { cursor:pointer; }
+    .req-table tbody tr:not(.fr-detail):hover td { background:rgba(255,255,255,0.025); }
     .req-table tbody tr.expanded td { background:rgba(255,215,0,.04); border-bottom-color:transparent; }
 
-    .fr-detail {
-      display:none; background:var(--bg-surface); border:1px solid var(--border-subtle);
-      border-radius:12px; margin:0.5rem 0 1rem; padding:1.25rem; animation:fr-slide-in .2s ease;
+    .fr-detail td { padding:0 !important; border-bottom:1px solid var(--border-subtle); }
+    .fr-detail-panel {
+      background:rgba(255,255,255,0.02); border-left:3px solid #FFD700;
+      border-radius:0 12px 12px 0; margin:0; padding:1.25rem; animation:fr-slide-in .2s ease;
     }
-    .fr-detail.open { display:block; }
     @keyframes fr-slide-in { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
 
     .fr-detail-header {
@@ -177,6 +180,18 @@
     .fr-linked-item-status.open { background:rgba(148,163,184,.1); color:var(--text-dim); }
 
     .fr-no-links { color:var(--text-dim); font-size:.8rem; font-style:italic; padding:.5rem 0; }
+
+    /* ── Mini SVG Graph ──────────────────────────────────── */
+    .fr-mini-graph { margin-top:1rem; }
+    .fr-mini-graph-label {
+      font-family:var(--font-heading); font-size:.7rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); margin-bottom:.4rem;
+    }
+    .fr-mini-graph svg { display:block; width:100%; max-width:500px; height:200px; }
+    .fr-mini-graph text {
+      font-family:'JetBrains Mono', monospace; font-size:10px; fill:var(--text-muted);
+      dominant-baseline:central; text-anchor:middle;
+    }
 
     @media(max-width:600px) {
       .spec-card { width:170px; }
@@ -354,7 +369,8 @@
       onFilter: function(f, q) { filterItems(q, f); }
     });
     function filterItems(query, filter) {
-      var rows = document.querySelectorAll('.req-table tbody tr');
+      closeAllDetails(); // close any open drill-down on filter change
+      var rows = document.querySelectorAll('.req-table tbody tr:not(.fr-detail)');
       var shown = 0, total = rows.length;
       rows.forEach(function(row) {
         var text = row.textContent.toLowerCase();
@@ -376,18 +392,31 @@
     if (!feature || !feature.tests || !Array.isArray(feature.tests)) return [];
     return feature.tests.filter(function(t) {
       if (typeof t === 'string') return false;
-      var refs = (t.requirement || t.ref || t.linkedFR || '').toString();
+      var refs = (t.requirement || t.ref || t.linkedFR || t.frRef || '').toString();
       return refs.indexOf(reqId) !== -1 || (t.id && allReqs.some(function(r) { return r.id === reqId && r.linked === t.id; }));
     });
   }
 
   function findLinkedTasks(reqId, feature) {
-    if (!feature || !feature.tasks || !Array.isArray(feature.tasks)) return [];
-    return feature.tasks.filter(function(t) {
-      if (typeof t === 'string') return false;
-      var refs = (t.requirement || t.ref || t.linkedFR || '').toString();
-      return refs.indexOf(reqId) !== -1;
-    });
+    var results = [];
+    if (!feature) return results;
+    // Check feature.tasks
+    if (feature.tasks && Array.isArray(feature.tasks)) {
+      feature.tasks.forEach(function(t) {
+        if (typeof t === 'string') return;
+        var refs = (t.requirement || t.ref || t.linkedFR || t.frRef || '').toString();
+        if (refs.indexOf(reqId) !== -1) results.push(t);
+      });
+    }
+    // Also check feature.taskItems (alternate field name)
+    if (feature.taskItems && Array.isArray(feature.taskItems)) {
+      feature.taskItems.forEach(function(t) {
+        if (typeof t === 'string') return;
+        var refs = (t.requirement || t.ref || t.linkedFR || t.frRef || '').toString();
+        if (refs.indexOf(reqId) !== -1) results.push(t);
+      });
+    }
+    return results;
   }
 
   function findLinkedBugs(reqId) {
@@ -470,46 +499,116 @@
 
     var noLinks = (!tests.length && !tasks.length && !bugs.length) ? '<div class="fr-no-links">No linked artifacts found for this requirement.</div>' : '';
 
+    // Mini SVG graph: FR (gold circle) → TS (purple diamonds) + Task (blue squares)
+    var graphHTML = '';
+    if (tests.length || tasks.length || bugs.length) {
+      var svgW = 500, svgH = 200;
+      var cx = 80, cy = svgH / 2; // FR node center
+      var nodes = []; // {x, y, type, label}
+      var edges = []; // {x1, y1, x2, y2}
+
+      // Collect right-side nodes
+      var rightItems = [];
+      tests.forEach(function(t) { rightItems.push({ type:'test', label: t.id || 'TS', status: (t.status||'pending').toLowerCase() }); });
+      tasks.forEach(function(t) { rightItems.push({ type:'task', label: t.id || 'T', status: (t.status||'open').toLowerCase() }); });
+      bugs.forEach(function(b) { rightItems.push({ type:'bug', label: b.id || 'BUG', status: (b.severity||'bug').toLowerCase() }); });
+
+      var spacing = Math.min(36, (svgH - 40) / Math.max(rightItems.length, 1));
+      var startY = cy - ((rightItems.length - 1) * spacing) / 2;
+      var rightX = 280;
+
+      var svgContent = '';
+      // Draw edges
+      rightItems.forEach(function(item, i) {
+        var ny = startY + i * spacing;
+        svgContent += '<line x1="' + (cx + 18) + '" y1="' + cy + '" x2="' + (rightX - 14) + '" y2="' + ny + '" stroke="rgba(148,163,184,0.25)" stroke-width="1.5"/>';
+      });
+
+      // FR node (gold circle)
+      svgContent += '<circle cx="' + cx + '" cy="' + cy + '" r="18" fill="rgba(255,215,0,0.15)" stroke="#FFD700" stroke-width="2"/>';
+      svgContent += '<text x="' + cx + '" y="' + cy + '" fill="#FFD700" font-size="9" font-weight="700">' + reqData.id + '</text>';
+
+      // Right-side nodes
+      rightItems.forEach(function(item, i) {
+        var ny = startY + i * spacing;
+        if (item.type === 'test') {
+          // Purple diamond
+          svgContent += '<polygon points="' + rightX + ',' + (ny-12) + ' ' + (rightX+12) + ',' + ny + ' ' + rightX + ',' + (ny+12) + ' ' + (rightX-12) + ',' + ny + '" fill="rgba(139,92,246,0.15)" stroke="#8B5CF6" stroke-width="1.5"/>';
+          svgContent += '<text x="' + (rightX + 22) + '" y="' + ny + '" fill="#8B5CF6" font-size="9" text-anchor="start">' + item.label + '</text>';
+          // Status dot
+          var stColor = item.status === 'passed' ? '#137DC5' : item.status === 'failed' ? '#EF4444' : '#64748B';
+          svgContent += '<circle cx="' + (rightX + 22 + (item.label.length * 5.5) + 8) + '" cy="' + ny + '" r="3" fill="' + stColor + '"/>';
+        } else if (item.type === 'task') {
+          // Blue square
+          svgContent += '<rect x="' + (rightX-10) + '" y="' + (ny-10) + '" width="20" height="20" rx="3" fill="rgba(19,125,197,0.15)" stroke="#137DC5" stroke-width="1.5"/>';
+          svgContent += '<text x="' + (rightX + 22) + '" y="' + ny + '" fill="#137DC5" font-size="9" text-anchor="start">' + item.label + '</text>';
+          var stColor2 = item.status === 'done' ? '#137DC5' : item.status === 'wip' ? '#FFD700' : item.status === 'blocked' ? '#EF4444' : '#64748B';
+          svgContent += '<circle cx="' + (rightX + 22 + (item.label.length * 5.5) + 8) + '" cy="' + ny + '" r="3" fill="' + stColor2 + '"/>';
+        } else {
+          // Bug: red circle
+          svgContent += '<circle cx="' + rightX + '" cy="' + ny + '" r="10" fill="rgba(239,68,68,0.15)" stroke="#EF4444" stroke-width="1.5"/>';
+          svgContent += '<text x="' + (rightX + 18) + '" y="' + ny + '" fill="#EF4444" font-size="9" text-anchor="start">' + item.label + '</text>';
+        }
+      });
+
+      graphHTML = '<div class="fr-mini-graph"><div class="fr-mini-graph-label">Traceability Graph</div>' +
+        '<svg viewBox="0 0 ' + svgW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg">' + svgContent + '</svg></div>';
+    }
+
     return '<div class="fr-detail-header">' +
       '<span class="fr-detail-id">' + reqData.id + '</span>' +
       '<span class="fr-detail-name">' + (reqData.name || reqData.feature) + '</span>' +
       '<span class="fr-detail-feature">' + (feature ? (feature.name || feature.id) : '') + '</span>' +
     '</div>' +
     chainHTML +
-    noLinks + testsHTML + tasksHTML + bugsHTML;
+    noLinks + testsHTML + tasksHTML + bugsHTML + graphHTML;
+  }
+
+  // Close all open detail panels
+  function closeAllDetails() {
+    document.querySelectorAll('tr.fr-detail').forEach(function(el) { el.remove(); });
+    document.querySelectorAll('.req-table tbody tr.expanded').forEach(function(el) { el.classList.remove('expanded'); });
   }
 
   // Attach click handlers to requirement rows (after DOM renders)
   setTimeout(function() {
     var rows = document.querySelectorAll('.req-table tbody tr');
-    rows.forEach(function(row, idx) {
-      row.addEventListener('click', function() {
+    rows.forEach(function(row) {
+      row.addEventListener('click', function(e) {
+        // Ignore clicks on detail rows themselves
+        if (row.classList.contains('fr-detail')) return;
+
         var reqId = (row.querySelector('.req-id') || {}).textContent || '';
         var reqObj = allReqs.find(function(r) { return r.id === reqId; });
         if (!reqObj) return;
 
-        // Close any open detail
-        var existing = row.parentElement.querySelector('.fr-detail-row');
-        var wasOpen = existing && existing.previousElementSibling === row;
-        document.querySelectorAll('.fr-detail-row').forEach(function(el) { el.remove(); });
-        document.querySelectorAll('.req-table tbody tr.expanded').forEach(function(el) { el.classList.remove('expanded'); });
+        // Check if this row's detail is already open
+        var next = row.nextElementSibling;
+        var wasOpen = next && next.classList.contains('fr-detail');
 
-        if (wasOpen) return; // Toggle off
+        // Close any open detail (only one at a time)
+        closeAllDetails();
+
+        if (wasOpen) return; // Toggle off — already closed above
 
         // Create detail row
         row.classList.add('expanded');
         var detailTR = document.createElement('tr');
-        detailTR.className = 'fr-detail-row';
+        detailTR.className = 'fr-detail';
         var detailTD = document.createElement('td');
         detailTD.setAttribute('colspan', '4');
-        detailTD.style.padding = '0';
         var detailDiv = document.createElement('div');
-        detailDiv.className = 'fr-detail open';
+        detailDiv.className = 'fr-detail-panel';
         detailDiv.innerHTML = renderDetailPanel(reqObj);
         detailTD.appendChild(detailDiv);
         detailTR.appendChild(detailTD);
         row.parentNode.insertBefore(detailTR, row.nextSibling);
       });
+    });
+
+    // Escape key closes open detail panel
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAllDetails();
     });
   }, 200);
 
@@ -520,8 +619,9 @@
     document.querySelectorAll('.spec-card[data-feature]').forEach(function(card) {
       card.style.display = (!active || SDD.filter.matchesFeature(card.getAttribute('data-feature'))) ? '' : 'none';
     });
+    closeAllDetails(); // close drill-down on feature filter
     // Filter requirement rows
-    document.querySelectorAll('.req-table tbody tr[data-feature]').forEach(function(row) {
+    document.querySelectorAll('.req-table tbody tr[data-feature]:not(.fr-detail)').forEach(function(row) {
       row.style.display = (!active || SDD.filter.matchesFeature(row.getAttribute('data-feature'))) ? '' : 'none';
     });
   });

@@ -69,6 +69,20 @@ window.DASHBOARD_DATA = {
         { id: "TS-010", title: "JWT refresh within window", status: "passed" },
         { id: "TS-011", title: "JWT refresh after expiry rejected", status: "passed" },
         { id: "TS-012", title: "Rate limit triggers after 5 attempts", status: "passed" }
+      ],
+      taskItems: [
+        { id: "T-001", title: "Set up auth module scaffold", frRef: "FR-001", status: "done" },
+        { id: "T-002", title: "Implement email registration endpoint", frRef: "FR-001", status: "done" },
+        { id: "T-003", title: "Add input validation (email, password strength)", frRef: "FR-001", status: "done" },
+        { id: "T-004", title: "Integrate Google OAuth2 provider", frRef: "FR-002", status: "done" },
+        { id: "T-005", title: "Handle OAuth callback and token exchange", frRef: "FR-002", status: "done" },
+        { id: "T-006", title: "Build password reset email template", frRef: "FR-003", status: "done" },
+        { id: "T-007", title: "Implement reset token generation + expiry", frRef: "FR-003", status: "done" },
+        { id: "T-008", title: "Add admin account deactivation endpoint", frRef: "FR-004", status: "done" },
+        { id: "T-009", title: "Implement JWT refresh middleware", frRef: "FR-005", status: "done" },
+        { id: "T-010", title: "Create RBAC permission matrix", frRef: "FR-006", status: "done" },
+        { id: "T-011", title: "Add rate limiter to auth routes", frRef: "FR-007", status: "done" },
+        { id: "T-012", title: "Implement auth event audit logger", frRef: "FR-008", status: "done" }
       ]
     },
     {
@@ -115,6 +129,16 @@ window.DASHBOARD_DATA = {
         { id: "TS-025", title: "Real-time score with partial answers", status: "pending" },
         { id: "TS-026", title: "Concurrent quiz sessions handled", status: "pending" },
         { id: "TS-027", title: "Quiz results export to CSV", status: "pending" }
+      ],
+      taskItems: [
+        { id: "T-013", title: "Design quiz data model (questions, options, answers)", frRef: "FR-009", status: "done" },
+        { id: "T-014", title: "Build MCQ/TF/FIB question type renderers", frRef: "FR-009", status: "done" },
+        { id: "T-015", title: "Implement configurable timer component", frRef: "FR-010", status: "done" },
+        { id: "T-016", title: "Add auto-save interval (30s debounced)", frRef: "FR-011", status: "done" },
+        { id: "T-017", title: "Build auto-grading engine", frRef: "FR-012", status: "done" },
+        { id: "T-018", title: "Implement real-time score aggregation", frRef: "FR-013", status: "wip" },
+        { id: "T-019", title: "Create quiz history storage + query", frRef: "FR-014", status: "done" },
+        { id: "T-020", title: "Add Page Visibility API for timer pause", frRef: "FR-015", status: "blocked" }
       ],
       bugs: [
         {
@@ -163,6 +187,13 @@ window.DASHBOARD_DATA = {
         { id: "TS-033", title: "Star indicator updates in real-time", status: "passed" },
         { id: "TS-034", title: "Analytics endpoint returns difficulty curve", status: "pending" },
         { id: "TS-035", title: "Edge case: all answers correct stays at max", status: "pending" }
+      ],
+      taskItems: [
+        { id: "T-021", title: "Implement IRT scoring algorithm", frRef: "FR-016", status: "done" },
+        { id: "T-022", title: "Build real-time difficulty adjuster", frRef: "FR-017", status: "done" },
+        { id: "T-023", title: "Add teacher difficulty config UI", frRef: "FR-018", status: "wip" },
+        { id: "T-024", title: "Create difficulty analytics endpoint", frRef: "FR-019", status: "todo" },
+        { id: "T-025", title: "Build star difficulty indicator", frRef: "FR-020", status: "wip" }
       ]
     },
     {

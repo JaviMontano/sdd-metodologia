@@ -229,3 +229,6 @@ body {
     padding: 1rem 0.75rem;
   }
 }
+
+/* Brand MetodologIA always in Poppins */
+.brand-sub, .brand-name, .brand-sdd { font-family: var(--font-heading); }

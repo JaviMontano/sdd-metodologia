@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230A122A'/%3E%3Cstop offset='100%25' stop-color='%2313315C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='10' fill='url(%23g)'/%3E%3Crect x='10' y='12' width='4' height='12' rx='.5' fill='%23FFF'/%3E%3Crect x='16' y='12' width='4' height='8' rx='.5' fill='%23FFF'/%3E%3Crect x='16' y='22' width='4' height='2' rx='.5' fill='%23FFF'/%3E%3Crect x='22' y='12' width='4' height='6' rx='.5' fill='%23FFF'/%3E%3Crect x='22' y='20' width='4' height='4' rx='.5' fill='%23FFF'/%3E%3Ccircle cx='18' cy='8' r='2' fill='%23FFD700'/%3E%3C/svg%3E">
   <title>Workspace &mdash; SDD ALM</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/search.js" defer></script>
   <script src="shared/data.js"></script>
   <script src="shared/filter.js" defer></script>
+  <script src="shared/i18n.js" defer></script>
   <script src="shared/nav.js" defer></script>
   <script src="shared/footer.js" defer></script>
   <style>
@@ -140,8 +142,85 @@
     .sdd-chip:hover { border-color: rgba(255,215,0,0.3); color: #E2E8F0; }
     .sdd-chip.active { background: rgba(255,215,0,0.12); border-color: #FFD700; color: #FFD700; }
 
+    /* RAG View Toggle */
+    .rag-view-toggle {
+      display:inline-flex; border-radius:9999px; overflow:hidden;
+      border:1px solid rgba(255,215,0,0.2); margin-left:auto;
+    }
+    .rag-toggle-btn {
+      padding:0.3rem 0.9rem; font-size:0.75rem; font-weight:600;
+      font-family:var(--font-heading); cursor:pointer; border:none;
+      background:transparent; color:var(--text-dim);
+      transition:all 0.2s ease;
+    }
+    .rag-toggle-btn:hover { color:var(--text-muted); }
+    .rag-toggle-btn.active {
+      background:rgba(255,215,0,0.15); color:#FFD700;
+    }
+
+    /* RAG Explorer View */
+    .rag-explorer { display:none; }
+    .rag-explorer.visible { display:block; }
+    .rag-cards-view.hidden { display:none; }
+
+    .rag-explorer-tree { font-family:var(--font-mono); font-size:0.82rem; }
+    .rag-explorer-file {
+      display:flex; align-items:center; gap:0.4rem;
+      padding:0.35rem 0.5rem 0.35rem 1.75rem;
+      border-radius:var(--radius-sm);
+      transition:background var(--transition-fast);
+      cursor:pointer; user-select:none;
+    }
+    .rag-explorer-file:hover { background:var(--bg-raised); }
+    .rag-explorer-file-name { color:var(--text-primary); font-weight:600; flex:1; }
+    .rag-explorer-badge {
+      font-size:0.65rem; font-weight:600; padding:1px 7px;
+      border-radius:12px; text-transform:uppercase;
+    }
+    .rag-explorer-size {
+      font-size:0.7rem; color:var(--text-dim);
+      margin-left:0.5rem; white-space:nowrap;
+    }
+    .rag-explorer-chevron {
+      display:inline-block; width:14px; text-align:center;
+      color:var(--text-dim); transition:transform 0.15s ease;
+      font-size:0.7rem;
+    }
+    .rag-explorer-chevron.open { transform:rotate(90deg); }
+
+    /* Explorer expanded detail card */
+    .rag-explorer-detail {
+      display:none; margin:0.25rem 0 0.5rem 1.75rem;
+      padding:0.75rem 1rem; border-radius:12px;
+      background:rgba(255,255,255,0.03);
+      backdrop-filter:blur(16px) saturate(180%);
+      -webkit-backdrop-filter:blur(16px) saturate(180%);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    .rag-explorer-detail.open { display:block; }
+    .rag-detail-abstract {
+      font-size:0.8rem; color:var(--text-muted); line-height:1.55;
+      margin-bottom:0.5rem; font-family:var(--font-body);
+    }
+    .rag-detail-section-label {
+      font-size:0.65rem; font-weight:700; text-transform:uppercase;
+      color:var(--text-dim); letter-spacing:0.05em; margin-bottom:0.3rem;
+    }
+    .rag-detail-takeaways {
+      font-size:0.78rem; color:var(--text-muted); line-height:1.5;
+      margin-bottom:0.5rem; padding-left:1rem; font-family:var(--font-body);
+    }
+    .rag-detail-takeaways li { margin-bottom:0.2rem; }
+    .rag-detail-tags { display:flex; flex-wrap:wrap; gap:0.35rem; }
+    .rag-tag-pill {
+      font-size:0.65rem; font-weight:600; padding:2px 10px;
+      border-radius:9999px; border:1px solid rgba(255,215,0,0.35);
+      color:#FFD700; background:transparent;
+    }
+
     @media(max-width:600px) {
       .rag-grid { grid-template-columns:1fr; }
+      .rag-view-toggle { margin-left:0; margin-top:0.5rem; }
     }
   </style>
 </head>
@@ -312,11 +391,70 @@
     return icons[type] || icons.text;
   }
 
+  /* ── RAG Explorer View builder ─────────────────────────── */
+  function buildRagExplorer(ragList) {
+    var html = '<div class="rag-explorer-tree">' +
+      '<div class="tree-folder" onclick="this.querySelector(\'.tree-chevron\').classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'collapsed\')">' +
+        '<span class="tree-chevron open">&#x25B6;</span>' +
+        '<span class="tree-folder-icon">&#x1F4C2;</span>' +
+        '<span class="tree-folder-name">memory/</span>' +
+        '<span class="tree-file-meta" style="color:var(--brand-gold)">' + ragList.length + ' files</span>' +
+      '</div>' +
+      '<div class="tree-children">';
+
+    ragList.forEach(function (rf, idx) {
+      var rawName = rf.name || rf.path || '';
+      var displayName = rawName.replace(/^.*rag-memory-of-/, '').replace(/\.md$/, '');
+      var type = rf.type || 'md';
+      var abstract = rf.abstract || rf.description || '';
+      var takeaways = rf.takeaways || rf.keyTakeaways || rf.key_takeaways || [];
+      var tags = rf.tags || [];
+      var size = rf.size || '';
+      var detailId = 'rag-detail-' + idx;
+
+      html += '<div class="rag-explorer-file" onclick="var d=document.getElementById(\'' + detailId + '\');d.classList.toggle(\'open\');this.querySelector(\'.rag-explorer-chevron\').classList.toggle(\'open\')">' +
+        '<span class="rag-explorer-chevron">&#x25B6;</span>' +
+        '<span class="tree-file-icon">' + ragFileIcon(type) + '</span>' +
+        '<span class="rag-explorer-file-name">' + displayName + '</span>' +
+        ragTypeBadge(type) +
+        (size ? '<span class="rag-explorer-size">' + size + '</span>' : '') +
+      '</div>' +
+      '<div class="rag-explorer-detail" id="' + detailId + '">';
+
+      if (abstract) {
+        html += '<div class="rag-detail-section-label">Abstract</div>' +
+          '<div class="rag-detail-abstract">' + abstract + '</div>';
+      }
+
+      if (Array.isArray(takeaways) && takeaways.length > 0) {
+        html += '<div class="rag-detail-section-label">Key Takeaways</div>' +
+          '<ul class="rag-detail-takeaways">' +
+          takeaways.map(function (t) { return '<li>' + t + '</li>'; }).join('') +
+          '</ul>';
+      }
+
+      if (Array.isArray(tags) && tags.length > 0) {
+        html += '<div class="rag-detail-section-label">Tags</div>' +
+          '<div class="rag-detail-tags">' +
+          tags.map(function (tag) { return '<span class="rag-tag-pill">' + tag + '</span>'; }).join('') +
+          '</div>';
+      }
+
+      if (!abstract && (!Array.isArray(takeaways) || takeaways.length === 0) && (!Array.isArray(tags) || tags.length === 0)) {
+        html += '<div style="font-size:0.78rem;color:var(--text-dim);font-style:italic">No metadata available for this memory file.</div>';
+      }
+
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+    return html;
+  }
+
   var ragHTML = '';
   if (ragFiles.length > 0) {
-    ragHTML =
-      '<section class="rag-section">' +
-        '<h3 class="section-title">RAG Memory Files</h3>' +
+    var ragCardsContent =
+      '<div class="rag-cards-view" id="rag-cards-view">' +
         '<div class="rag-tree">' +
         '<div class="tree-dir"><span class="tree-dir-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FFD700" stroke-width="1.2"><path d="M2 2h3l1.5 2H12v8H2V2z"/></svg></span><span class="tree-dir-name">memory/</span><span class="tree-count">' + ragFiles.length + '</span></div>' +
         ragFiles.map(function (rf) {
@@ -335,6 +473,26 @@
           '</div>';
         }).join('') +
         '</div>' +
+      '</div>';
+
+    var ragExplorerContent =
+      '<div class="rag-explorer" id="rag-explorer-view">' +
+        '<div class="card" style="padding:var(--space-md)">' +
+          buildRagExplorer(ragFiles) +
+        '</div>' +
+      '</div>';
+
+    ragHTML =
+      '<section class="rag-section">' +
+        '<h3 class="section-title" style="justify-content:space-between">' +
+          '<span style="display:flex;align-items:center;gap:0.5rem">RAG Memory Files</span>' +
+          '<div class="rag-view-toggle" id="rag-view-toggle">' +
+            '<button class="rag-toggle-btn active" data-view="cards" onclick="window._ragToggle(\'cards\')">&#x1F4CB; Cards</button>' +
+            '<button class="rag-toggle-btn" data-view="explorer" onclick="window._ragToggle(\'explorer\')">&#x1F333; Explorer</button>' +
+          '</div>' +
+        '</h3>' +
+        ragCardsContent +
+        ragExplorerContent +
       '</section>';
   } else {
     ragHTML =
@@ -395,6 +553,25 @@
     treeHTML +
     ragHTML +
     activityHTML;
+
+  // RAG view toggle
+  window._ragToggle = function (view) {
+    var cards = document.getElementById('rag-cards-view');
+    var explorer = document.getElementById('rag-explorer-view');
+    var btns = document.querySelectorAll('.rag-toggle-btn');
+    if (!cards || !explorer) return;
+    btns.forEach(function (b) { b.classList.remove('active'); });
+    if (view === 'explorer') {
+      cards.classList.add('hidden');
+      explorer.classList.add('visible');
+    } else {
+      cards.classList.remove('hidden');
+      explorer.classList.remove('visible');
+    }
+    btns.forEach(function (b) {
+      if (b.getAttribute('data-view') === view) b.classList.add('active');
+    });
+  };
 
   // Search + Filter
   setTimeout(function() {
