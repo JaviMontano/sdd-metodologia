@@ -108,6 +108,100 @@
     .bug-sev.major { background:rgba(249,115,22,0.15); color:var(--brand-orange); }
     .bug-sev.minor { background:rgba(148,163,184,0.15); color:var(--text-muted); }
 
+    /* ── DoD Tracker ──────────────────────────────────────────── */
+    .dod-section { margin-bottom:2.5rem; }
+    .dod-table {
+      width:100%; border-collapse:collapse; font-size:0.82rem;
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-card); overflow:hidden;
+    }
+    .dod-table th {
+      text-align:left; padding:0.6rem 0.75rem; font-size:0.7rem; font-weight:600;
+      color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;
+      border-bottom:1px solid var(--border-subtle); background:rgba(255,255,255,0.02);
+    }
+    .dod-table td { padding:0.55rem 0.75rem; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .dod-table tr.dod-passed { border-left:3px solid rgba(255,215,0,0.45); }
+    .dod-status-icon { font-size:0.85rem; }
+
+    /* ── Acceptance Criteria Matrix ─────────────────────────── */
+    .ac-section { margin-bottom:2.5rem; }
+    .ac-list { list-style:none; padding:0; margin:0; }
+    .ac-item {
+      display:flex; align-items:flex-start; gap:0.6rem; padding:0.5rem 0.75rem;
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-sm);
+      margin-bottom:0.4rem; font-size:0.82rem; transition:transform var(--transition-fast);
+    }
+    .ac-item:hover { transform:translateX(3px); }
+    .ac-icon { flex-shrink:0; font-size:0.9rem; margin-top:1px; }
+    .ac-id { font-family:var(--font-mono); font-weight:600; color:var(--brand-gold); font-size:0.75rem; margin-right:0.25rem; }
+    .ac-summary {
+      margin-top:0.75rem; font-size:0.78rem; color:var(--text-muted);
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-sm);
+      padding:0.5rem 0.75rem;
+    }
+
+    /* ── Feature Quality Heatmap ────────────────────────────── */
+    .fq-section { margin-bottom:2.5rem; }
+    .fq-table {
+      width:100%; border-collapse:collapse; font-size:0.82rem;
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-card); overflow:hidden;
+    }
+    .fq-table th {
+      text-align:left; padding:0.6rem 0.75rem; font-size:0.7rem; font-weight:600;
+      color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;
+      border-bottom:1px solid var(--border-subtle); background:rgba(255,255,255,0.02);
+    }
+    .fq-table td { padding:0.55rem 0.75rem; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .fq-cell { font-family:var(--font-mono); font-weight:600; font-size:0.78rem; padding:2px 8px; border-radius:4px; text-align:center; }
+    .fq-cell.high { background:rgba(19,125,197,0.18); color:#137DC5; }
+    .fq-cell.mid  { background:rgba(255,215,0,0.18);  color:#FFD700; }
+    .fq-cell.low  { background:rgba(239,68,68,0.18);  color:#EF4444; }
+    .fq-health { font-weight:900; font-size:0.85rem; }
+    .fq-phase {
+      font-size:0.65rem; font-weight:600; padding:2px 8px; border-radius:10px;
+      display:inline-block; white-space:nowrap;
+    }
+    .fq-phase.plan      { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .fq-phase.spec      { background:rgba(255,215,0,0.15);  color:#FFD700; }
+    .fq-phase.test      { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .fq-phase.impl      { background:rgba(255,215,0,0.15);  color:#FFD700; }
+    .fq-phase.done      { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .fq-phase.default   { background:rgba(148,163,184,0.15); color:var(--text-muted); }
+
+    /* ── QA Artifact Index ──────────────────────────────────── */
+    .sa-section { margin-bottom:2.5rem; }
+    .sa-table {
+      width:100%; border-collapse:collapse; font-size:0.82rem;
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-card); overflow:hidden;
+    }
+    .sa-table th {
+      text-align:left; padding:0.6rem 0.75rem; font-size:0.7rem; font-weight:600;
+      color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;
+      border-bottom:1px solid var(--border-subtle); background:rgba(255,255,255,0.02);
+    }
+    .sa-table td { padding:0.55rem 0.75rem; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .sa-badge {
+      font-size:0.65rem; font-weight:600; padding:2px 8px; border-radius:10px;
+      display:inline-block; white-space:nowrap;
+    }
+    .sa-badge.verified    { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .sa-badge.complete    { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .sa-badge.in-progress { background:rgba(255,215,0,0.15);  color:#FFD700; }
+    .sa-badge.draft       { background:rgba(148,163,184,0.15); color:var(--text-muted); }
+    .sa-badge.missing     { background:rgba(239,68,68,0.15);  color:#EF4444; }
+
+    .qa-nodata-hint {
+      text-align:center; padding:1.5rem 1rem; color:var(--text-dim); font-size:0.85rem;
+      background:var(--bg-card); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass);
+      border:1px solid var(--border-subtle); border-radius:var(--radius-sm);
+    }
+    .qa-nodata-hint code { color:var(--brand-gold); }
+
     /* ── No Data ─────────────────────────────────────────────── */
     .no-data { text-align:center; padding:3rem 1rem; }
     .no-data-icon { font-size:3rem; margin-bottom:1rem; opacity:0.4; }
@@ -153,6 +247,7 @@
     try { return path.split('.').reduce(function(o,k){ return o[k]; }, D()) || fallback; }
     catch(_) { return fallback; }
   }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
   var root = document.getElementById('qa-root');
 
@@ -341,6 +436,182 @@
     '</section>';
   }
 
+  /* ── 6. DoD Tracker (qaplan.dod) ─────────────────────── */
+  var dodHTML = '';
+  (function() {
+    var qaplan = get('qaplan', null);
+    if (!qaplan) {
+      dodHTML = '<section class="dod-section">' +
+        '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+        '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
+      '</section>';
+      return;
+    }
+    var dod = qaplan.dod;
+    if (!Array.isArray(dod) || !dod.length) {
+      dodHTML = '<section class="dod-section">' +
+        '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+        '<div class="qa-nodata-hint">No DoD data available</div>' +
+      '</section>';
+      return;
+    }
+    var rows = dod.map(function(d) {
+      var st = (d.status || '').toLowerCase();
+      var icon = st === 'passed' ? '<span class="dod-status-icon" style="color:#FFD700">&#x2714;</span>'
+               : st === 'in-progress' ? '<span class="dod-status-icon" style="color:#137DC5">&#x1F551;</span>'
+               : '<span class="dod-status-icon" style="color:var(--text-dim)">&ndash;</span>';
+      var rowClass = st === 'passed' ? ' class="dod-passed"' : '';
+      return '<tr' + rowClass + '>' +
+        '<td>' + esc(d.phase) + '</td>' +
+        '<td>' + esc(d.name) + '</td>' +
+        '<td>' + esc(d.criterion) + '</td>' +
+        '<td style="font-family:var(--font-mono);font-size:0.78rem">' + esc(d.target) + '</td>' +
+        '<td style="text-align:center">' + icon + '</td>' +
+      '</tr>';
+    }).join('');
+    dodHTML = '<section class="dod-section">' +
+      '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+      '<table class="dod-table"><thead><tr>' +
+        '<th>Phase</th><th>Name</th><th>Criterion</th><th>Target</th><th style="text-align:center">Status</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+    '</section>';
+  })();
+
+  /* ── 7. Acceptance Criteria Matrix (qaplan.globalAC) ─── */
+  var acHTML = '';
+  (function() {
+    var qaplan = get('qaplan', null);
+    if (!qaplan) {
+      acHTML = '<section class="ac-section">' +
+        '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+        '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
+      '</section>';
+      return;
+    }
+    var ac = qaplan.globalAC;
+    if (!Array.isArray(ac) || !ac.length) {
+      acHTML = '<section class="ac-section">' +
+        '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+        '<div class="qa-nodata-hint">No acceptance criteria data available</div>' +
+      '</section>';
+      return;
+    }
+    var met = 0;
+    var items = ac.map(function(a) {
+      var checked = !!a.checked;
+      if (checked) met++;
+      var icon = checked
+        ? '<span class="ac-icon" style="color:#137DC5">&#x2714;</span>'
+        : '<span class="ac-icon" style="color:#FFD700">&#x25CB;</span>';
+      return '<li class="ac-item">' + icon +
+        '<div><span class="ac-id">' + esc(a.id) + ':</span> ' + esc(a.description) + '</div>' +
+      '</li>';
+    }).join('');
+    var total = ac.length;
+    var pct = total ? Math.round((met / total) * 100) : 0;
+    acHTML = '<section class="ac-section">' +
+      '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+      '<ul class="ac-list">' + items + '</ul>' +
+      '<div class="ac-summary">' + met + '/' + total + ' criteria met (' + pct + '%)</div>' +
+    '</section>';
+  })();
+
+  /* ── 8. Feature Quality Heatmap (qaplan.featureQuality) ── */
+  var fqHTML = '';
+  (function() {
+    var qaplan = get('qaplan', null);
+    if (!qaplan) {
+      fqHTML = '<section class="fq-section">' +
+        '<h3 class="section-title">&#x1F525; Feature Quality Heatmap</h3>' +
+        '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
+      '</section>';
+      return;
+    }
+    var fq = qaplan.featureQuality;
+    if (!Array.isArray(fq) || !fq.length) {
+      fqHTML = '<section class="fq-section">' +
+        '<h3 class="section-title">&#x1F525; Feature Quality Heatmap</h3>' +
+        '<div class="qa-nodata-hint">No feature quality data available</div>' +
+      '</section>';
+      return;
+    }
+    function pctClass(v) { v = parseFloat(v) || 0; return v >= 80 ? 'high' : v >= 50 ? 'mid' : 'low'; }
+    function phaseClass(p) {
+      p = (p || '').toLowerCase();
+      if (p.indexOf('plan') !== -1) return 'plan';
+      if (p.indexOf('spec') !== -1) return 'spec';
+      if (p.indexOf('test') !== -1) return 'test';
+      if (p.indexOf('impl') !== -1 || p.indexOf('deliver') !== -1) return 'impl';
+      if (p.indexOf('done') !== -1 || p.indexOf('ship') !== -1) return 'done';
+      return 'default';
+    }
+    var rows = fq.map(function(f) {
+      var acP = parseFloat(f.acPct) || 0;
+      var testP = parseFloat(f.testPct) || 0;
+      var clP = parseFloat(f.checklistPct) || 0;
+      var health = parseFloat(f.health) || 0;
+      var pc = phaseClass(f.phase);
+      return '<tr>' +
+        '<td style="font-weight:500">' + esc(f.feature) + '</td>' +
+        '<td><span class="fq-cell ' + pctClass(acP) + '">' + Math.round(acP) + '%</span></td>' +
+        '<td><span class="fq-cell ' + pctClass(testP) + '">' + Math.round(testP) + '%</span></td>' +
+        '<td><span class="fq-cell ' + pctClass(clP) + '">' + Math.round(clP) + '%</span></td>' +
+        '<td><span class="fq-health ' + pctClass(health) + '" style="color:' + (health >= 80 ? '#137DC5' : health >= 50 ? '#FFD700' : '#EF4444') + '">' + Math.round(health) + '</span></td>' +
+        '<td><span class="fq-phase ' + pc + '">' + esc(f.phase || 'unknown') + '</span></td>' +
+      '</tr>';
+    }).join('');
+    fqHTML = '<section class="fq-section">' +
+      '<h3 class="section-title">&#x1F525; Feature Quality Heatmap</h3>' +
+      '<table class="fq-table"><thead><tr>' +
+        '<th>Feature</th><th>AC%</th><th>Test%</th><th>Checklist%</th><th>Health</th><th>Phase</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+    '</section>';
+  })();
+
+  /* ── 9. Sub-QA Artifacts (qaplan.subArtifacts) ─────────── */
+  var saHTML = '';
+  (function() {
+    var qaplan = get('qaplan', null);
+    if (!qaplan) {
+      saHTML = '<section class="sa-section">' +
+        '<h3 class="section-title">&#x1F4C2; QA Artifact Index</h3>' +
+        '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
+      '</section>';
+      return;
+    }
+    var sa = qaplan.subArtifacts;
+    if (!Array.isArray(sa) || !sa.length) {
+      saHTML = '<section class="sa-section">' +
+        '<h3 class="section-title">&#x1F4C2; QA Artifact Index</h3>' +
+        '<div class="qa-nodata-hint">No QA artifact data available</div>' +
+      '</section>';
+      return;
+    }
+    function badgeClass(s) {
+      s = (s || '').toLowerCase().replace(/\s+/g, '-');
+      if (s === 'verified') return 'verified';
+      if (s === 'complete') return 'complete';
+      if (s === 'in-progress') return 'in-progress';
+      if (s === 'draft') return 'draft';
+      if (s === 'missing') return 'missing';
+      return 'draft';
+    }
+    var rows = sa.map(function(a) {
+      var bc = badgeClass(a.status);
+      return '<tr>' +
+        '<td style="font-weight:500">' + esc(a.feature) + '</td>' +
+        '<td><span style="font-family:var(--font-mono);font-size:0.78rem" title="' + esc(a.path) + '">' + esc(a.artifact) + '</span></td>' +
+        '<td><span class="sa-badge ' + bc + '">' + esc(a.status || 'unknown') + '</span></td>' +
+      '</tr>';
+    }).join('');
+    saHTML = '<section class="sa-section">' +
+      '<h3 class="section-title">&#x1F4C2; QA Artifact Index</h3>' +
+      '<table class="sa-table"><thead><tr>' +
+        '<th>Feature</th><th>Artifact</th><th>Status</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+    '</section>';
+  })();
+
   /* ── Render ────────────────────────────────────────────── */
   root.innerHTML =
     '<h1 class="page-title"><span class="gold">&#x2713;</span> Quality</h1>' +
@@ -351,6 +622,10 @@
     pyramidHTML +
     sankeyHTML +
     bugsHTML +
+    dodHTML +
+    acHTML +
+    fqHTML +
+    saHTML +
 
     '<footer class="cc-footer">SDD v3.0 &middot; Spec Driven Development by metodolog<span class="gold">IA</span></footer>';
 
