@@ -1,4 +1,4 @@
-# SDD v3.0 — Spec Driven Development · MetodologIA Edition
+# SDD v3.2 — Spec Driven Development · MetodologIA Edition
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
