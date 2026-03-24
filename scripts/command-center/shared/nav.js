@@ -65,7 +65,7 @@
       label: 'Help',
       items: [
         { id: 'tour',       label: 'Tour', icon: 'tour' },
-        { id: 'docs/index', label: 'Docs', icon: 'docs' }
+        { id: 'docs', label: 'Docs', icon: 'docs' }
       ]
     }
   ];
