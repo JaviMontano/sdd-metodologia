@@ -2,7 +2,7 @@
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 skills · 9 pipeline phases · 38 commands · 20 scripts · Per-prompt heartbeat · Knowledge graph · Command Center
+> 12 skills · 9 pipeline phases · 38 commands · 22 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -112,10 +112,18 @@ Multi-HTML system in `.specify/dashboard/`:
 | `quality.html` | Testify (Sankey) + Analyze + Bugs |
 | `intelligence.html` | Insights (sparklines) + Graph (force-directed) + Timeline |
 | `workspace.html` | Filesystem explorer + RAG memory preview |
-| `governance.html` | Constitution + Principles radar |
+| `governance.html` | Constitution + Principles radar + Operational logs timeline |
+| `logs.html` | Unified 4-source log viewer (session, changelog, tasklog, decisions/ADRs) |
+| `backlog.html` | Feature backlog board (3-column: Backlog/In Progress/Done) |
+| `search.html` | Global cross-artifact search with category filters |
 
-Shared: `nav.js` (sticky navbar), `tokens.css` (design tokens), `data.js` (DASHBOARD_DATA).
-Generate with: `/sdd:dashboard` or `node scripts/generate-dashboard.js <path> --multi`
+Shared: `nav.js` (12-tab navbar), `tokens.css` (design tokens), `search.js` (search+filter), `footer.js`, `data.js` (DASHBOARD_DATA).
+
+**Two generators:**
+- `generate-dashboard.js` — Single-file dashboard (`.specify/dashboard.html`). Legacy compat.
+- `generate-command-center-data.js` — Multi-page ALM data (`.specify/shared/data.js`). Primary.
+
+`/sdd:init` runs both. `/sdd:dashboard` refreshes both. The Command Center (multi-page) is the primary ALM; the single-file dashboard is kept for backward compatibility.
 
 ## RAG Memory System
 
@@ -127,7 +135,7 @@ Session inputs are captured as `rag-memory-of-{slug}.md` with:
 Indexed in `.specify/rag-index.json`. Visible in Workspace view.
 Capture with: `/sdd:capture <file>` or `bash scripts/sdd-rag-capture.sh <file>`
 
-## Scripts (20)
+## Scripts (22)
 
 | Script | Purpose |
 |--------|---------|
@@ -145,7 +153,10 @@ Capture with: `/sdd:capture <file>` or `bash scripts/sdd-rag-capture.sh <file>`
 | `sdd-feature.sh` | Create/select/list features |
 | `sdd-verify.sh` | Full verification suite (7 checks) |
 | `sdd-hooks-install.sh` | Git hook installation |
-| `generate-dashboard.js` | Dashboard HTML generator (single + multi mode) |
+| `generate-dashboard.js` | Single-file dashboard HTML generator (legacy) |
+| `generate-command-center-data.js` | Multi-page ALM data generator (`shared/data.js`) |
+| `sdd-qa-plan.js` | QA Plan generator (QA-PLAN.md + qa-plan.json) |
+| `sdd-demo-serve.sh` | Serve demo data with npx serve for local preview |
 | `brand-overlay.sh` | MetodologIA branding overlay |
 | `brand-html-patch.js` | HTML structural patches |
 | `sync-upstream.sh` | Upstream IIC/kit sync |
