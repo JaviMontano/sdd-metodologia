@@ -1,5 +1,5 @@
 ---
-description: "SDD Phase 6 — Organize Plan — cross-artifact consistency validation, traceability FR→TS→T
+description: "SDD Phase 6 — Organize Plan — cross-artifact consistency validation, traceability FR→TS→Tasks"
 user-invocable: true
 ---
 
