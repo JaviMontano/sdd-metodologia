@@ -1,5 +1,5 @@
 ---
-description: "SDD Phase 3 — BDD Analysis — requirements quality checklists (not implementation testing)
+description: "SDD Phase 3 — BDD Analysis — requirements quality checklists (not implementation testing)"
 user-invocable: true
 ---
 
