@@ -12,6 +12,7 @@
 window.DASHBOARD_DATA = {
 
   // ── META ───────────────────────────────────────────────────────
+  isDemo: true, // Flag: pages show "Demo Data" badge. Removed by generate-command-center-data.js
   generatedAt: "2026-03-23T18:00:00.000Z",
 
   // ── PROJECT ────────────────────────────────────────────────────

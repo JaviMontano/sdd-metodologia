@@ -418,4 +418,30 @@
       window.dispatchEvent(new CustomEvent('sdd:feature-select', { detail: { featureId: sel.value } }));
     });
   }
+
+  /* ── Demo Data Badge ────────────────────────────────────── */
+  var D = window.DASHBOARD_DATA;
+  if (D && D.isDemo) {
+    // Create badge
+    var badge = document.createElement('div');
+    badge.id = 'sdd-demo-badge';
+    badge.style.cssText = 'position:fixed;top:6px;right:80px;z-index:10001;'
+      + 'background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);'
+      + 'color:#FFD700;font-family:var(--font-heading);font-size:0.65rem;font-weight:700;'
+      + 'padding:3px 10px;border-radius:12px;letter-spacing:0.5px;'
+      + 'display:flex;align-items:center;gap:6px;cursor:pointer;'
+      + 'transition:opacity 0.3s ease';
+    badge.innerHTML = ICONS.hub + ' DEMO DATA'
+      + '<span style="font-size:0.6rem;color:var(--text-dim);margin-left:4px">dismiss</span>';
+    badge.title = 'Viewing demo data. Run /sdd:init to load your project.';
+    badge.addEventListener('click', function () {
+      badge.style.opacity = '0';
+      setTimeout(function () { badge.remove(); }, 300);
+      sessionStorage.setItem('sdd-demo-dismissed', 'true');
+    });
+    // Don't show if dismissed this session
+    if (!sessionStorage.getItem('sdd-demo-dismissed')) {
+      document.body.appendChild(badge);
+    }
+  }
 })();

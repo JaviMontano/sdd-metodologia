@@ -252,6 +252,7 @@ const avgProgress = features.length > 0
 
 // ── Assemble ──
 const data = {
+  isDemo: false, // Real project data — demo badge hidden
   generatedAt: new Date().toISOString(),
   project: { name: path.basename(path.resolve(projectPath)) },
   premise: hasPremise ? { name: path.basename(path.resolve(projectPath)) } : null,
