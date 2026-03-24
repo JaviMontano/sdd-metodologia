@@ -215,17 +215,17 @@
 <body>
   <main class="bl-main">
     <div class="page-header">
-      <h1 class="page-title"><span class="gold">Feature</span> Backlog</h1>
+      <h1 class="page-title" data-i18n="backlog.title"><span class="gold">Feature</span> Backlog</h1>
       <p class="page-subtitle">Track features from request to completion across the SDD pipeline</p>
     </div>
     <div class="stats-bar" id="stats-bar"></div>
     <div class="controls-bar">
       <div class="search-wrap">
         <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
-        <input class="search-input" id="bl-search" type="text" placeholder="Search features and backlog items..." />
+        <input class="search-input" id="bl-search" type="text" data-i18n="common.search" placeholder="Search features and backlog items..." />
       </div>
       <div class="filter-chips" id="filter-chips">
-        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip active" data-filter="all" data-i18n="common.all">All</button>
         <button class="filter-chip" data-filter="p0">P0</button>
         <button class="filter-chip" data-filter="p1">P1</button>
         <button class="filter-chip" data-filter="p2">P2</button>
@@ -237,8 +237,8 @@
         <option value="date">Sort: Date</option>
       </select>
       <div class="view-toggle">
-        <button class="view-btn active" data-view="board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/></svg> Board</button>
-        <button class="view-btn" data-view="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg> List</button>
+        <button class="view-btn active" data-view="board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/></svg> <span data-i18n="backlog.board">Board</span></button>
+        <button class="view-btn" data-view="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg> <span data-i18n="backlog.list">List</span></button>
       </div>
     </div>
     <div id="view-board"></div>
@@ -365,9 +365,9 @@
 
       var el = document.getElementById('view-board');
       el.innerHTML = '<div class="board">' +
-        '<div class="board-col"><div class="col-header col-header-backlog">'+ICO.colBacklog+' Backlog <span class="col-count">'+backlogItems.length+'</span></div><div class="col-body">'+(hB||emptyCol)+'</div></div>' +
-        '<div class="board-col"><div class="col-header col-header-progress">'+ICO.colProgress+' In Progress <span class="col-count">'+inProgress.length+'</span></div><div class="col-body">'+(hP||emptyCol)+'</div></div>' +
-        '<div class="board-col"><div class="col-header col-header-done">'+ICO.colDone+' Done <span class="col-count">'+done.length+'</span></div><div class="col-body">'+(hD||emptyCol)+'</div></div>' +
+        '<div class="board-col"><div class="col-header col-header-backlog">'+ICO.colBacklog+' '+(window.SDD && SDD.i18n ? SDD.i18n.t('backlog.title') : 'Backlog')+' <span class="col-count">'+backlogItems.length+'</span></div><div class="col-body">'+(hB||emptyCol)+'</div></div>' +
+        '<div class="board-col"><div class="col-header col-header-progress">'+ICO.colProgress+' '+(window.SDD && SDD.i18n ? SDD.i18n.t('pipeline.wip') : 'In Progress')+' <span class="col-count">'+inProgress.length+'</span></div><div class="col-body">'+(hP||emptyCol)+'</div></div>' +
+        '<div class="board-col"><div class="col-header col-header-done">'+ICO.colDone+' '+(window.SDD && SDD.i18n ? SDD.i18n.t('pipeline.done') : 'Done')+' <span class="col-count">'+done.length+'</span></div><div class="col-body">'+(hD||emptyCol)+'</div></div>' +
       '</div>';
       bindCards(el);
     }

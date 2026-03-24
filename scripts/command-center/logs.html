@@ -275,26 +275,26 @@
 <body>
   <main class="logs-main">
     <div class="page-header">
-      <h1 class="page-title">Logs <span class="gold">&amp;</span> Decisions</h1>
+      <h1 class="page-title" data-i18n="logs.title">Logs <span class="gold">&amp;</span> Decisions</h1>
       <p class="page-subtitle">Unified timeline -- session events, changes, tasks, and architectural decisions</p>
     </div>
     <div class="stats-bar" id="stats-bar"></div>
     <div class="controls-bar">
       <div class="search-wrap">
         <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
-        <input class="search-input" id="log-search" type="text" placeholder="Search logs, tasks, decisions..." />
+        <input class="search-input" id="log-search" type="text" data-i18n="common.search" placeholder="Search logs, tasks, decisions..." />
       </div>
       <div class="filter-chips" id="filter-chips">
-        <button class="filter-chip active" data-filter="all">All</button>
-        <button class="filter-chip" data-filter="session">Session</button>
-        <button class="filter-chip" data-filter="change">Change</button>
-        <button class="filter-chip" data-filter="task">Task</button>
-        <button class="filter-chip" data-filter="decision">Decision</button>
+        <button class="filter-chip active" data-filter="all" data-i18n="common.all">All</button>
+        <button class="filter-chip" data-filter="session" data-i18n="logs.session">Session</button>
+        <button class="filter-chip" data-filter="change" data-i18n="logs.change">Change</button>
+        <button class="filter-chip" data-filter="task" data-i18n="logs.task">Task</button>
+        <button class="filter-chip" data-filter="decision" data-i18n="logs.decision">Decision</button>
       </div>
       <div class="view-toggle">
-        <button class="view-btn active" data-view="timeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg> Timeline</button>
-        <button class="view-btn" data-view="table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Table</button>
-        <button class="view-btn" data-view="adr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> ADR Gallery</button>
+        <button class="view-btn active" data-view="timeline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg> <span data-i18n="logs.timeline">Timeline</span></button>
+        <button class="view-btn" data-view="table"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg> <span data-i18n="logs.table">Table</span></button>
+        <button class="view-btn" data-view="adr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> <span data-i18n="logs.adr">ADR Gallery</span></button>
       </div>
     </div>
     <div class="results-counter" id="results-counter"></div>
@@ -306,6 +306,9 @@
   <script>
   (function() {
     'use strict';
+
+    /* ── i18n helper ── */
+    function t(key, fallback) { return (window.SDD && SDD.i18n ? SDD.i18n.t(key) : fallback); }
 
     function D() { return window.DASHBOARD_DATA || null; }
     function get(obj, path, def) {
@@ -393,9 +396,9 @@
       var total = allEntries.length;
       document.getElementById('stats-bar').innerHTML =
         statCard(total, 'Total Entries', 'stat-icon-total', ICONS.total) +
-        statCard(sessions, 'Session Events', 'stat-icon-session', ICONS.session) +
-        statCard(changes, 'Changes', 'stat-icon-change', ICONS.change) +
-        statCard(decisions, 'Decisions (ADRs)', 'stat-icon-decision', ICONS.decision);
+        statCard(sessions, t('logs.session','Session') + ' Events', 'stat-icon-session', ICONS.session) +
+        statCard(changes, t('logs.change','Change') + 's', 'stat-icon-change', ICONS.change) +
+        statCard(decisions, t('logs.decision','Decision') + 's (ADRs)', 'stat-icon-decision', ICONS.decision);
     }
     function statCard(val, label, cls, icon) {
       return '<div class="stat-card"><div class="stat-icon '+cls+'">'+icon+'</div><div><div class="stat-value">'+val+'</div><div class="stat-label">'+esc(label)+'</div></div></div>';

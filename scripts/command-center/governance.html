@@ -287,7 +287,7 @@
 
   var constitutionHTML = '';
   if (principles.length) {
-    constitutionHTML += '<div class="section-header">'+ICO.shield+'<span class="section-title">Constitution'+(constitutionVersion ? ' v'+esc(constitutionVersion) : '')+'</span><span class="section-badge">'+principles.length+' principle'+(principles.length!==1?'s':'')+'</span></div>';
+    constitutionHTML += '<div class="section-header">'+ICO.shield+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.constitution') : 'Constitution')+(constitutionVersion ? ' v'+esc(constitutionVersion) : '')+'</span><span class="section-badge">'+principles.length+' principle'+(principles.length!==1?'s':'')+'</span></div>';
     constitutionHTML += '<div class="principles-grid" id="principles-grid">';
     principles.forEach(function(p) {
       var num = p.number || p.id || '?';
@@ -304,7 +304,7 @@
     });
     constitutionHTML += '</div>';
   } else {
-    constitutionHTML = '<div class="section-header">'+ICO.shield+'<span class="section-title">Constitution</span></div><div class="empty-state" style="padding:2rem">'+ICO.empty+'<div class="empty-msg" style="margin-top:0.5rem">No constitution defined yet -- run <code>/sdd:00-constitution</code> to create governance principles</div></div>';
+    constitutionHTML = '<div class="section-header">'+ICO.shield+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.constitution') : 'Constitution')+'</span></div><div class="empty-state" style="padding:2rem">'+ICO.empty+'<div class="empty-msg" style="margin-top:0.5rem">No constitution defined yet -- run <code>/sdd:00-constitution</code> to create governance principles</div></div>';
   }
 
   /* ════════════════════════════════════════════════════
@@ -338,7 +338,7 @@
     { key:'G3', label:'Implement + Ship' }
   ];
 
-  var gatesHTML = '<div class="section-header">'+ICO.gate+'<span class="section-title">Quality Gates</span></div>';
+  var gatesHTML = '<div class="section-header">'+ICO.gate+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.gates') : 'Quality Gates')+'</span></div>';
   gatesHTML += '<div class="gates-flow">';
   gates.forEach(function(g, idx) {
     var st = gateStatus(g.key);
@@ -357,7 +357,7 @@
   /* ════════════════════════════════════════════════════
      3. EVIDENCE TAGS
      ════════════════════════════════════════════════════ */
-  var evidenceHTML = '<div class="section-header">'+ICO.tag+'<span class="section-title">Evidence Tags</span></div>';
+  var evidenceHTML = '<div class="section-header">'+ICO.tag+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.evidence') : 'Evidence Tags')+'</span></div>';
   evidenceHTML += '<div class="evidence-row">';
   evidenceHTML += '<div class="ev-pill ev-code"><span class="ev-tag">[CODE]</span><span class="ev-desc">Verified in source</span></div>';
   evidenceHTML += '<div class="ev-pill ev-config"><span class="ev-tag">[CONFIG]</span><span class="ev-desc">From configuration</span></div>';
@@ -382,7 +382,7 @@
     { phase:'Phase 8 -- Ship', criterion:'GitHub Issues exported. Deployment verified. Loop closed.', target:'100%' }
   ];
 
-  var dodHTML = '<div class="section-header">'+ICO.check+'<span class="section-title">Definition of Done</span></div>';
+  var dodHTML = '<div class="section-header">'+ICO.check+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.dod') : 'Definition of Done')+'</span></div>';
   dodHTML += '<div class="dod-wrap"><table class="dod-table"><thead><tr><th>PHASE</th><th>CRITERION</th><th>TARGET</th><th>STATUS</th></tr></thead><tbody>';
   dodPhases.forEach(function(ph) {
     var phaseName = ph.phase || ph.name || '';
@@ -481,7 +481,7 @@
     return h;
   }
 
-  var opsHTML = '<div class="section-header">'+ICO.list+'<span class="section-title">Operational Logs</span></div>';
+  var opsHTML = '<div class="section-header">'+ICO.list+'<span class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.logs') : 'Operational Logs')+'</span></div>';
   opsHTML += '<div class="ops-tabs">';
   opsHTML += '<button class="ops-tab active" data-ops="changelog">Changelog <span style="font-family:var(--font-mono);font-size:0.65rem;opacity:0.7">'+changelog.length+'</span></button>';
   opsHTML += '<button class="ops-tab" data-ops="tasklog">Tasklog <span style="font-family:var(--font-mono);font-size:0.65rem;opacity:0.7">'+tasklog.length+'</span></button>';
@@ -498,12 +498,12 @@
      ════════════════════════════════════════════════════ */
   root.innerHTML =
     '<header class="page-header">' +
-      '<h1 class="page-title"><span class="gold">Governance</span></h1>' +
+      '<h1 class="page-title"><span class="gold">'+(window.SDD && SDD.i18n ? SDD.i18n.t('governance.title') : 'Governance')+'</span></h1>' +
       '<p class="page-subtitle">Constitution, quality gates, and operational governance for '+esc(projectName)+'</p>' +
     '</header>' +
     '<div class="gov-controls">' +
       '<div class="search-wrap"><span class="search-icon">'+ICO.search+'</span><input class="search-input" id="gov-search" type="text" placeholder="Search principles, gates, logs..." /></div>' +
-      '<div class="filter-chips" id="gov-filters"><button class="filter-chip active" data-filter="all">All</button><button class="filter-chip" data-filter="MUST">MUST</button><button class="filter-chip" data-filter="SHOULD">SHOULD</button></div>' +
+      '<div class="filter-chips" id="gov-filters"><button class="filter-chip active" data-filter="all" data-i18n="common.all">All</button><button class="filter-chip" data-filter="MUST">MUST</button><button class="filter-chip" data-filter="SHOULD">SHOULD</button></div>' +
     '</div>' +
     constitutionHTML +
     gatesHTML +

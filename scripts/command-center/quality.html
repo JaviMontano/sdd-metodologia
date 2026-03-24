@@ -245,6 +245,9 @@
 (function () {
   'use strict';
 
+  /* ── i18n helper ── */
+  function t(key, fallback) { return (window.SDD && SDD.i18n ? SDD.i18n.t(key) : fallback); }
+
   function D() { return window.DASHBOARD_DATA || null; }
   function get(path, fallback) {
     try { return path.split('.').reduce(function(o,k){ return o[k]; }, D()) || fallback; }
@@ -256,10 +259,10 @@
 
   if (!D()) {
     root.innerHTML =
-      '<h1 class="page-title"><span class="gold">&#x2713;</span> Quality</h1>' +
+      '<h1 class="page-title"><span class="gold">&#x2713;</span> ' + t('quality.title','Quality') + '</h1>' +
       '<div class="no-data">' +
         '<div class="no-data-icon">&#x2713;</div>' +
-        '<h2 style="margin-bottom:0.5rem">No Data Yet</h2>' +
+        '<h2 style="margin-bottom:0.5rem" data-i18n="common.nodata">No Data Yet</h2>' +
         '<p class="no-data-text">Run <code style="color:var(--brand-gold)">/sdd:test</code> to generate tests,<br>then <code style="color:var(--brand-gold)">/sdd:dashboard</code> to refresh.</p>' +
       '</div>' +
       '<footer class="cc-footer">SDD v3.0 &middot; Spec Driven Development by metodolog<span class="gold">IA</span></footer>';
@@ -288,7 +291,7 @@
         ' stroke-dashoffset="' + dashOffset.toFixed(2) + '" />' +
     '</svg>' +
     '<div class="gauge-pct" style="color:' + gaugeColor + '">' + passRate + '%</div>' +
-    '<div class="gauge-label">Pass Rate</div>' +
+    '<div class="gauge-label" data-i18n="quality.passrate">' + t('quality.passrate','Pass Rate') + '</div>' +
   '</div></div>';
 
   /* ── 2. Checklist Progress ─────────────────────────────── */
@@ -320,7 +323,7 @@
     }).join('');
 
     checklistHTML = '<section class="checklist-section">' +
-      '<h3 class="section-title">&#x2611; Checklist Progress</h3>' +
+      '<h3 class="section-title">&#x2611; ' + t('quality.checklist','Checklists') + '</h3>' +
       bars +
     '</section>';
   }
@@ -352,7 +355,7 @@
   }
 
   var pyramidHTML = '<section class="pyramid-section">' +
-    '<h3 class="section-title">&#x25B3; Test Pyramid</h3>' +
+    '<h3 class="section-title">&#x25B3; ' + t('quality.testpyramid','Test Pyramid') + '</h3>' +
     '<div class="pyramid-wrap"><div class="pyramid-container">' +
     '<svg viewBox="0 0 280 200">' +
       '<!-- E2E (top, smallest) -->' +
@@ -446,7 +449,7 @@
     var qaplan = get('qaplan', null);
     if (!qaplan) {
       dodHTML = '<section class="dod-section">' +
-        '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+        '<h3 class="section-title">&#x2611; ' + t('quality.dod','Definition of Done') + '</h3>' +
         '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
       '</section>';
       return;
@@ -454,7 +457,7 @@
     var dod = qaplan.dod;
     if (!Array.isArray(dod) || !dod.length) {
       dodHTML = '<section class="dod-section">' +
-        '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+        '<h3 class="section-title">&#x2611; ' + t('quality.dod','Definition of Done') + '</h3>' +
         '<div class="qa-nodata-hint">No DoD data available</div>' +
       '</section>';
       return;
@@ -474,7 +477,7 @@
       '</tr>';
     }).join('');
     dodHTML = '<section class="dod-section">' +
-      '<h3 class="section-title">&#x2611; Definition of Done</h3>' +
+      '<h3 class="section-title">&#x2611; ' + t('quality.dod','Definition of Done') + '</h3>' +
       '<table class="dod-table"><thead><tr>' +
         '<th>Phase</th><th>Name</th><th>Criterion</th><th>Target</th><th style="text-align:center">Status</th>' +
       '</tr></thead><tbody>' + rows + '</tbody></table>' +
@@ -487,7 +490,7 @@
     var qaplan = get('qaplan', null);
     if (!qaplan) {
       acHTML = '<section class="ac-section">' +
-        '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+        '<h3 class="section-title">&#x2705; ' + t('quality.ac','Acceptance Criteria') + '</h3>' +
         '<div class="qa-nodata-hint">Run <code>/sdd:qa</code> to generate QA Plan</div>' +
       '</section>';
       return;
@@ -495,7 +498,7 @@
     var ac = qaplan.globalAC;
     if (!Array.isArray(ac) || !ac.length) {
       acHTML = '<section class="ac-section">' +
-        '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+        '<h3 class="section-title">&#x2705; ' + t('quality.ac','Acceptance Criteria') + '</h3>' +
         '<div class="qa-nodata-hint">No acceptance criteria data available</div>' +
       '</section>';
       return;
@@ -514,7 +517,7 @@
     var total = ac.length;
     var pct = total ? Math.round((met / total) * 100) : 0;
     acHTML = '<section class="ac-section">' +
-      '<h3 class="section-title">&#x2705; Global Acceptance Criteria</h3>' +
+      '<h3 class="section-title">&#x2705; ' + t('quality.ac','Acceptance Criteria') + '</h3>' +
       '<ul class="ac-list">' + items + '</ul>' +
       '<div class="ac-summary">' + met + '/' + total + ' criteria met (' + pct + '%)</div>' +
     '</section>';
@@ -618,7 +621,7 @@
 
   /* ── Render ────────────────────────────────────────────── */
   root.innerHTML =
-    '<h1 class="page-title"><span class="gold">&#x2713;</span> Quality</h1>' +
+    '<h1 class="page-title"><span class="gold">&#x2713;</span> ' + t('quality.title','Quality') + '</h1>' +
     '<p class="page-subtitle">' + projectName + ' &mdash; ' + totalFR + ' requirements, ' + totalTS + ' tests, ' + passRate + '% pass rate</p>' +
 
     gaugeHTML +
@@ -636,7 +639,7 @@
   // Search + Filter
   setTimeout(function() {
     var ctrl = SDD.search.init('page-search', {
-      placeholder: 'Search checklists...',
+      placeholder: t('common.search','Search') + '...',
       filters: [{label:'Critical',value:'critical'}, {label:'Major',value:'major'}, {label:'Minor',value:'minor'}],
       onSearch: function(q, f) { filterItems(q, f); },
       onFilter: function(f, q) { filterItems(q, f); }

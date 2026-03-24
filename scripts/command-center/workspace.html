@@ -337,7 +337,7 @@
   if (treeKeys.length > 0) {
     treeHTML =
       '<section class="file-tree-section">' +
-        '<h3 class="section-title">&#x1F4C2; File Explorer</h3>' +
+        '<h3 class="section-title">&#x1F4C2; '+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.files') : 'Project Files')+'</h3>' +
         '<div class="card" style="padding:var(--space-md)">' +
           '<div class="file-tree">' + renderTree(tree, 0) + '</div>' +
         '</div>' +
@@ -345,7 +345,7 @@
   } else if (fileCount) {
     treeHTML =
       '<section class="file-tree-section">' +
-        '<h3 class="section-title">&#x1F4C2; File Explorer</h3>' +
+        '<h3 class="section-title">&#x1F4C2; '+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.files') : 'Project Files')+'</h3>' +
         '<div class="card" style="padding:var(--space-lg);text-align:center">' +
           '<p style="color:var(--text-muted);font-size:0.9rem">' + fileCount + ' files in workspace</p>' +
           '<p style="color:var(--text-dim);font-size:0.8rem;margin-top:0.5rem">Detailed tree not available &mdash; run <code class="rec-cmd" style="display:inline-block;font-family:var(--font-mono);font-size:0.75rem;padding:0.2rem 0.55rem;border-radius:9999px;background:rgba(255,215,0,0.1);color:var(--brand-gold);font-weight:600">/sdd:dashboard</code> with full data</p>' +
@@ -354,7 +354,7 @@
   } else {
     treeHTML =
       '<section class="file-tree-section">' +
-        '<h3 class="section-title">&#x1F4C2; File Explorer</h3>' +
+        '<h3 class="section-title">&#x1F4C2; '+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.files') : 'Project Files')+'</h3>' +
         '<div class="empty-state">No workspace files detected &mdash; run <code style="color:var(--brand-gold)">/sdd:init</code> to scaffold the project</div>' +
       '</section>';
   }
@@ -485,7 +485,7 @@
     ragHTML =
       '<section class="rag-section">' +
         '<h3 class="section-title" style="justify-content:space-between">' +
-          '<span style="display:flex;align-items:center;gap:0.5rem">RAG Memory Files</span>' +
+          '<span style="display:flex;align-items:center;gap:0.5rem">'+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.rag') : 'RAG Memory Files')+'</span>' +
           '<div class="rag-view-toggle" id="rag-view-toggle">' +
             '<button class="rag-toggle-btn active" data-view="cards" onclick="window._ragToggle(\'cards\')">&#x1F4CB; Cards</button>' +
             '<button class="rag-toggle-btn" data-view="explorer" onclick="window._ragToggle(\'explorer\')">&#x1F333; Explorer</button>' +
@@ -497,7 +497,7 @@
   } else {
     ragHTML =
       '<section class="rag-section">' +
-        '<h3 class="section-title">RAG Memory Files</h3>' +
+        '<h3 class="section-title">'+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.rag') : 'RAG Memory Files')+'</h3>' +
         '<div class="empty-state">No RAG memory files yet. Use <code style="color:var(--brand-gold)">/sdd:capture</code> to save session knowledge.</div>' +
       '</section>';
   }
@@ -547,7 +547,7 @@
   /* ── Render ───────────────────────────────────────────────── */
   root.innerHTML =
     '<header class="page-header">' +
-      '<h1 class="page-title"><span class="gold">&#x1F4C1;</span> Workspace</h1>' +
+      '<h1 class="page-title"><span class="gold">&#x1F4C1;</span> '+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.title') : 'Workspace')+'</h1>' +
       '<p class="page-subtitle">File explorer, RAG memory, and session activity for ' + projectName + '</p>' +
     '</header>' +
     treeHTML +

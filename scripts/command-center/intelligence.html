@@ -161,6 +161,9 @@
 (function () {
   'use strict';
 
+  /* ── i18n helper ── */
+  function t(key, fallback) { return (window.SDD && SDD.i18n ? SDD.i18n.t(key) : fallback); }
+
   function D() { return window.DASHBOARD_DATA || null; }
   function get(path, fallback) {
     try {
@@ -261,7 +264,7 @@
     '<div class="card">' +
       '<div class="sentinel-status">' +
         '<div class="sentinel-dot ' + (sentEnabled ? 'enabled' : 'disabled') + '"></div>' +
-        '<span class="sentinel-label">Sentinel ' + (sentEnabled ? 'Active' : 'Disabled') + '</span>' +
+        '<span class="sentinel-label">' + t('intel.sentinel','Sentinel Status') + ': ' + (sentEnabled ? 'Active' : 'Disabled') + '</span>' +
       '</div>' +
       '<div class="sentinel-meta">' +
         'Last run: <span>' + sentLastRun + '</span><br>' +
@@ -324,7 +327,7 @@
 
   var recsHTML =
     '<section>' +
-      '<h3 class="section-title">&#x1F4A1; Recommendations</h3>' +
+      '<h3 class="section-title">&#x1F4A1; ' + t('intel.recommendations','Recommendations') + '</h3>' +
       '<div class="recommendations-list">' +
       recs.map(function (r) {
         return '<div class="rec-item">' +
@@ -377,14 +380,14 @@
 
   root.innerHTML =
     '<header class="page-header">' +
-      '<h1 class="page-title"><span class="gold">&#x25C9;</span> Intelligence</h1>' +
+      '<h1 class="page-title"><span class="gold">&#x25C9;</span> ' + t('intel.title','Intelligence') + '</h1>' +
       '<p class="page-subtitle">Health insights, risk analysis, and smart recommendations for ' + projectName + '</p>' +
     '</header>' +
 
     '<section class="health-hero">' +
       '<div class="health-score-display">' +
         '<div class="score-number" style="color:' + scoreColor + '">' + score + '</div>' +
-        '<div class="score-label">Health Score</div>' +
+        '<div class="score-label" data-i18n="intel.health">' + t('intel.health','Health Score') + '</div>' +
         '<div class="score-trend ' + trendClass + '">' + trendArrow + ' ' + trendText + '</div>' +
       '</div>' +
       '<div class="health-detail">' +
@@ -404,7 +407,7 @@
     sparkSVG +
 
     '<section>' +
-      '<h3 class="section-title">&#x26A0; Risk Indicators</h3>' +
+      '<h3 class="section-title">&#x26A0; ' + t('intel.risks','Risk Indicators') + '</h3>' +
       risksHTML +
     '</section>' +
 
@@ -415,7 +418,7 @@
   // Search + Filter
   setTimeout(function() {
     var ctrl = SDD.search.init('page-search', {
-      placeholder: 'Search findings...',
+      placeholder: t('common.search','Search') + '...',
       filters: [{label:'High',value:'HIGH'}, {label:'Medium',value:'MEDIUM'}, {label:'Low',value:'LOW'}, {label:'Info',value:'INFO'}],
       onSearch: function(q, f) { filterItems(q, f); },
       onFilter: function(f, q) { filterItems(q, f); }

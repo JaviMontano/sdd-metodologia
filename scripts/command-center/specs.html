@@ -210,6 +210,9 @@
 (function () {
   'use strict';
 
+  /* ── i18n helper ── */
+  function t(key, fallback) { return (window.SDD && SDD.i18n ? SDD.i18n.t(key) : fallback); }
+
   function D() { return window.DASHBOARD_DATA || null; }
   function get(path, fallback) {
     try { return path.split('.').reduce(function(o,k){ return o[k]; }, D()) || fallback; }
@@ -220,10 +223,10 @@
 
   if (!D() || !get('features', null)) {
     root.innerHTML =
-      '<h1 class="page-title"><span class="gold">&#x1F4CB;</span> Specifications</h1>' +
+      '<h1 class="page-title"><span class="gold">&#x1F4CB;</span> ' + t('specs.title','Specifications') + '</h1>' +
       '<div class="no-data">' +
         '<div class="no-data-icon">&#x1F4CB;</div>' +
-        '<h2 style="margin-bottom:0.5rem">No Data Yet</h2>' +
+        '<h2 style="margin-bottom:0.5rem" data-i18n="common.nodata">No Data Yet</h2>' +
         '<p class="no-data-text">Run <code style="color:var(--brand-gold)">/sdd:spec</code> to create specifications,<br>then <code style="color:var(--brand-gold)">/sdd:dashboard</code> to refresh.</p>' +
       '</div>' +
       '<footer class="cc-footer">SDD v3.0 &middot; Spec Driven Development by metodolog<span class="gold">IA</span></footer>';
@@ -323,18 +326,18 @@
     var orphanCount = allReqs.filter(function(r){ return r.status === 'orphan'; }).length;
 
     reqHTML = '<section class="req-section">' +
-      '<h3 class="section-title">&#x1F4D1; Requirements ' +
+      '<h3 class="section-title">&#x1F4D1; ' + t('specs.requirements','Requirements') + ' ' +
         '<span style="font-size:0.75rem;color:var(--text-dim);font-weight:400">' + allReqs.length + ' total' +
         (orphanCount ? ', <span style="color:var(--brand-red)">' + orphanCount + ' orphan</span>' : '') +
         '</span></h3>' +
       '<table class="req-table">' +
-        '<thead><tr><th>ID</th><th>Requirement</th><th>Linked Test</th><th>Status</th></tr></thead>' +
+        '<thead><tr><th>ID</th><th>Requirement</th><th>Linked Test</th><th data-i18n="common.status">' + t('common.status','Status') + '</th></tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
       '</table>' +
     '</section>';
   } else {
     reqHTML = '<section class="req-section">' +
-      '<h3 class="section-title">&#x1F4D1; Requirements</h3>' +
+      '<h3 class="section-title">&#x1F4D1; ' + t('specs.requirements','Requirements') + '</h3>' +
       '<p style="color:var(--text-dim);font-size:0.85rem;padding:1rem 0">No requirements extracted yet &mdash; run <code style="color:var(--brand-gold)">/sdd:spec</code></p>' +
     '</section>';
   }
@@ -348,11 +351,11 @@
   });
 
   root.innerHTML =
-    '<h1 class="page-title"><span class="gold">&#x1F4CB;</span> Specifications</h1>' +
+    '<h1 class="page-title"><span class="gold">&#x1F4CB;</span> ' + t('specs.title','Specifications') + '</h1>' +
     '<p class="page-subtitle">' + projectName + ' &mdash; ' + totalFR + ' FR, ' + totalUS + ' US, ' + totalSC + ' SC across ' + features.length + ' feature' + (features.length !== 1 ? 's' : '') + '</p>' +
 
     '<section class="story-map">' +
-      '<h3 class="section-title">&#x1F5FA; Story Map</h3>' +
+      '<h3 class="section-title">&#x1F5FA; ' + t('specs.storymap','Story Map') + '</h3>' +
       storyMapHTML +
     '</section>' +
 
@@ -363,8 +366,8 @@
   // Search + Filter
   setTimeout(function() {
     var ctrl = SDD.search.init('page-search', {
-      placeholder: 'Search requirements...',
-      filters: [{label:'Covered',value:'covered'}, {label:'Orphan',value:'orphan'}],
+      placeholder: t('common.search','Search') + '...',
+      filters: [{label:t('specs.covered','Covered'),value:'covered'}, {label:t('specs.orphan','Orphan'),value:'orphan'}],
       onSearch: function(q, f) { filterItems(q, f); },
       onFilter: function(f, q) { filterItems(q, f); }
     });

@@ -133,7 +133,7 @@
     + '</button>'
     + '<a href="index.html" class="header-brand">'
     + '<span class="brand-logo">' + ICONS.logo + '</span>'
-    + '<span class="brand-sdd">SDD</span>'
+    + '<span class="brand-sdd" id="sdd-brand-name">SDD</span>'
     + '<span class="brand-sub">by metodolog<span class="gold">IA</span></span>'
     + '</a>'
     + '</div>'
@@ -419,8 +419,17 @@
     });
   }
 
-  /* ── Demo Data Badge ────────────────────────────────────── */
+  /* ── Dynamic project name in brand ───────────────────────── */
   var D = window.DASHBOARD_DATA;
+  var brandEl = document.getElementById('sdd-brand-name');
+  if (D && D.project && D.project.name && brandEl) {
+    // Show project name instead of "SDD" — capitalize first letter
+    var pname = D.project.name.replace(/-/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    brandEl.textContent = pname;
+    brandEl.title = 'Project: ' + D.project.name;
+  }
+
+  /* ── Demo Data Badge ────────────────────────────────────── */
   if (D && D.isDemo) {
     // Create badge
     var badge = document.createElement('div');
