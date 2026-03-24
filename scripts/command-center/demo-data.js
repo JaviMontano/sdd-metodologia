@@ -526,5 +526,65 @@ window.DASHBOARD_DATA = {
     { id: "ADR-003", title: "bcrypt over Argon2 for password hashing", status: "accepted", date: "2026-03-23", context: "Firebase Auth handles most auth but custom admin tokens need hashing", options: ["Argon2 (memory-hard, best security)", "bcrypt (battle-tested, native Node.js)", "scrypt (Node.js built-in)"], decision: "bcrypt — native Node.js support via bcryptjs, no C++ binding needed, proven security", consequences: "Slightly less memory-hard than Argon2. Acceptable for admin-only use case.", anchor: "Principle XIV (Simple First)" },
     { id: "ADR-004", title: "Quiz timer: server-authoritative vs client", status: "proposed", date: "2026-03-22", context: "Quiz timers must be tamper-proof — students shouldn't manipulate remaining time", options: ["Client-side timer with server validation", "Server-authoritative via WebSocket", "Server-authoritative via polling (30s)"], decision: "Pending Socratic debate resolution", consequences: "TBD", anchor: "Principle VII (Secure by Default), Principle XV (BDD)" },
     { id: "ADR-005", title: "Offline quiz sync strategy", status: "proposed", date: "2026-03-23", context: "Students in rural areas may lose connectivity mid-quiz", options: ["Service Worker + IndexedDB (full offline)", "LocalStorage cache (simple, limited)", "No offline (require connectivity)"], decision: "Pending — depends on Feature 007 scope finalization", consequences: "TBD", anchor: "Principle VIII (Offline Resilience)" }
-  ]
+  ],
+
+  // ── QA PLAN (unified quality governance) ──────────────────
+  qaplan: {
+    version: "1.0",
+    generatedAt: "2026-03-23T18:00:00Z",
+    constitutionVersion: "1.1",
+
+    // Global Definition of Done — one row per pipeline phase
+    dod: [
+      { phase: "P0", name: "Constitution", criterion: "Principles defined, evidence tags enforced", target: "\u22655 principles, 100% tagged", status: "passed" },
+      { phase: "P1", name: "User Specs", criterion: "FR/SC complete, <30% assumptions", target: "FR\u22653, SC\u22651 per FR", status: "passed" },
+      { phase: "P2", name: "Technical Specs", criterion: "Data model, API contracts, Gate G1", target: "Spec + Plan exist", status: "passed" },
+      { phase: "P3", name: "BDD Analysis", criterion: "Checklist 100% checked", target: "All items [x]", status: "passed" },
+      { phase: "P4", name: "Test", criterion: "Gherkin hash-locked, \u22651 TS per FR", target: "Coverage \u2265 80%", status: "in-progress" },
+      { phase: "P5", name: "Task", criterion: "All tasks ordered, parallel marked", target: "Tasks \u2265 FR count", status: "in-progress" },
+      { phase: "P6", name: "Organize", criterion: "Analysis score \u2265 95%, Gate G2", target: "Zero HIGH", status: "pending" },
+      { phase: "P7", name: "Deliver", criterion: "Tests green, code reviewed, Gate G3", target: "100% pass", status: "pending" },
+      { phase: "P8", name: "Ship", criterion: "Deployed, changelog updated", target: "Issues exported", status: "pending" }
+    ],
+
+    // Global Acceptance Criteria — project-wide quality contracts
+    globalAC: [
+      { id: "AC-001", description: "Every FR-XXX has \u22651 TS-XXX scenario", checked: true },
+      { id: "AC-002", description: "Every SC-XXX has \u22651 verification scenario", checked: true },
+      { id: "AC-003", description: "Zero CRITICAL findings in analysis", checked: true },
+      { id: "AC-004", description: "Assertion hash integrity verified", checked: true },
+      { id: "AC-005", description: "Brand compliance (zero green, design tokens)", checked: true },
+      { id: "AC-006", description: "Constitution alignment \u226595%", checked: false },
+      { id: "AC-007", description: "All features have qa/acceptance-criteria.md", checked: false },
+      { id: "AC-008", description: "Test coverage \u226580% for all in-progress features", checked: false }
+    ],
+
+    // Quality Gate Registry
+    gates: [
+      { id: "G1", phase: "P2", name: "Technical Specs", status: "passed", passedAt: "2026-03-20T10:00:00Z", blocker: null },
+      { id: "G2", phase: "P6", name: "Organize Plan", status: "pending", passedAt: null, blocker: "feat-003 analysis incomplete" },
+      { id: "G3", phase: "P7", name: "Deliver", status: "pending", passedAt: null, blocker: null }
+    ],
+
+    // Per-feature quality summary
+    featureQuality: [
+      { feature: "001-user-auth", acCoverage: "8/8", acPct: 100, testCoverage: "12/12", testPct: 100, checklistPct: 100, health: 95, phase: "complete" },
+      { feature: "002-quiz-engine", acCoverage: "5/7", acPct: 71, testCoverage: "10/15", testPct: 67, checklistPct: 85, health: 72, phase: "deliver" },
+      { feature: "003-adaptive-difficulty", acCoverage: "3/5", acPct: 60, testCoverage: "5/8", testPct: 63, checklistPct: 70, health: 58, phase: "test" },
+      { feature: "004-analytics-dashboard", acCoverage: "0/3", acPct: 0, testCoverage: "0/0", testPct: 0, checklistPct: 0, health: 15, phase: "spec" }
+    ],
+
+    // Sub-QA artifact index
+    subArtifacts: [
+      { feature: "001-user-auth", artifact: "Acceptance Criteria", path: "specs/001-user-auth/qa/acceptance-criteria.md", status: "verified" },
+      { feature: "001-user-auth", artifact: "Quality Checklist", path: "specs/001-user-auth/qa/quality-checklist.md", status: "complete" },
+      { feature: "001-user-auth", artifact: "Test Coverage Matrix", path: "specs/001-user-auth/qa/test-coverage.md", status: "complete" },
+      { feature: "002-quiz-engine", artifact: "Acceptance Criteria", path: "specs/002-quiz-engine/qa/acceptance-criteria.md", status: "in-progress" },
+      { feature: "002-quiz-engine", artifact: "Quality Checklist", path: "specs/002-quiz-engine/qa/quality-checklist.md", status: "in-progress" },
+      { feature: "002-quiz-engine", artifact: "Test Coverage Matrix", path: "specs/002-quiz-engine/qa/test-coverage.md", status: "in-progress" },
+      { feature: "003-adaptive-difficulty", artifact: "Acceptance Criteria", path: "specs/003-adaptive-difficulty/qa/acceptance-criteria.md", status: "draft" },
+      { feature: "003-adaptive-difficulty", artifact: "Test Coverage Matrix", path: "specs/003-adaptive-difficulty/qa/test-coverage.md", status: "draft" },
+      { feature: "004-analytics-dashboard", artifact: "Acceptance Criteria", path: "specs/004-analytics-dashboard/qa/acceptance-criteria.md", status: "missing" }
+    ]
+  }
 };

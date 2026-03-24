@@ -60,6 +60,7 @@ SDD runs a **per-prompt heartbeat** via `UserPromptSubmit` hook. On every user p
 | `/sdd:sentinel` | Full sentinel cycle (perceive-decide-act, zero LLM cost) |
 | `/sdd:insights` | Health trends, risk indicators, smart recommendations |
 | `/sdd:graph` | Build knowledge graph (Constitution→FR→TS→Tasks traceability) |
+| `/sdd:qa` | Generate/refresh QA-PLAN.md (DoD, acceptance criteria, gate status) |
 | `/sdd:dashboard` | Generate Command Center (multi-HTML micro-frontend) |
 
 ## Utility Commands
