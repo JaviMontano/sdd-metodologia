@@ -25,7 +25,8 @@
     moon: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.1 10.4A6.5 6.5 0 0 1 7.6 2.9 7 7 0 1 0 15.1 10.4z"/></svg>',
     hamburger: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>',
     close: '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>',
-    logo: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/><line x1="12" y1="22" x2="12" y2="8.5"/><line x1="22" y1="8.5" x2="12" y2="8.5"/><line x1="2" y1="8.5" x2="12" y2="8.5"/></svg>',
+    logo: '<svg width="24" height="24" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-label="MetodologIA"><defs><linearGradient id="nav-lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0A122A"/><stop offset="100%" stop-color="#13315C"/></linearGradient></defs><rect width="36" height="36" rx="10" fill="url(#nav-lg)"/><rect x="10" y="12" width="4" height="12" rx=".5" fill="#FFF"/><rect x="16" y="12" width="4" height="8" rx=".5" fill="#FFF"/><rect x="16" y="22" width="4" height="2" rx=".5" fill="#FFF"/><rect x="22" y="12" width="4" height="6" rx=".5" fill="#FFF"/><rect x="22" y="20" width="4" height="4" rx=".5" fill="#FFF"/><circle cx="18" cy="8" r="2" fill="#FFD700"/></svg>',
+    lang: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M2 9h14"/><ellipse cx="9" cy="9" rx="3.5" ry="7"/></svg>',
     chevron: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 9 7 4 12"/></svg>'
   };
 
@@ -141,6 +142,10 @@
     + ICONS.search
     + '<span class="shortcut-hint">Ctrl+K</span>'
     + '</button>'
+    + '<button id="sdd-lang-toggle" class="header-action-btn lang-btn" aria-label="Toggle language" title="Toggle EN/ES">'
+    + ICONS.lang
+    + '<span class="lang-label">EN</span>'
+    + '</button>'
     + '<button id="sdd-theme-toggle" class="header-action-btn" aria-label="Toggle theme" title="Toggle light/dark theme">'
     + '<span class="theme-icon">' + ICONS.moon + '</span>'
     + '</button>'
@@ -216,6 +221,8 @@
     + '  font-family:var(--font-body); font-size:0.7rem;'
     + '}'
     + '.header-action-btn:hover { background:var(--bg-raised); color:var(--text-primary); }'
+    + '.lang-btn { gap:0.2rem; }'
+    + '.lang-label { font-family:var(--font-heading); font-size:0.6rem; font-weight:700; letter-spacing:0.05em; }'
     + '.shortcut-hint {'
     + '  font-size:0.6rem; color:var(--text-dim); padding:0.1rem 0.35rem;'
     + '  border:1px solid var(--border-medium); border-radius:4px;'
@@ -340,6 +347,33 @@
     themeIconEl.innerHTML = isLight ? ICONS.sun : ICONS.moon;
     localStorage.setItem('sdd-theme', isLight ? 'light' : 'dark');
   });
+
+  /* ── Language toggle (EN/ES) ─────────────────────────────── */
+  var langToggle = document.getElementById('sdd-lang-toggle');
+  var langLabel = langToggle ? langToggle.querySelector('.lang-label') : null;
+  var savedLang = localStorage.getItem('sdd-lang') || 'en';
+  if (langLabel) langLabel.textContent = savedLang.toUpperCase();
+  document.documentElement.setAttribute('lang', savedLang);
+
+  if (langToggle) {
+    langToggle.addEventListener('click', function () {
+      var current = localStorage.getItem('sdd-lang') || 'en';
+      var next = current === 'en' ? 'es' : 'en';
+      localStorage.setItem('sdd-lang', next);
+      document.documentElement.setAttribute('lang', next);
+      if (langLabel) langLabel.textContent = next.toUpperCase();
+      window.dispatchEvent(new CustomEvent('sdd:lang-change', { detail: { lang: next } }));
+    });
+  }
+
+  /* ── Inject favicon (MetodologIA logo) ─────────────────── */
+  if (!document.querySelector('link[rel="icon"]')) {
+    var favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/svg+xml';
+    favicon.href = 'data:image/svg+xml,' + encodeURIComponent('<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0A122A"/><stop offset="100%" stop-color="#13315C"/></linearGradient></defs><rect width="36" height="36" rx="10" fill="url(#fg)"/><rect x="10" y="12" width="4" height="12" rx=".5" fill="#FFF"/><rect x="16" y="12" width="4" height="8" rx=".5" fill="#FFF"/><rect x="16" y="22" width="4" height="2" rx=".5" fill="#FFF"/><rect x="22" y="12" width="4" height="6" rx=".5" fill="#FFF"/><rect x="22" y="20" width="4" height="4" rx=".5" fill="#FFF"/><circle cx="18" cy="8" r="2" fill="#FFD700"/></svg>');
+    document.head.appendChild(favicon);
+  }
 
   /* ── Hamburger toggle (mobile) ─────────────────────────── */
   var burger = document.getElementById('sdd-hamburger');
