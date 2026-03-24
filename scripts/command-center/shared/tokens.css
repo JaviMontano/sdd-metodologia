@@ -17,10 +17,9 @@
   --brand-gold-dark: #FFA000;
   --brand-blue: #137DC5;
   --brand-purple: #8B5CF6;
-  --brand-cyan: #00FFFF;
-  --brand-green: #22C55E;
+  --brand-lavender: #BBA0CC;
   --brand-red: #EF4444;
-  --brand-orange: #F97316;
+  --brand-amber: #F59E0B;
 
   /* Text */
   --text-primary: #E2E8F0;
@@ -169,7 +168,7 @@ code, pre { font-family: var(--font-mono); }
 }
 .badge-gold   { background: rgba(255,215,0,0.12);   color: var(--brand-gold); }
 .badge-blue   { background: rgba(19,125,197,0.12);   color: var(--brand-blue); }
-.badge-green  { background: rgba(34,197,94,0.12);    color: var(--brand-green); }
+.badge-blue  { background: rgba(34,197,94,0.12);    color: var(--brand-blue); }
 .badge-red    { background: rgba(239,68,68,0.12);    color: var(--brand-red); }
 .badge-purple { background: rgba(139,92,246,0.12);   color: var(--brand-purple); }
 
