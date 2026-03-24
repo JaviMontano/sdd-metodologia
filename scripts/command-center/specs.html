@@ -113,9 +113,75 @@
     .sdd-chip:hover { border-color: rgba(255,215,0,0.3); color: #E2E8F0; }
     .sdd-chip.active { background: rgba(255,215,0,0.12); border-color: #FFD700; color: #FFD700; }
 
+    /* ── FR Drill-Down Detail Panel ──────────────────────── */
+    .req-table tbody tr { cursor:pointer; }
+    .req-table tbody tr.expanded td { background:rgba(255,215,0,.04); border-bottom-color:transparent; }
+
+    .fr-detail {
+      display:none; background:var(--bg-surface); border:1px solid var(--border-subtle);
+      border-radius:12px; margin:0.5rem 0 1rem; padding:1.25rem; animation:fr-slide-in .2s ease;
+    }
+    .fr-detail.open { display:block; }
+    @keyframes fr-slide-in { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+    .fr-detail-header {
+      display:flex; align-items:center; gap:.75rem; margin-bottom:1rem;
+      padding-bottom:.75rem; border-bottom:1px solid var(--border-faint);
+    }
+    .fr-detail-id { font-family:var(--font-mono); font-size:1rem; font-weight:700; color:var(--brand-gold); }
+    .fr-detail-name { font-size:.9rem; color:var(--text-primary); }
+    .fr-detail-feature { font-size:.7rem; color:var(--text-dim); margin-left:auto; font-family:var(--font-footnote); }
+
+    .fr-chain {
+      display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;
+      padding:.75rem 1rem; background:var(--bg-deep); border-radius:8px; flex-wrap:wrap;
+    }
+    .fr-chain-node {
+      display:inline-flex; align-items:center; gap:.3rem;
+      font-family:var(--font-mono); font-size:.75rem; font-weight:600;
+      padding:.25rem .6rem; border-radius:6px;
+    }
+    .fr-chain-node.principle { background:rgba(255,215,0,.1); color:var(--brand-gold); border:1px solid rgba(255,215,0,.2); }
+    .fr-chain-node.requirement { background:rgba(19,125,197,.1); color:var(--brand-blue); border:1px solid rgba(19,125,197,.2); }
+    .fr-chain-node.test { background:rgba(139,92,246,.1); color:#8B5CF6; border:1px solid rgba(139,92,246,.2); }
+    .fr-chain-node.task { background:rgba(148,163,184,.1); color:var(--text-muted); border:1px solid rgba(148,163,184,.2); }
+    .fr-chain-arrow { color:var(--text-dim); font-size:.7rem; }
+    .fr-chain-arrow svg { width:14px; height:14px; vertical-align:middle; }
+
+    .fr-linked-section { margin-top:.75rem; }
+    .fr-linked-label {
+      font-family:var(--font-heading); font-size:.7rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); margin-bottom:.4rem;
+    }
+    .fr-linked-list { display:flex; flex-direction:column; gap:.35rem; }
+    .fr-linked-item {
+      display:flex; align-items:center; gap:.5rem; padding:.4rem .6rem;
+      background:var(--bg-card); border:1px solid var(--border-faint); border-radius:8px;
+      font-size:.78rem; transition:background .15s;
+    }
+    .fr-linked-item:hover { background:rgba(255,255,255,.03); }
+    .fr-linked-item-id { font-family:var(--font-mono); font-weight:600; min-width:65px; }
+    .fr-linked-item-id.test-id { color:#8B5CF6; }
+    .fr-linked-item-id.task-id { color:var(--text-muted); }
+    .fr-linked-item-id.bug-id { color:var(--brand-red); }
+    .fr-linked-item-title { color:var(--text-secondary); flex:1; }
+    .fr-linked-item-status {
+      font-size:.65rem; font-weight:600; padding:.15rem .5rem; border-radius:6px;
+      font-family:var(--font-footnote);
+    }
+    .fr-linked-item-status.passed { background:rgba(19,125,197,.1); color:var(--brand-blue); }
+    .fr-linked-item-status.failed { background:rgba(239,68,68,.1); color:var(--brand-red); }
+    .fr-linked-item-status.pending { background:rgba(148,163,184,.1); color:var(--text-dim); }
+    .fr-linked-item-status.done { background:rgba(19,125,197,.1); color:var(--brand-blue); }
+    .fr-linked-item-status.wip { background:rgba(255,215,0,.1); color:var(--brand-gold); }
+    .fr-linked-item-status.open { background:rgba(148,163,184,.1); color:var(--text-dim); }
+
+    .fr-no-links { color:var(--text-dim); font-size:.8rem; font-style:italic; padding:.5rem 0; }
+
     @media(max-width:600px) {
       .spec-card { width:170px; }
       .req-table { font-size:0.75rem; }
+      .fr-chain { flex-direction:column; align-items:flex-start; }
     }
   </style>
 </head>
@@ -302,6 +368,150 @@
       ctrl.setCount(shown, total);
     }
   }, 100);
+
+  // ── FR Drill-Down: Click a requirement row to expand traceability ──
+  var arrowSVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h6m0 0l-2.5-2.5M10 7l-2.5 2.5"/></svg>';
+
+  function findLinkedTests(reqId, feature) {
+    if (!feature || !feature.tests || !Array.isArray(feature.tests)) return [];
+    return feature.tests.filter(function(t) {
+      if (typeof t === 'string') return false;
+      var refs = (t.requirement || t.ref || t.linkedFR || '').toString();
+      return refs.indexOf(reqId) !== -1 || (t.id && allReqs.some(function(r) { return r.id === reqId && r.linked === t.id; }));
+    });
+  }
+
+  function findLinkedTasks(reqId, feature) {
+    if (!feature || !feature.tasks || !Array.isArray(feature.tasks)) return [];
+    return feature.tasks.filter(function(t) {
+      if (typeof t === 'string') return false;
+      var refs = (t.requirement || t.ref || t.linkedFR || '').toString();
+      return refs.indexOf(reqId) !== -1;
+    });
+  }
+
+  function findLinkedBugs(reqId) {
+    var d = D();
+    if (!d) return [];
+    var bugs = [];
+    if (d.quality && d.quality.bugs) bugs = bugs.concat(d.quality.bugs);
+    (d.features || []).forEach(function(f) { if (f.bugs) bugs = bugs.concat(f.bugs); });
+    return bugs.filter(function(b) { return (b.requirement || '').indexOf(reqId) !== -1; });
+  }
+
+  function getFeatureForReq(reqId) {
+    var fs = D().features || [];
+    for (var i = 0; i < fs.length; i++) {
+      var reqs = fs[i].requirements || [];
+      for (var j = 0; j < reqs.length; j++) {
+        var rid = typeof reqs[j] === 'string' ? reqs[j] : (reqs[j].id || '');
+        if (rid === reqId) return fs[i];
+      }
+    }
+    return null;
+  }
+
+  function renderDetailPanel(reqData) {
+    var feature = getFeatureForReq(reqData.id);
+    var tests = feature ? findLinkedTests(reqData.id, feature) : [];
+    var tasks = feature ? findLinkedTasks(reqData.id, feature) : [];
+    var bugs = findLinkedBugs(reqData.id);
+
+    // Traceability chain
+    var chainHTML = '<div class="fr-chain">';
+    chainHTML += '<span class="fr-chain-node principle">P-*</span>';
+    chainHTML += '<span class="fr-chain-arrow">' + arrowSVG + '</span>';
+    chainHTML += '<span class="fr-chain-node requirement">' + reqData.id + '</span>';
+    if (tests.length) {
+      chainHTML += '<span class="fr-chain-arrow">' + arrowSVG + '</span>';
+      chainHTML += '<span class="fr-chain-node test">' + tests.length + ' TS</span>';
+    }
+    if (tasks.length) {
+      chainHTML += '<span class="fr-chain-arrow">' + arrowSVG + '</span>';
+      chainHTML += '<span class="fr-chain-node task">' + tasks.length + ' T</span>';
+    }
+    if (bugs.length) {
+      chainHTML += '<span class="fr-chain-arrow">' + arrowSVG + '</span>';
+      chainHTML += '<span class="fr-chain-node" style="background:rgba(239,68,68,.1);color:var(--brand-red);border:1px solid rgba(239,68,68,.2)">' + bugs.length + ' BUG</span>';
+    }
+    chainHTML += '</div>';
+
+    // Linked tests
+    var testsHTML = '';
+    if (tests.length) {
+      testsHTML = '<div class="fr-linked-section"><div class="fr-linked-label">Linked Tests</div><div class="fr-linked-list">';
+      tests.forEach(function(t) {
+        var st = (t.status || 'pending').toLowerCase();
+        testsHTML += '<div class="fr-linked-item"><span class="fr-linked-item-id test-id">' + (t.id || '?') + '</span><span class="fr-linked-item-title">' + (t.title || t.name || '') + '</span><span class="fr-linked-item-status ' + st + '">' + st + '</span></div>';
+      });
+      testsHTML += '</div></div>';
+    }
+
+    // Linked tasks
+    var tasksHTML = '';
+    if (tasks.length) {
+      tasksHTML = '<div class="fr-linked-section"><div class="fr-linked-label">Linked Tasks</div><div class="fr-linked-list">';
+      tasks.forEach(function(t) {
+        var st = (t.status || 'open').toLowerCase();
+        tasksHTML += '<div class="fr-linked-item"><span class="fr-linked-item-id task-id">' + (t.id || '?') + '</span><span class="fr-linked-item-title">' + (t.title || t.name || '') + '</span><span class="fr-linked-item-status ' + st + '">' + st + '</span></div>';
+      });
+      tasksHTML += '</div></div>';
+    }
+
+    // Linked bugs
+    var bugsHTML = '';
+    if (bugs.length) {
+      bugsHTML = '<div class="fr-linked-section"><div class="fr-linked-label">Linked Bugs</div><div class="fr-linked-list">';
+      bugs.forEach(function(b) {
+        bugsHTML += '<div class="fr-linked-item"><span class="fr-linked-item-id bug-id">' + (b.id || '?') + '</span><span class="fr-linked-item-title">' + (b.title || b.description || '') + '</span><span class="fr-linked-item-status" style="background:rgba(239,68,68,.1);color:var(--brand-red)">' + (b.severity || 'bug') + '</span></div>';
+      });
+      bugsHTML += '</div></div>';
+    }
+
+    var noLinks = (!tests.length && !tasks.length && !bugs.length) ? '<div class="fr-no-links">No linked artifacts found for this requirement.</div>' : '';
+
+    return '<div class="fr-detail-header">' +
+      '<span class="fr-detail-id">' + reqData.id + '</span>' +
+      '<span class="fr-detail-name">' + (reqData.name || reqData.feature) + '</span>' +
+      '<span class="fr-detail-feature">' + (feature ? (feature.name || feature.id) : '') + '</span>' +
+    '</div>' +
+    chainHTML +
+    noLinks + testsHTML + tasksHTML + bugsHTML;
+  }
+
+  // Attach click handlers to requirement rows (after DOM renders)
+  setTimeout(function() {
+    var rows = document.querySelectorAll('.req-table tbody tr');
+    rows.forEach(function(row, idx) {
+      row.addEventListener('click', function() {
+        var reqId = (row.querySelector('.req-id') || {}).textContent || '';
+        var reqObj = allReqs.find(function(r) { return r.id === reqId; });
+        if (!reqObj) return;
+
+        // Close any open detail
+        var existing = row.parentElement.querySelector('.fr-detail-row');
+        var wasOpen = existing && existing.previousElementSibling === row;
+        document.querySelectorAll('.fr-detail-row').forEach(function(el) { el.remove(); });
+        document.querySelectorAll('.req-table tbody tr.expanded').forEach(function(el) { el.classList.remove('expanded'); });
+
+        if (wasOpen) return; // Toggle off
+
+        // Create detail row
+        row.classList.add('expanded');
+        var detailTR = document.createElement('tr');
+        detailTR.className = 'fr-detail-row';
+        var detailTD = document.createElement('td');
+        detailTD.setAttribute('colspan', '4');
+        detailTD.style.padding = '0';
+        var detailDiv = document.createElement('div');
+        detailDiv.className = 'fr-detail open';
+        detailDiv.innerHTML = renderDetailPanel(reqObj);
+        detailTD.appendChild(detailDiv);
+        detailTR.appendChild(detailTD);
+        row.parentNode.insertBefore(detailTR, row.nextSibling);
+      });
+    });
+  }, 200);
 
   // Feature filter integration
   window.addEventListener('sdd:filter-applied', function() {
