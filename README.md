@@ -132,8 +132,12 @@ sdd-metodologia/
 
 ## Credits
 
+- **Co-creators**: Javier Montano & Katherin Oquendo
 - **Upstream**: [Intent Integrity Chain / Kit](https://github.com/intent-integrity-chain/kit) (MIT)
-- **Brand**: MetodologIA by Javier Montano (GPL-3.0)
+- **Brand**: MetodologIA (GPL-3.0)
 - **Aesthetic**: Neo-Swiss Clean
+- **Powered by**: Claude Code, Antigravity & Agente Pristino
 
-*SDD v3.0 · Spec Driven Development · by metodologIA*
+*Built with much love.*
+
+*SDD v3.2 · Spec Driven Development · by metodologIA*
