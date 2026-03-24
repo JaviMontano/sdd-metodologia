@@ -9,6 +9,7 @@
   <script src="shared/search.js" defer></script>
   <script src="shared/data.js"></script>
   <script src="shared/nav.js" defer></script>
+  <script src="shared/footer.js" defer></script>
   <style>
     /* ── Layout ─────────────────────────────────────────────── */
     .cc-main { max-width:1280px; margin:0 auto; padding:2rem 1.5rem 3rem; }
@@ -148,7 +149,7 @@
   /* ── Health score gauge helpers ──────────────────────────── */
   var score = get('insights.healthScore', 0);
   score = Math.max(0, Math.min(100, Math.round(score)));
-  var gaugeColor = score >= 75 ? '#22C55E' : score >= 50 ? '#F97316' : '#EF4444';
+  var gaugeColor = score >= 75 ? '#137DC5' : score >= 50 ? '#FFD700' : '#EF4444';
 
   // SVG arc: semicircle from 180 to 0 degrees (left to right)
   var R = 44, CX = 80, CY = 82;
