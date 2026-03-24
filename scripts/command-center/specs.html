@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Specifications &mdash; SDD ALM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Montserrat:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/search.js" defer></script>
   <script src="shared/data.js"></script>
+  <script src="shared/filter.js" defer></script>
   <script src="shared/nav.js" defer></script>
   <script src="shared/footer.js" defer></script>
   <style>
@@ -104,11 +105,11 @@
     .sdd-search-bar { margin-bottom: 1.5rem; }
     .sdd-search-input-wrap { position: relative; display: flex; align-items: center; }
     .sdd-search-icon { position: absolute; left: 12px; width: 18px; height: 18px; color: #94A3B8; pointer-events: none; }
-    .sdd-search-input { width: 100%; padding: 10px 12px 10px 40px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #E2E8F0; font-family: var(--font-body, Montserrat, sans-serif); font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .sdd-search-input { width: 100%; padding: 10px 12px 10px 40px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #E2E8F0; font-family: var(--font-body, Trebuchet MS, sans-serif); font-size: 14px; outline: none; transition: border-color 0.2s; }
     .sdd-search-input:focus { border-color: #FFD700; box-shadow: 0 0 0 2px rgba(255,215,0,0.15); }
     .sdd-search-count { position: absolute; right: 12px; font-size: 11px; color: #64748B; font-family: var(--font-mono, 'JetBrains Mono', monospace); }
     .sdd-filter-chips { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .sdd-chip { padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #94A3B8; font-size: 12px; cursor: pointer; font-family: var(--font-body, Montserrat, sans-serif); transition: all 0.2s; }
+    .sdd-chip { padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #94A3B8; font-size: 12px; cursor: pointer; font-family: var(--font-body, Trebuchet MS, sans-serif); transition: all 0.2s; }
     .sdd-chip:hover { border-color: rgba(255,215,0,0.3); color: #E2E8F0; }
     .sdd-chip.active { background: rgba(255,215,0,0.12); border-color: #FFD700; color: #FFD700; }
 
@@ -177,7 +178,8 @@
     /* Fallback: derive from tasks if no stories */
     if (!us && f.tasks) { us = Array.isArray(f.tasks) ? f.tasks.length : (parseInt(f.tasks,10) || 0); }
 
-    return '<div class="spec-card">' +
+    var fid = f.id || f.name || '';
+    return '<div class="spec-card" data-feature="' + fid + '">' +
       '<div class="sc-name">' + (f.name || f.id || 'Feature') + '</div>' +
       '<div class="sc-stats">' +
         '<span class="sc-stat"><span class="val">' + fr + '</span> FR</span>' +
@@ -221,7 +223,7 @@
         linked = (typeof t === 'string') ? t : (t.id || '');
         if (linked) status = 'covered';
       }
-      allReqs.push({ id:id, name:name, feature:f.name||f.id, linked:linked, status:status });
+      allReqs.push({ id:id, name:name, feature:f.name||f.id, featureId:f.id||f.name||'', linked:linked, status:status });
     });
   });
 
@@ -229,7 +231,7 @@
   if (allReqs.length) {
     var rows = allReqs.map(function(r) {
       var rowCls = r.status === 'orphan' ? ' class="orphan-row"' : '';
-      return '<tr' + rowCls + '>' +
+      return '<tr' + rowCls + ' data-feature="' + r.featureId + '">' +
         '<td><span class="req-id">' + r.id + '</span></td>' +
         '<td>' + (r.name || r.feature) + '</td>' +
         '<td><span class="req-linked">' + (r.linked || '&mdash;') + '</span></td>' +
@@ -300,6 +302,19 @@
       ctrl.setCount(shown, total);
     }
   }, 100);
+
+  // Feature filter integration
+  window.addEventListener('sdd:filter-applied', function() {
+    var active = window.SDD && SDD.filter && SDD.filter.active();
+    // Filter spec cards in story map
+    document.querySelectorAll('.spec-card[data-feature]').forEach(function(card) {
+      card.style.display = (!active || SDD.filter.matchesFeature(card.getAttribute('data-feature'))) ? '' : 'none';
+    });
+    // Filter requirement rows
+    document.querySelectorAll('.req-table tbody tr[data-feature]').forEach(function(row) {
+      row.style.display = (!active || SDD.filter.matchesFeature(row.getAttribute('data-feature'))) ? '' : 'none';
+    });
+  });
 })();
 </script>
 

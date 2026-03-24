@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feature Backlog &mdash; SDD ALM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Montserrat:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/data.js"></script>
+  <script src="shared/filter.js" defer></script>
   <script src="shared/nav.js" defer></script>
   <script src="shared/footer.js" defer></script>
   <script src="shared/search.js" defer></script>
@@ -29,7 +30,7 @@
     .stat-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .stat-icon svg { width:18px; height:18px; }
     .stat-icon-total { background:rgba(255,215,0,0.12); color:#FFD700; }
-    .stat-icon-pipe { background:rgba(139,92,246,0.12); color:#8B5CF6; }
+    .stat-icon-pipe { background:rgba(187,160,204,0.12); color:#BBA0CC; }
     .stat-icon-backlog { background:rgba(148,163,184,0.12); color:#94A3B8; }
     .stat-icon-done { background:rgba(19,125,197,0.12); color:#137DC5; }
     .stat-value { font-family:var(--font-heading); font-weight:700; font-size:1.35rem; color:var(--text-primary); line-height:1; }
@@ -319,7 +320,7 @@
       var tsC = type==='backlog' ? (item.tsCount||0) : (item.tests||[]).length;
       var tkC = type==='backlog' ? (item.taskCount||0) : (item.tasks||[]).length;
 
-      var h = '<div class="bl-card" data-id="'+(item.id||'')+'">';
+      var h = '<div class="bl-card" data-id="'+(item.id||'')+'" data-feature="'+(item.id||item.name||'')+'">';
       h += '<div class="card-top">';
       h += '<span class="card-name">'+esc(item.name)+'</span>';
       h += '<div class="card-badges">';
@@ -476,6 +477,25 @@
     });
     document.getElementById('sort-select').addEventListener('change', function() { activeSort = this.value; render(); });
     document.getElementById('bl-search').addEventListener('input', function() { searchTerm = this.value.trim(); render(); });
+
+    // Feature filter integration
+    window.addEventListener('sdd:filter-applied', function() {
+      var active = window.SDD && SDD.filter && SDD.filter.active();
+      document.querySelectorAll('.bl-card[data-feature]').forEach(function(card) {
+        card.style.display = (!active || SDD.filter.matchesFeature(card.getAttribute('data-feature'))) ? '' : 'none';
+      });
+      // Update column counts
+      document.querySelectorAll('.board-col').forEach(function(col) {
+        var visible = col.querySelectorAll('.bl-card[data-feature]:not([style*="display: none"])').length;
+        var countEl = col.querySelector('.col-count');
+        if (countEl) countEl.textContent = visible;
+      });
+      // Update list table rows
+      document.querySelectorAll('.list-table tbody tr').forEach(function(row) {
+        var name = (row.querySelector('.td-name') || {}).textContent || '';
+        row.style.display = (!active || SDD.filter.matchesFeature(name)) ? '' : 'none';
+      });
+    });
 
     /* ── Init ─────────────────────────────────────────── */
     renderStats();

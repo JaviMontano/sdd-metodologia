@@ -50,9 +50,10 @@
   --space-xl: 2rem;
   --space-2xl: 3rem;
 
-  /* Fonts */
+  /* Fonts — Neo-Swiss Clean */
   --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-body: 'Trebuchet MS', 'Lucida Grande', sans-serif;
+  --font-footnote: 'Futura', 'Century Gothic', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Transitions */
@@ -92,6 +93,13 @@ body.light .badge-gold { background: rgba(180,130,0,0.1); color: #8B6500; }
 body.light a { color: #8B6500; }
 body.light a:hover { color: #6B4F00; }
 body.light .nav-item.active { color: #8B6500; border-left-color: #B48200; }
+
+/* ── Footnote Typography ───────────────────────────────────── */
+.footnote, .callout-note, .badge, .tag,
+.rag-type-badge, .gate, .shortcut-hint, .lang-label,
+.tour-step-counter, .tree-file-size, .tree-count {
+  font-family: var(--font-footnote);
+}
 
 /* ── Base Resets ────────────────────────────────────────────── */
 

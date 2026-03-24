@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logs &amp; Decisions &mdash; SDD ALM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Montserrat:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/tokens.css">
   <script src="shared/data.js"></script>
+  <script src="shared/filter.js" defer></script>
   <script src="shared/nav.js" defer></script>
   <script src="shared/footer.js" defer></script>
   <script src="shared/search.js" defer></script>
@@ -623,6 +624,24 @@
       }
       render();
     }
+
+    // Feature filter integration
+    window.addEventListener('sdd:filter-applied', function() {
+      var active = window.SDD && SDD.filter && SDD.filter.active();
+      if (!active) { render(); return; }
+      // Filter timeline entries by checking if content references the active feature
+      var containers = [
+        document.querySelectorAll('.timeline-entry'),
+        document.querySelectorAll('.log-table tbody tr')
+      ];
+      containers.forEach(function(nodes) {
+        nodes.forEach(function(el) {
+          var text = el.textContent.toLowerCase();
+          var featureId = active.toLowerCase();
+          el.style.display = (text.indexOf(featureId) !== -1) ? '' : 'none';
+        });
+      });
+    });
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
