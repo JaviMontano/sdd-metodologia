@@ -108,7 +108,7 @@
       display:inline-block;
     }
     .bug-sev.critical { background:rgba(239,68,68,0.15); color:var(--brand-red); }
-    .bug-sev.major { background:rgba(249,115,22,0.15); color:var(--brand-orange); }
+    .bug-sev.major { background:rgba(249,115,22,0.15); color:var(--brand-amber); }
     .bug-sev.minor { background:rgba(148,163,184,0.15); color:var(--text-muted); }
 
     /* ── DoD Tracker ──────────────────────────────────────────── */
@@ -274,7 +274,7 @@
   if (typeof passRate !== 'number') passRate = parseInt(passRate, 10) || 0;
   passRate = Math.max(0, Math.min(100, Math.round(passRate)));
 
-  var gaugeColor = passRate >= 75 ? 'var(--brand-gold)' : passRate >= 50 ? 'var(--brand-orange)' : 'var(--brand-red)';
+  var gaugeColor = passRate >= 75 ? 'var(--brand-gold)' : passRate >= 50 ? 'var(--brand-amber)' : 'var(--brand-red)';
   var R = 60, CX = 110, CY = 112;
   var halfCirc = Math.PI * R;
   var dashOffset = halfCirc - (halfCirc * passRate / 100);
