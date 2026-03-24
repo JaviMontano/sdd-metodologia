@@ -1,0 +1,847 @@
+{
+  "nodes": [
+    {
+      "id": "P-I",
+      "type": "principle",
+      "label": "Skills-First",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-II",
+      "type": "principle",
+      "label": "Multi-Agent Compatibility",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-III",
+      "type": "principle",
+      "label": "Cross-Platform Parity",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-IV",
+      "type": "principle",
+      "label": "Phase Separation (NON-NEGOTIABLE)",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-V",
+      "type": "principle",
+      "label": "Self-Validating Skills",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-VI",
+      "type": "principle",
+      "label": "Definition of Done",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-VII",
+      "type": "principle",
+      "label": "Operational Logs",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "P-VIII",
+      "type": "principle",
+      "label": "Session Protocol",
+      "file": "CONSTITUTION.md"
+    },
+    {
+      "id": "FR-001",
+      "type": "requirement",
+      "label": ": Testify skill MUST generate standard Gherkin `.feature` files in `tests/feat",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-002",
+      "type": "requirement",
+      "label": ": Generated `.feature` files MUST use Gherkin tags for all traceability metada",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-003",
+      "type": "requirement",
+      "label": ": Testify MUST NOT generate `test-specs.md` — `.feature` files are the sole te",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-004",
+      "type": "requirement",
+      "label": ": A combined SHA-256 hash of all assertion lines across all `.feature` files (",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-005",
+      "type": "requirement",
+      "label": ": Pre-commit and post-commit hooks MUST detect and block commits with tampered",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-006",
+      "type": "requirement",
+      "label": ": A step coverage verification mechanism MUST detect undefined and pending ste",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-007",
+      "type": "requirement",
+      "label": ": A step quality analysis mechanism MUST detect empty, trivial, and tautologic",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-008",
+      "type": "requirement",
+      "label": ": BDD framework MUST be auto-detected from the tech stack defined in plan.md",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-009",
+      "type": "requirement",
+      "label": ": BDD framework installation and directory scaffolding MUST be automated when",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-010",
+      "type": "requirement",
+      "label": ": The implement skill MUST enforce the BDD verification chain: hash check, ste",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-011",
+      "type": "requirement",
+      "label": ": `.feature` files MUST NOT be modified during implementation — only step defi",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-012",
+      "type": "requirement",
+      "label": ": When no BDD framework is available for the tech stack, the system MUST fall",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-013",
+      "type": "requirement",
+      "label": ": All verification and scaffolding scripts MUST have both bash and PowerShell",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-014",
+      "type": "requirement",
+      "label": ": All new scripts MUST have automated tests",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-015",
+      "type": "requirement",
+      "label": ": The analyze skill MUST verify that all `@FR-XXX` tags in `.feature` files tr",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-016",
+      "type": "requirement",
+      "label": ": Testify MUST use Gherkin advanced constructs where appropriate: `Background:",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "FR-017",
+      "type": "requirement",
+      "label": ": `.feature` file hash extraction MUST normalize whitespace before hashing to",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-001",
+      "type": "success-criteria",
+      "label": ": Every functional requirement in spec.md has a corresponding `@FR-XXX` tag in",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-002",
+      "type": "success-criteria",
+      "label": ": Step coverage verification catches 100% of undefined steps (no false negativ",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-003",
+      "type": "success-criteria",
+      "label": ": Step quality analysis catches empty bodies, `pass`/`return`-only bodies, and",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-004",
+      "type": "success-criteria",
+      "label": ": Pre-commit hook blocks 100% of commits containing modified `.feature` assert",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-005",
+      "type": "success-criteria",
+      "label": ": BDD framework auto-detection covers all tech stacks listed in the framework",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-006",
+      "type": "success-criteria",
+      "label": ": All scripts produce identical output on both bash and PowerShell for the sam",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "SC-007",
+      "type": "success-criteria",
+      "label": ": The implement skill never marks a TDD task as complete without passing step",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/spec.md",
+      "feature": "031-bdd-verification-chain"
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-1",
+      "type": "task",
+      "label": "T001 Modify extract_assertions() in .claude/skills/iikit-core/scripts/bash/testi",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-2",
+      "type": "task",
+      "label": "T002 Modify compute_assertion_hash() in .claude/skills/iikit-core/scripts/bash/t",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-3",
+      "type": "task",
+      "label": "T003 Modify store_assertion_hash() in .claude/skills/iikit-core/scripts/bash/tes",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-4",
+      "type": "task",
+      "label": "T004 Modify derive_context_path() in .claude/skills/iikit-core/scripts/bash/test",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-5",
+      "type": "task",
+      "label": "T005 Modify comprehensive_integrity_check() in .claude/skills/iikit-core/scripts",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-6",
+      "type": "task",
+      "label": "T006 Update BATS tests in tests/bash/testify-tdd.bats for all modified functions",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-7",
+      "type": "task",
+      "label": "T007 [P] Modify extract_assertions() in .claude/skills/iikit-core/scripts/powers",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-8",
+      "type": "task",
+      "label": "T008 [P] Modify compute_assertion_hash() in .claude/skills/iikit-core/scripts/po",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-9",
+      "type": "task",
+      "label": "T009 [P] Modify store_assertion_hash() in .claude/skills/iikit-core/scripts/powe",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-10",
+      "type": "task",
+      "label": "T010 [P] Modify derive_context_path() and comprehensive check in .claude/skills/",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-11",
+      "type": "task",
+      "label": "T011 [US1] Rewrite the test specification generation section of .claude/skills/i",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-12",
+      "type": "task",
+      "label": "T012 [US1] Add Gherkin advanced construct guidance to .claude/skills/iikit-05-te",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-13",
+      "type": "task",
+      "label": "T013 [US1] Update hash storage commands in .claude/skills/iikit-05-testify/SKILL",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-14",
+      "type": "task",
+      "label": "T014 [US1] Remove all references to test-specs.md output format from .claude/ski",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-15",
+      "type": "task",
+      "label": "T015 [US1] Add .feature file syntax error handling guidance to .claude/skills/ii",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-16",
+      "type": "task",
+      "label": "T016 [US2] Modify pre-commit-hook.sh in .claude/skills/iikit-core/scripts/bash/p",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-17",
+      "type": "task",
+      "label": "T017 [US2] Modify staged file extraction in pre-commit-hook.sh to handle multipl",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-18",
+      "type": "task",
+      "label": "T018 [US2] Modify context.json reading strategy in pre-commit-hook.sh for new te",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-19",
+      "type": "task",
+      "label": "T019 [US2] Modify git notes search in pre-commit-hook.sh to match .feature direc",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-20",
+      "type": "task",
+      "label": "T020 [US2] Modify post-commit-hook.sh in .claude/skills/iikit-core/scripts/bash/",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-21",
+      "type": "task",
+      "label": "T021 [US2] Update BATS tests in tests/bash/pre-commit-hook.bats — add .feature f",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-22",
+      "type": "task",
+      "label": "T022 [P] [US2] Modify pre-commit-hook.ps1 in .claude/skills/iikit-core/scripts/p",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-23",
+      "type": "task",
+      "label": "T023 [P] [US2] Modify post-commit-hook.ps1 in .claude/skills/iikit-core/scripts/",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-24",
+      "type": "task",
+      "label": "T024 [US3] Create verify-steps.sh in .claude/skills/iikit-core/scripts/bash/veri",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-25",
+      "type": "task",
+      "label": "T025 [US3] Implement dry-run execution in verify-steps.sh — invoke framework-spe",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-26",
+      "type": "task",
+      "label": "T026 [US3] Implement DEGRADED mode in verify-steps.sh — when no framework detect",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-27",
+      "type": "task",
+      "label": "T027 [US3] Create BATS tests in tests/bash/verify-steps.bats — test framework de",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-28",
+      "type": "task",
+      "label": "T028 [P] [US3] Create verify-steps.ps1 in .claude/skills/iikit-core/scripts/powe",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-29",
+      "type": "task",
+      "label": "T029 [US4] Create verify-step-quality.sh in .claude/skills/iikit-core/scripts/ba",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-30",
+      "type": "task",
+      "label": "T030 [US4] Implement Python AST analysis in verify-step-quality.sh — use python3",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-31",
+      "type": "task",
+      "label": "T031 [US4] Implement JavaScript/TypeScript analysis in verify-step-quality.sh — ",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-32",
+      "type": "task",
+      "label": "T032 [US4] Implement Go analysis in verify-step-quality.sh — use go/ast via embe",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-33",
+      "type": "task",
+      "label": "T033 [US4] Implement regex fallback in verify-step-quality.sh for unsupported la",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-34",
+      "type": "task",
+      "label": "T034 [US4] Create BATS tests in tests/bash/verify-step-quality.bats — test each ",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-35",
+      "type": "task",
+      "label": "T035 [P] [US4] Create verify-step-quality.ps1 in .claude/skills/iikit-core/scrip",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-36",
+      "type": "task",
+      "label": "T036 [US5] Create setup-bdd.sh in .claude/skills/iikit-core/scripts/bash/setup-b",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-37",
+      "type": "task",
+      "label": "T037 [US5] Implement idempotency in setup-bdd.sh — detect existing scaffolding, ",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-38",
+      "type": "task",
+      "label": "T038 [US5] Implement NO_FRAMEWORK fallback in setup-bdd.sh — create directory st",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-39",
+      "type": "task",
+      "label": "T039 [US5] Create BATS tests in tests/bash/setup-bdd.bats — test framework detec",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-40",
+      "type": "task",
+      "label": "T040 [P] [US5] Create setup-bdd.ps1 in .claude/skills/iikit-core/scripts/powersh",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-41",
+      "type": "task",
+      "label": "T041 [US6] Update TDD Support Check section in .claude/skills/iikit-08-implement",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-42",
+      "type": "task",
+      "label": "T042 [US6] Update Test Execution Enforcement section in .claude/skills/iikit-08-",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-43",
+      "type": "task",
+      "label": "T043 [US6] Add .feature file immutability rule to .claude/skills/iikit-08-implem",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-44",
+      "type": "task",
+      "label": "T044 [US6] Add task completion gate to .claude/skills/iikit-08-implement/SKILL.m",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-45",
+      "type": "task",
+      "label": "T045 [US7] Add .feature file tag extraction to coverage detection in .claude/ski",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-46",
+      "type": "task",
+      "label": "T046 [US7] Add untested requirement detection to .claude/skills/iikit-07-analyze",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-47",
+      "type": "task",
+      "label": "T047 [US7] Add orphaned tag detection to .claude/skills/iikit-07-analyze/SKILL.m",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-48",
+      "type": "task",
+      "label": "T048 [US7] Add optional step definition existence check to .claude/skills/iikit-",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-49",
+      "type": "task",
+      "label": "T049 [P] Remove all references to test-specs.md format from .claude/skills/iikit",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-50",
+      "type": "task",
+      "label": "T050 [P] Update testspec-template.md in .claude/skills/iikit-core/templates/test",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-51",
+      "type": "task",
+      "label": "T051 [P] Modify verify-test-execution.sh in .claude/skills/iikit-core/scripts/ba",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-52",
+      "type": "task",
+      "label": "T052 [P] Create Pester tests for verify-steps.ps1, verify-step-quality.ps1, and ",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    },
+    {
+      "id": "T-auto-031-bdd-verification-chain-53",
+      "type": "task",
+      "label": "T053 Run quickstart.md validation scenarios end-to-end to verify all scripts wor",
+      "file": "/Users/deonto/skills/plugins/sdd-metodologia/specs/031-bdd-verification-chain/tasks.md",
+      "feature": "031-bdd-verification-chain",
+      "metadata": {
+        "checked": true
+      }
+    }
+  ],
+  "edges": [],
+  "orphans": {
+    "untested_requirements": [
+      "FR-001",
+      "FR-002",
+      "FR-003",
+      "FR-004",
+      "FR-005",
+      "FR-006",
+      "FR-007",
+      "FR-008",
+      "FR-009",
+      "FR-010",
+      "FR-011",
+      "FR-012",
+      "FR-013",
+      "FR-014",
+      "FR-015",
+      "FR-016",
+      "FR-017"
+    ],
+    "untraced_principles": [
+      "P-I",
+      "P-II",
+      "P-III",
+      "P-IV",
+      "P-V",
+      "P-VI",
+      "P-VII",
+      "P-VIII"
+    ],
+    "unlinked_tasks": [
+      "T-auto-031-bdd-verification-chain-1",
+      "T-auto-031-bdd-verification-chain-2",
+      "T-auto-031-bdd-verification-chain-3",
+      "T-auto-031-bdd-verification-chain-4",
+      "T-auto-031-bdd-verification-chain-5",
+      "T-auto-031-bdd-verification-chain-6",
+      "T-auto-031-bdd-verification-chain-7",
+      "T-auto-031-bdd-verification-chain-8",
+      "T-auto-031-bdd-verification-chain-9",
+      "T-auto-031-bdd-verification-chain-10",
+      "T-auto-031-bdd-verification-chain-11",
+      "T-auto-031-bdd-verification-chain-12",
+      "T-auto-031-bdd-verification-chain-13",
+      "T-auto-031-bdd-verification-chain-14",
+      "T-auto-031-bdd-verification-chain-15",
+      "T-auto-031-bdd-verification-chain-16",
+      "T-auto-031-bdd-verification-chain-17",
+      "T-auto-031-bdd-verification-chain-18",
+      "T-auto-031-bdd-verification-chain-19",
+      "T-auto-031-bdd-verification-chain-20",
+      "T-auto-031-bdd-verification-chain-21",
+      "T-auto-031-bdd-verification-chain-22",
+      "T-auto-031-bdd-verification-chain-23",
+      "T-auto-031-bdd-verification-chain-24",
+      "T-auto-031-bdd-verification-chain-25",
+      "T-auto-031-bdd-verification-chain-26",
+      "T-auto-031-bdd-verification-chain-27",
+      "T-auto-031-bdd-verification-chain-28",
+      "T-auto-031-bdd-verification-chain-29",
+      "T-auto-031-bdd-verification-chain-30",
+      "T-auto-031-bdd-verification-chain-31",
+      "T-auto-031-bdd-verification-chain-32",
+      "T-auto-031-bdd-verification-chain-33",
+      "T-auto-031-bdd-verification-chain-34",
+      "T-auto-031-bdd-verification-chain-35",
+      "T-auto-031-bdd-verification-chain-36",
+      "T-auto-031-bdd-verification-chain-37",
+      "T-auto-031-bdd-verification-chain-38",
+      "T-auto-031-bdd-verification-chain-39",
+      "T-auto-031-bdd-verification-chain-40",
+      "T-auto-031-bdd-verification-chain-41",
+      "T-auto-031-bdd-verification-chain-42",
+      "T-auto-031-bdd-verification-chain-43",
+      "T-auto-031-bdd-verification-chain-44",
+      "T-auto-031-bdd-verification-chain-45",
+      "T-auto-031-bdd-verification-chain-46",
+      "T-auto-031-bdd-verification-chain-47",
+      "T-auto-031-bdd-verification-chain-48",
+      "T-auto-031-bdd-verification-chain-49",
+      "T-auto-031-bdd-verification-chain-50",
+      "T-auto-031-bdd-verification-chain-51",
+      "T-auto-031-bdd-verification-chain-52",
+      "T-auto-031-bdd-verification-chain-53"
+    ]
+  },
+  "stats": {
+    "nodes": 85,
+    "edges": 0,
+    "coverage": 0,
+    "principlesCovered": 0,
+    "principlesTotal": 8,
+    "requirementsTested": 0,
+    "requirementsTotal": 17,
+    "features": 1
+  }
+}
