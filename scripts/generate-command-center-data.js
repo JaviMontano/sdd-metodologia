@@ -162,6 +162,52 @@ const workspaceTree = [];
   if (stat) workspaceTree.push({ name: f, path: f, type: 'file', ...stat });
 });
 
+// ── Workspace Sessions ──
+const workspaceSessions = [];
+const wsDir = path.join(projectPath, 'workspace');
+if (fs.existsSync(wsDir)) {
+  fs.readdirSync(wsDir).filter(d => {
+    const full = path.join(wsDir, d);
+    try { return fs.statSync(full).isDirectory() && !d.startsWith('.'); } catch { return false; }
+  }).forEach(dir => {
+    const sessionJson = readJSON(path.join(wsDir, dir, 'session.json'));
+    const tasklog = readFile(path.join(wsDir, dir, 'tasklog.md'));
+    const wsRagDir = path.join(wsDir, dir, 'rag');
+    const wsInputsDir = path.join(wsDir, dir, 'inputs');
+
+    let ragCount = 0, inputCount = 0;
+    try { ragCount = fs.readdirSync(wsRagDir).filter(f => f.startsWith('rag-memory-of-')).length; } catch {}
+    try { inputCount = fs.readdirSync(wsInputsDir).filter(f => !f.startsWith('.')).length; } catch {}
+
+    const tasklogEntryCount = tasklog ? (tasklog.match(/^\|[^|]*TL-/gm) || []).length : 0;
+
+    const sessionRagFiles = [];
+    try {
+      fs.readdirSync(wsRagDir).filter(f => f.startsWith('rag-memory-of-')).forEach(f => {
+        const content = readFile(path.join(wsRagDir, f));
+        const abstract = content ? (content.match(/## Abstract\n([\s\S]*?)(?=\n## )/)?.[1] || '').trim().slice(0, 200) : '';
+        const type = content ? (content.match(/type:\s*(.+)/)?.[1] || 'text').trim() : 'text';
+        const stat = fileStat(path.join(wsRagDir, f));
+        sessionRagFiles.push({ filename: f, type, abstract, ...stat });
+      });
+    } catch {}
+
+    workspaceSessions.push({
+      id: dir,
+      name: sessionJson?.taskName || dir.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/-/g, ' '),
+      created: sessionJson?.created || null,
+      status: sessionJson?.status || 'unknown',
+      lastActivity: sessionJson?.lastActivity || null,
+      inputCount,
+      ragCount,
+      tasklogEntries: tasklogEntryCount,
+      ragFiles: sessionRagFiles,
+      tree: scanDir(path.join(wsDir, dir), `workspace/${dir}`, 0)
+    });
+  });
+}
+const activeWorkspace = readFile(path.join(specifyDir, 'active-workspace'))?.trim() || null;
+
 // ── Operational logs ──
 const tasklogContent = readFile(path.join(projectPath, 'tasklog.md'));
 const changelogContent = readFile(path.join(projectPath, 'changelog.md'));
@@ -271,6 +317,8 @@ const data = {
   workspace: {
     tree: workspaceTree,
     ragMemories,
+    sessions: workspaceSessions,
+    activeSession: activeWorkspace,
     fileCount: workspaceTree.reduce(function countFiles(sum, node) {
       if (node.type === 'file') return sum + 1;
       return (node.children || []).reduce(countFiles, sum + 1);
@@ -309,5 +357,5 @@ console.log(`ALM data: ${outputFile}`);
 console.log(`  Features: ${data.summary.totalFeatures} (${data.summary.completeFeatures} complete)`);
 console.log(`  Tasks: ${data.summary.completedTasks}/${data.summary.totalTasks}`);
 console.log(`  Requirements: ${data.quality.totalFR} FR, ${data.quality.totalTests} tests`);
-console.log(`  Workspace: ${data.workspace.fileCount} files, ${ragMemories.length} RAG memories`);
+console.log(`  Workspace: ${data.workspace.fileCount} files, ${ragMemories.length} RAG memories, ${workspaceSessions.length} sessions`);
 console.log(`  Health: ${data.insights.healthScore}%`);

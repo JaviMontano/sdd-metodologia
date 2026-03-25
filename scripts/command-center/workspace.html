@@ -219,9 +219,116 @@
       color:#FFD700; background:transparent;
     }
 
+    /* ── Workspace Sessions ── */
+    .ws-sessions-section { margin-bottom:2rem; }
+    .ws-sessions-grid {
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+      gap:var(--space-md,16px);
+    }
+    .ws-session-card {
+      background:rgba(255,255,255,0.03);
+      backdrop-filter:blur(16px) saturate(180%);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:var(--radius-md,12px);
+      padding:var(--space-md,16px);
+      transition:border-color 0.2s, box-shadow 0.2s;
+      position:relative;
+    }
+    .ws-session-card:hover {
+      border-color:rgba(255,215,0,0.2);
+      box-shadow:0 4px 24px rgba(18,37,98,0.25);
+    }
+    .ws-session-active {
+      border-left:3px solid var(--brand-gold,#FFD700);
+    }
+    .ws-session-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:0.4rem;
+    }
+    .ws-session-name {
+      font-family:var(--font-heading,Poppins,sans-serif);
+      font-weight:600; font-size:0.95rem; color:var(--text-primary,#F8F9FC);
+      text-transform:capitalize;
+    }
+    .ws-session-badge {
+      font-size:0.65rem; font-weight:700; text-transform:uppercase;
+      padding:2px 10px; border-radius:9999px; letter-spacing:0.04em;
+    }
+    .ws-status-active { background:rgba(255,215,0,0.15); color:#FFD700; }
+    .ws-status-archived { background:rgba(148,163,184,0.12); color:#94A3B8; }
+    .ws-status-done { background:rgba(19,125,197,0.15); color:#137DC5; }
+    .ws-session-date {
+      font-size:0.75rem; color:var(--text-dim,#475569); margin-bottom:0.6rem;
+      font-family:var(--font-mono,monospace);
+    }
+    .ws-session-stats {
+      display:flex; gap:1rem; flex-wrap:wrap;
+    }
+    .ws-stat {
+      font-size:0.75rem; color:var(--text-muted,#94A3B8);
+      display:flex; align-items:center; gap:0.25rem;
+    }
+    .ws-session-active-label {
+      position:absolute; top:8px; right:12px;
+      font-size:0.6rem; font-weight:700; text-transform:uppercase;
+      color:var(--brand-gold,#FFD700); letter-spacing:0.06em;
+    }
+    .ws-session-count {
+      font-size:0.7rem; font-weight:700; background:rgba(255,215,0,0.15);
+      color:#FFD700; padding:2px 8px; border-radius:9999px;
+    }
+    .ws-session-summary {
+      font-size:0.7rem; color:var(--text-dim,#475569); font-weight:400;
+      margin-left:auto;
+    }
+    .ws-session-meta {
+      display:flex; gap:0.75rem; align-items:center; margin-bottom:0.5rem;
+    }
+    .ws-session-last {
+      font-size:0.7rem; color:var(--text-dim,#475569); font-style:italic;
+    }
+    .ws-session-card { cursor:pointer; }
+    .ws-session-card.expanded { border-color:rgba(255,215,0,0.3); }
+    .ws-session-detail {
+      display:none; padding:var(--space-sm,8px) var(--space-md,16px) var(--space-md,16px);
+      background:rgba(255,255,255,0.015);
+      border:1px solid rgba(255,255,255,0.04);
+      border-top:none; border-radius:0 0 var(--radius-md,12px) var(--radius-md,12px);
+      margin-top:-1px;
+    }
+    .ws-session-detail.open { display:block; }
+    .ws-detail-label {
+      font-size:0.65rem; font-weight:700; text-transform:uppercase;
+      color:var(--text-dim,#475569); letter-spacing:0.05em;
+      margin-bottom:0.3rem; margin-top:0.5rem;
+    }
+    .ws-detail-id {
+      font-size:0.75rem; font-family:var(--font-mono,monospace);
+      color:var(--text-muted,#94A3B8);
+    }
+    .ws-detail-rag-list { display:flex; flex-direction:column; gap:0.35rem; }
+    .ws-rag-item {
+      display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem;
+      padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .ws-rag-item:last-child { border-bottom:none; }
+    .ws-rag-name {
+      font-size:0.8rem; color:var(--text-primary,#F8F9FC); font-weight:500;
+    }
+    .ws-rag-type {
+      font-size:0.6rem; font-weight:600; text-transform:uppercase;
+      padding:1px 6px; border-radius:9999px;
+      background:rgba(255,215,0,0.1); color:var(--brand-gold,#FFD700);
+    }
+    .ws-rag-abstract {
+      width:100%; font-size:0.72rem; color:var(--text-dim,#475569);
+      line-height:1.4; margin-top:0.15rem;
+    }
+
     @media(max-width:600px) {
       .rag-grid { grid-template-columns:1fr; }
       .rag-view-toggle { margin-left:0; margin-top:0.5rem; }
+      .ws-sessions-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -256,6 +363,111 @@
   }
 
   var projectName = get('project.name', 'SDD Project');
+
+  /* ── Workspace Sessions ──────────────────────────────────── */
+  var sessions = get('workspace.sessions', []);
+  var activeSession = get('workspace.activeSession', null);
+  var sessionsHTML = '';
+
+  // Sort: active first, then by created desc
+  sessions.sort(function (a, b) {
+    if (a.id === activeSession) return -1;
+    if (b.id === activeSession) return 1;
+    return (b.created || '').localeCompare(a.created || '');
+  });
+
+  // Aggregate stats for header
+  var wsStats = sessions.reduce(function (acc, s) {
+    acc.inputs += s.inputCount || 0;
+    acc.rags += s.ragCount || 0;
+    acc.tasks += s.tasklogEntries || 0;
+    if (s.status === 'active') acc.active++;
+    if (s.status === 'done') acc.done++;
+    if (s.status === 'archived') acc.archived++;
+    return acc;
+  }, { inputs: 0, rags: 0, tasks: 0, active: 0, done: 0, archived: 0 });
+
+  if (sessions.length > 0) {
+    var cards = '';
+    sessions.forEach(function (s, idx) {
+      var isActive = s.id === activeSession;
+      var statusCls = s.status === 'active' ? 'ws-status-active' : s.status === 'archived' ? 'ws-status-archived' : 'ws-status-done';
+      var statusLabel = s.status || 'unknown';
+      var dateStr = s.created ? s.created.split('T')[0] : s.id.substring(0, 10);
+      var detailId = 'ws-detail-' + idx;
+
+      // RAG file list for expandable detail
+      var ragList = '';
+      if (Array.isArray(s.ragFiles) && s.ragFiles.length > 0) {
+        ragList = '<div class="ws-detail-label">RAG Memory</div><div class="ws-detail-rag-list">';
+        s.ragFiles.forEach(function (rf) {
+          var name = (rf.filename || '').replace('rag-memory-of-', '').replace('.md', '');
+          var abstract = rf.abstract ? rf.abstract.substring(0, 120) : '';
+          ragList += '<div class="ws-rag-item">' +
+            '<span class="ws-rag-name">' + name + '</span>' +
+            '<span class="ws-rag-type">' + (rf.type || 'text') + '</span>' +
+            (abstract ? '<div class="ws-rag-abstract">' + abstract + '</div>' : '') +
+          '</div>';
+        });
+        ragList += '</div>';
+      }
+
+      // Last activity relative time
+      var lastStr = '';
+      if (s.lastActivity) {
+        var diff = Math.floor((Date.now() - new Date(s.lastActivity).getTime()) / 60000);
+        if (diff < 60) lastStr = diff + 'm ago';
+        else if (diff < 1440) lastStr = Math.floor(diff / 60) + 'h ago';
+        else lastStr = Math.floor(diff / 1440) + 'd ago';
+      }
+
+      cards += '<div class="ws-session-card' + (isActive ? ' ws-session-active' : '') + '" ' +
+        'onclick="var d=document.getElementById(\'' + detailId + '\');d.classList.toggle(\'open\');this.classList.toggle(\'expanded\')" ' +
+        'role="button" tabindex="0" aria-expanded="false" aria-controls="' + detailId + '">' +
+        '<div class="ws-session-header">' +
+          '<div class="ws-session-name">' + (s.name || s.id) + '</div>' +
+          '<span class="ws-session-badge ' + statusCls + '">' + statusLabel + '</span>' +
+        '</div>' +
+        '<div class="ws-session-meta">' +
+          '<span class="ws-session-date">' + dateStr + '</span>' +
+          (lastStr ? '<span class="ws-session-last">' + lastStr + '</span>' : '') +
+        '</div>' +
+        '<div class="ws-session-stats">' +
+          '<span class="ws-stat" title="Inputs">&#x1F4E5; ' + s.inputCount + ' inputs</span>' +
+          '<span class="ws-stat" title="RAG files">&#x1F9E0; ' + s.ragCount + ' RAG</span>' +
+          '<span class="ws-stat" title="Task log entries">&#x2705; ' + s.tasklogEntries + ' tasks</span>' +
+        '</div>' +
+        (isActive ? '<div class="ws-session-active-label">&#x25C9; Active</div>' : '') +
+      '</div>' +
+      '<div class="ws-session-detail" id="' + detailId + '">' +
+        ragList +
+        '<div class="ws-detail-label">Session ID</div>' +
+        '<div class="ws-detail-id">' + s.id + '</div>' +
+      '</div>';
+    });
+
+    sessionsHTML =
+      '<section class="ws-sessions-section">' +
+        '<h3 class="section-title" style="display:flex;align-items:center;gap:0.5rem">' +
+          '&#x1F4CB; Workspace Sessions ' +
+          '<span class="ws-session-count">' + sessions.length + '</span>' +
+          '<span class="ws-session-summary">' +
+            wsStats.inputs + ' inputs &middot; ' + wsStats.rags + ' RAG &middot; ' + wsStats.tasks + ' tasks' +
+          '</span>' +
+        '</h3>' +
+        '<div class="ws-sessions-grid">' + cards + '</div>' +
+      '</section>';
+  } else {
+    sessionsHTML =
+      '<section class="ws-sessions-section">' +
+        '<h3 class="section-title">&#x1F4CB; Workspace Sessions</h3>' +
+        '<div class="empty-state">' +
+          '<div style="font-size:1.5rem;margin-bottom:0.5rem">&#x1F4CB;</div>' +
+          'No workspace sessions yet.<br>' +
+          'Run <code style="color:var(--brand-gold)">/sdd:workspace create my-task</code> to isolate inputs, RAG, and logs per task.' +
+        '</div>' +
+      '</section>';
+  }
 
   /* ── File Icons ───────────────────────────────────────────── */
   function fileIcon(name) {
@@ -549,8 +761,9 @@
   root.innerHTML =
     '<header class="page-header">' +
       '<h1 class="page-title"><span class="gold">&#x1F4C1;</span> '+(window.SDD && SDD.i18n ? SDD.i18n.t('workspace.title') : 'Workspace')+'</h1>' +
-      '<p class="page-subtitle">File explorer, RAG memory, and session activity for ' + projectName + '</p>' +
+      '<p class="page-subtitle">File explorer, RAG memory, workspace sessions, and activity for ' + projectName + '</p>' +
     '</header>' +
+    sessionsHTML +
     treeHTML +
     ragHTML +
     activityHTML;

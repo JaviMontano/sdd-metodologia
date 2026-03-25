@@ -1,8 +1,8 @@
-# SDD v3.3 — Spec Driven Development · MetodologIA Edition
+# SDD v3.4 — Spec Driven Development · MetodologIA Edition
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 skills · 9 pipeline phases · 38 commands · 22 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center
+> 12 skills · 9 pipeline phases · 39 commands · 23 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -67,10 +67,11 @@ SDD runs a **per-prompt heartbeat** via `UserPromptSubmit` hook. On every user p
 
 | Command | Description |
 |---------|-------------|
+| `/sdd:workspace` | Manage per-task workspace sessions (create/list/select/archive) |
 | `/sdd:feature` | Create, select, or list features |
 | `/sdd:sync` | Sync upstream IIC/kit + reapply MetodologIA brand |
 | `/sdd:status` | Pipeline overview with visual table + next step advisor |
-| `/sdd:verify` | Run verification suite (structure, brand, tokens, assertions) |
+| `/sdd:verify` | Run verification suite (structure, brand, tokens, assertions, workspace) |
 | `/sdd:hooks` | Install git hooks for assertion integrity |
 | `/sdd:capture` | Capture session inputs into RAG memory files |
 | `/sdd:memory` | Browse and search RAG memory archive |
@@ -135,7 +136,38 @@ Session inputs are captured as `rag-memory-of-{slug}.md` with:
 Indexed in `.specify/rag-index.json`. Visible in Workspace view.
 Capture with: `/sdd:capture <file>` or `bash scripts/sdd-rag-capture.sh <file>`
 
-## Scripts (22)
+When a workspace session is active, RAG captures route to the workspace's `rag/` folder instead of `.specify/rag-memory/`. Use `--global` flag to force global routing.
+
+## Workspace Sessions
+
+SDD supports **per-task workspace sessions** — dated folders that isolate inputs, RAG files, logs, and tasklog per interaction/task.
+
+**Structure:**
+```
+workspace/
+  yyyy-mm-dd-task-name/
+    inputs/          # Raw inputs dropped during conversation
+    rag/             # RAG files auto-captured from inputs
+    logs/            # Task-specific session logs
+    tasklog.md       # Task progress table
+    session.json     # {taskName, created, status, inputCount, ragCount, lastActivity}
+```
+
+**Commands:**
+- `/sdd:workspace create <name>` — Create a new session and set as active
+- `/sdd:workspace list` — List all sessions with stats
+- `/sdd:workspace select <name>` — Set active session
+- `/sdd:workspace current` — Show active session
+- `/sdd:workspace archive <name>` — Archive a session
+
+**Behavior:**
+- Active workspace tracked in `.specify/active-workspace`
+- RAG capture routes to active workspace's `rag/` folder
+- Session logs dual-write to both global and workspace logs
+- Heartbeat nudges if no workspace is active on SDD projects
+- Dashboard Workspace page shows session cards with status and stats
+
+## Scripts (23)
 
 | Script | Purpose |
 |--------|---------|
@@ -144,14 +176,15 @@ Capture with: `/sdd:capture <file>` or `bash scripts/sdd-rag-capture.sh <file>`
 | `sdd-insights.js` | Health scores, traceability, risk analysis engine |
 | `sdd-knowledge-graph.js` | Knowledge graph builder (Constitution→FR→TS→Tasks) |
 | `sdd-seed-demo.sh` | Generate realistic demo project (3 features) |
-| `sdd-rag-capture.sh` | RAG memory capture with auto-detect + indexing |
+| `sdd-workspace.sh` | Per-task workspace session management (create/list/select/archive) |
+| `sdd-rag-capture.sh` | RAG memory capture with auto-detect + indexing (workspace-aware) |
 | `sdd-session-log.sh` | Session event logging (PostToolUse + PreCompact) |
 | `sdd-init.sh` | Project initialization with GitHub sync |
 | `sdd-status.sh` | Visual pipeline table with phase dots |
 | `sdd-next-step.sh` | Next command advisor |
 | `sdd-prereqs.sh` | Phase prerequisite validation |
 | `sdd-feature.sh` | Create/select/list features |
-| `sdd-verify.sh` | Full verification suite (7 checks) |
+| `sdd-verify.sh` | Full verification suite (8 checks) |
 | `sdd-hooks-install.sh` | Git hook installation |
 | `generate-dashboard.js` | Single-file dashboard HTML generator (legacy) |
 | `generate-command-center-data.js` | Multi-page ALM data generator (`shared/data.js`) |
