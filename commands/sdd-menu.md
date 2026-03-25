@@ -37,9 +37,12 @@ UTILITIES
   /sdd:sync             Sync upstream IIC/kit + reapply brand
   /sdd:dashboard        Generate Neo-Swiss branded dashboard
   /sdd:status           Pipeline overview + next step advisor
-  /sdd:verify           Run verification suite (7 categories)
+  /sdd:verify           Run verification suite (8 categories)
   /sdd:hooks            Install git hooks for assertion integrity
   /sdd:menu             This command palette
+
+WORKSPACE
+  /sdd:workspace        Manage per-task workspace sessions (create/list/select/archive)
 
 KNOWLEDGE & MEMORY
   /sdd:capture          Capture session inputs to RAG memory files

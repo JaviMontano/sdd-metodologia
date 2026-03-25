@@ -62,6 +62,7 @@ FINDINGS=0
 STALE=0
 MISSING=0
 HEALTH=""
+WS_NUDGE=0
 
 # Stale artifacts (files older than STALE_DAYS)
 if [ -d "$SPECIFY_DIR" ]; then
@@ -75,6 +76,21 @@ fi
 [ ! -f "$SPECIFY_DIR/context.json" ] && MISSING=$((MISSING + 1))
 [ "$MISSING" -gt 0 ] && FINDINGS=$((FINDINGS + MISSING))
 
+# Workspace session check (~1ms)
+ACTIVE_WS_FILE="$SPECIFY_DIR/active-workspace"
+if [ ! -f "$ACTIVE_WS_FILE" ] || [ -z "$(cat "$ACTIVE_WS_FILE" 2>/dev/null | tr -d '\n')" ]; then
+  # No active workspace — nudge if this is a real SDD project
+  if [ -d "specs" ] || [ -f "CONSTITUTION.md" ]; then
+    WS_NUDGE=1
+  fi
+else
+  ACTIVE_WS=$(cat "$ACTIVE_WS_FILE" 2>/dev/null | tr -d '\n')
+  if [ -n "$ACTIVE_WS" ] && [ ! -d "workspace/$ACTIVE_WS" ]; then
+    MISSING=$((MISSING + 1))  # Active workspace folder missing
+    FINDINGS=$((FINDINGS + 1))
+  fi
+fi
+
 # Health score regression (read last score from health-history.json)
 HH="$SPECIFY_DIR/health-history.json"
 if [ -f "$HH" ]; then
@@ -86,13 +102,16 @@ if [ -f "$HH" ]; then
   fi
 fi
 
-# ── Report ──
-if [ "$FINDINGS" -gt 0 ]; then
+# ── Report (single line to minimize context noise) ──
+if [ "$FINDINGS" -gt 0 ] || [ "$WS_NUDGE" -gt 0 ]; then
   MSG=""
   [ "$STALE" -gt 0 ] && MSG="${MSG}${STALE} stale"
   [ "$MISSING" -gt 0 ] && { [ -n "$MSG" ] && MSG="${MSG}, "; MSG="${MSG}${MISSING} missing"; }
   [ -n "$HEALTH" ] && { [ -n "$MSG" ] && MSG="${MSG}, "; MSG="${MSG}health:${HEALTH}"; }
-  echo "⚡ SDD: ${MSG} — /sdd:sentinel"
+  [ "$WS_NUDGE" -gt 0 ] && { [ -n "$MSG" ] && MSG="${MSG} | "; MSG="${MSG}no workspace"; }
+  HINT="/sdd:sentinel"
+  [ "$WS_NUDGE" -gt 0 ] && [ "$FINDINGS" -eq 0 ] && HINT="/sdd:workspace create <name>"
+  echo "⚡ SDD: ${MSG} — ${HINT}"
 fi
 
 exit 0

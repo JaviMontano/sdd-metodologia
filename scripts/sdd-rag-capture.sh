@@ -3,9 +3,13 @@
 #
 # Usage:
 #   bash scripts/sdd-rag-capture.sh <file-or-dir> [project-path]
-#   bash scripts/sdd-rag-capture.sh --scan [project-path]    # scan .specify/inputs/
+#   bash scripts/sdd-rag-capture.sh --scan [project-path]    # scan inputs/ dir
+#   bash scripts/sdd-rag-capture.sh --global <file> [path]   # force .specify/ routing
 #
-# Creates .specify/rag-memory/rag-memory-of-{name}.md with:
+# Workspace-aware: routes to active workspace's rag/ when .specify/active-workspace exists.
+# Use --global to bypass workspace and always write to .specify/rag-memory/.
+#
+# Creates rag-memory-of-{name}.md with:
 #   - Frontmatter (source, type, captured timestamp)
 #   - Abstract, Key Takeaways, Relevant Insights (placeholder for LLM fill)
 #   - Full Content (verbatim for text, metadata for binary)
@@ -29,9 +33,28 @@ RAG_DIR="$PROJECT_PATH/.specify/rag-memory"
 RAG_INDEX="$PROJECT_PATH/.specify/rag-index.json"
 INPUTS_DIR="$PROJECT_PATH/.specify/inputs"
 
+# ── Workspace-aware routing ──
+# If --global flag is set, skip workspace override
+if [[ "$INPUT" == "--global" ]]; then
+  shift; INPUT="${1:---help}"; PROJECT_PATH="${2:-.}"
+else
+  ACTIVE_WS_FILE="$PROJECT_PATH/.specify/active-workspace"
+  if [[ -f "$ACTIVE_WS_FILE" ]]; then
+    ACTIVE_WS=$(cat "$ACTIVE_WS_FILE" 2>/dev/null | tr -d '\n')
+    if [[ -n "$ACTIVE_WS" && -d "$PROJECT_PATH/workspace/$ACTIVE_WS" ]]; then
+      RAG_DIR="$PROJECT_PATH/workspace/$ACTIVE_WS/rag"
+      RAG_INDEX="$PROJECT_PATH/workspace/$ACTIVE_WS/rag-index.json"
+      INPUTS_DIR="$PROJECT_PATH/workspace/$ACTIVE_WS/inputs"
+    fi
+  fi
+fi
+
 if [[ "$INPUT" == "--help" || "$INPUT" == "-h" ]]; then
   echo "Usage: sdd-rag-capture.sh <file-or-dir> [project-path]"
   echo "       sdd-rag-capture.sh --scan [project-path]"
+  echo "       sdd-rag-capture.sh --global <file> [project-path]  # bypass workspace"
+  echo ""
+  echo "When a workspace is active, RAG files route to workspace/{id}/rag/"
   exit 0
 fi
 
@@ -365,5 +388,7 @@ else
 fi
 
 echo ""
-echo -e "${BLUE}Captured:${RESET} $CAPTURED file(s) → .specify/rag-memory/"
+# Show actual destination (workspace or global)
+RAG_DEST="${RAG_DIR#$PROJECT_PATH/}"
+echo -e "${BLUE}Captured:${RESET} $CAPTURED file(s) → $RAG_DEST/"
 echo -e "${MUTED}Run /sdd:capture to fill abstracts and insights with LLM analysis.${RESET}"

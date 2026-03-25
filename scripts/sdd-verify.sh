@@ -151,6 +151,54 @@ SKILL_COUNT=$(find "$ROOT_DIR/.claude/skills" -name "SKILL.md" 2>/dev/null | wc 
 SCRIPT_COUNT=$(ls "$ROOT_DIR/scripts"/*.sh "$ROOT_DIR/scripts"/*.js 2>/dev/null | wc -l | tr -d ' ')
 pass "$CMD_COUNT commands, $SKILL_COUNT skills, $SCRIPT_COUNT scripts"
 
+# ─── Check 8: Workspace Sessions ───
+echo ""
+echo -e "${WHITE}8. Workspace Sessions${RESET}"
+WS_DIR="$PROJECT_PATH/workspace"
+if [[ -d "$WS_DIR" ]]; then
+  WS_COUNT=0
+  WS_INVALID=0
+  for ws in "$WS_DIR"/*/; do
+    [[ -d "$ws" ]] || continue
+    ws_name=$(basename "$ws")
+    [[ "$ws_name" == .* ]] && continue
+    WS_COUNT=$((WS_COUNT + 1))
+    # Validate session.json exists and is valid JSON
+    if [[ -f "$ws/session.json" ]]; then
+      if ! python3 -c "import json; json.load(open('$ws/session.json'))" 2>/dev/null; then
+        fail "Invalid session.json in $ws_name"
+        WS_INVALID=$((WS_INVALID + 1))
+      fi
+    else
+      warn "Missing session.json in $ws_name"
+      WS_INVALID=$((WS_INVALID + 1))
+    fi
+    # Check required subdirectories
+    for subdir in inputs rag logs; do
+      [[ -d "$ws/$subdir" ]] || warn "$ws_name missing $subdir/"
+    done
+  done
+  if [[ $WS_COUNT -gt 0 ]] && [[ $WS_INVALID -eq 0 ]]; then
+    pass "$WS_COUNT workspace session(s) valid"
+  elif [[ $WS_COUNT -eq 0 ]]; then
+    pass "workspace/ exists (no sessions yet)"
+  fi
+  # Validate active-workspace reference
+  ACTIVE_WS_FILE="$PROJECT_PATH/.specify/active-workspace"
+  if [[ -f "$ACTIVE_WS_FILE" ]]; then
+    ACTIVE_WS=$(cat "$ACTIVE_WS_FILE" | tr -d '[:space:]')
+    if [[ -n "$ACTIVE_WS" ]]; then
+      if [[ -d "$WS_DIR/$ACTIVE_WS" ]]; then
+        pass "Active workspace: $ACTIVE_WS"
+      else
+        warn "Active workspace '$ACTIVE_WS' folder missing (stale reference)"
+      fi
+    fi
+  fi
+else
+  pass "No workspace/ directory (optional)"
+fi
+
 # ─── Summary ───
 echo ""
 echo -e "${GOLD}─────────────────────────────────────────────${RESET}"
@@ -162,4 +210,4 @@ elif [[ $WARNINGS -gt 0 ]]; then
 else
   echo -e "${BLUE}${BOLD}ALL CHECKS PASSED${RESET}"
 fi
-echo -e "${MUTED}SDD v2.0 · MetodologIA · $(date +%Y-%m-%d)${RESET}"
+echo -e "${MUTED}SDD v3.4 · MetodologIA · $(date +%Y-%m-%d)${RESET}"

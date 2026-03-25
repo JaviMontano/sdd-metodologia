@@ -139,6 +139,30 @@ else
   done
 fi
 
+# ─── Workspace Sessions ───
+WS_DIR="$PROJECT_PATH/workspace"
+ACTIVE_WS_FILE="$SPECIFY_DIR/active-workspace"
+if [[ -d "$WS_DIR" ]]; then
+  WS_COUNT=0
+  WS_ACTIVE=""
+  for ws in "$WS_DIR"/*/; do
+    [[ -d "$ws" ]] || continue
+    ws_name=$(basename "$ws")
+    [[ "$ws_name" == .* ]] && continue
+    WS_COUNT=$((WS_COUNT + 1))
+  done
+  [[ -f "$ACTIVE_WS_FILE" ]] && WS_ACTIVE=$(cat "$ACTIVE_WS_FILE" 2>/dev/null | tr -d '[:space:]')
+  echo ""
+  echo -e "${WHITE}Workspace:${RESET}"
+  if [[ -n "$WS_ACTIVE" ]] && [[ -d "$WS_DIR/$WS_ACTIVE" ]]; then
+    echo -e "  ${GOLD}▸${RESET} Active: ${WHITE}$WS_ACTIVE${RESET} ($WS_COUNT total)"
+  elif [[ $WS_COUNT -gt 0 ]]; then
+    echo -e "  ${MUTED}○${RESET} $WS_COUNT session(s) — none active ${MUTED}(/sdd:workspace select)${RESET}"
+  else
+    echo -e "  ${MUTED}○${RESET} No sessions ${MUTED}(/sdd:workspace create my-task)${RESET}"
+  fi
+fi
+
 echo ""
 echo -e "${MUTED}Legend: ${BLUE}●${MUTED} done  ${AMBER}◐${MUTED} in progress  ${MUTED}○ pending${RESET}"
-echo -e "${MUTED}SDD v1.1 · MetodologIA · $(date +%Y-%m-%d)${RESET}"
+echo -e "${MUTED}SDD v3.4 · MetodologIA · $(date +%Y-%m-%d)${RESET}"

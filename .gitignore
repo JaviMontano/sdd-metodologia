@@ -1,5 +1,6 @@
 # Project-level artifacts (not part of the plugin)
 .specify/
+workspace/
 node_modules/
 *.log
 .DS_Store
