@@ -198,14 +198,38 @@ workspace/
 
 ## Brand Rules
 
-- **Body bg**: `#020617` (ultra-dark) — **Navy** `#122562` for surfaces
-- **Gold** `#FFD700` — Accents, CTAs, focus, progress bars
-- **Blue** `#137DC5` — Success, done, verified — **NUNCA verde**
-- **Poppins** headings · **Montserrat** body · **JetBrains Mono** code
-- Cards: glassmorphism `blur(16px) saturate(180%)` + `rgba(255,255,255,0.03)`
-- Swiss 8px grid · Navy-tinted shadows · Neo-Swiss aesthetic
+**Aesthetic**: Neo-Swiss Clean and Soft Explainer (Corporate Clean and Premium)
 
-> Canonical tokens: `references/design-tokens.json` (33 colors, 4 fonts, shadows, logo SVG)
+**Palette** (6 exclusive colors):
+- **Navy** `#122562` — Surfaces, primary background
+- **Gold** `#FFD700` — Accents, CTAs, focus, progress
+- **Blue** `#137DC5` — Success, done, verified — **NUNCA verde**
+- **Charcoal** `#1F2833` — Body background
+- **Lavender** `#BBA0CC` — Secondary text, medium severity
+- **Gray** `#808080` — Muted text, disabled states
+
+**Typography**:
+- **Poppins** — Titulares (headings, hero, section titles)
+- **Trebuchet MS** — Cuerpo (body text, descriptions, cards)
+- **Futura** — Notas, footnotes, popups, callouts
+- **JetBrains Mono** — Código (code blocks, commands, monospace)
+
+**Visual rules**:
+- Swiss 8px grid · Navy-tinted soft shadows · Discrete micro-gradients
+- Cards: glassmorphism `blur(16px) saturate(180%)` + `rgba(255,255,255,0.03)`
+- Flat vector illustrations: faceless figures, soft geometric shapes, UI elements
+- High legibility: large text, high contrast, never on noisy backgrounds
+- Column composition (text + visual), generous white space
+
+**Voice**: MetodologIA Brand Voice v3.0 (Minto-First OS)
+- Structure: Minto (Conclusión → Soportes MECE → Evidencia → CTA)
+- Language: Español latino neutro, tú por defecto
+- Pillars: P1 (R)Evolución · P2 Intención antes que intensidad · P3 Tecnología como aliada
+- Red list: hack, truco, secreto, resultados instantáneos, arquitecto, arquitectura, transformación
+- Green list: método, diseñar, sistemas, gobernanza, capacidades, (R)Evolución, Success as a Service
+- Rubric: 10 criteria × 0-2 scale = /20. Approval: 20/20 or correct and revalidate
+
+> Canonical tokens: `references/design-tokens.json` (v2.0 — 6 palette colors, 4 fonts, aesthetic spec, voice config)
 > Sequence diagrams: `references/sequence-diagrams.md` (7 Mermaid diagrams)
 
 ## Operational Vision

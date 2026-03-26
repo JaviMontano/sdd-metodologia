@@ -52,13 +52,31 @@ for skill_dir in "$SKILLS_DIR"/iikit-*/; do
     continue
   fi
 
-  check_token "$template" "#122562" "$skill"
-  check_token "$template" "#FFD700" "$skill"
-  check_token "$template" "#137DC5" "$skill"
-  check_token "$template" "#F8F9FC" "$skill"
-  check_token "$template" "Poppins" "$skill"
-  check_token "$template" "metodolog" "$skill"
+  check_token "$template" "#122562" "$skill (navy)"
+  check_token "$template" "#FFD700" "$skill (gold)"
+  check_token "$template" "#137DC5" "$skill (blue)"
+  check_token "$template" "Poppins" "$skill (heading font)"
+  check_token "$template" "metodolog" "$skill (brand name)"
 done
+
+# ─── 1b. Design tokens palette ───
+echo ""
+echo "1b. Design tokens palette (6 exclusive colors)"
+TOKENS="$ROOT_DIR/references/design-tokens.json"
+if [[ -f "$TOKENS" ]]; then
+  check_token "$TOKENS" '"navy": "#122562"' "palette"
+  check_token "$TOKENS" '"gold": "#FFD700"' "palette"
+  check_token "$TOKENS" '"blue": "#137DC5"' "palette"
+  check_token "$TOKENS" '"charcoal": "#1F2833"' "palette"
+  check_token "$TOKENS" '"lavender": "#BBA0CC"' "palette"
+  check_token "$TOKENS" '"gray": "#808080"' "palette"
+  check_token "$TOKENS" "Poppins" "fonts (heading)"
+  check_token "$TOKENS" "Trebuchet" "fonts (body)"
+  check_token "$TOKENS" "Futura" "fonts (note)"
+  check_token "$TOKENS" "JetBrains Mono" "fonts (code)"
+else
+  fail "design-tokens.json missing"
+fi
 
 # ─── 2. GREEN AUDIT (critical) ───
 echo ""
