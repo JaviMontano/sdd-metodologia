@@ -2,50 +2,53 @@
 
 > **by metodolog*IA***
 
-[![Version](https://img.shields.io/badge/version-3.3.0-FFD700?style=flat-square&labelColor=122562)](https://github.com/JaviMontano/sdd-metodologia)
+[![Version](https://img.shields.io/badge/version-3.4.0-FFD700?style=flat-square&labelColor=122562)](https://github.com/JaviMontano/sdd-metodologia)
 [![License](https://img.shields.io/badge/license-GPL--3.0-137DC5?style=flat-square&labelColor=122562)](LICENSE)
-[![Commands](https://img.shields.io/badge/commands-37-FFD700?style=flat-square&labelColor=122562)]()
+[![Commands](https://img.shields.io/badge/commands-39-FFD700?style=flat-square&labelColor=122562)]()
 [![Upstream](https://img.shields.io/badge/upstream-IIC%2Fkit-137DC5?style=flat-square&labelColor=122562)](https://github.com/intent-integrity-chain/kit)
 
-Specification-driven AI development with cryptographic BDD verification, ambient intelligence, and MetodologIA's Neo-Swiss branding. SDD conducts software development from governance principles to GitHub issues — or vitamizes your operational process by searching, creating, and deploying skills.
+Desarrollo de software dirigido por especificación con verificación BDD criptográfica, inteligencia ambiental y branding Neo-Swiss de MetodologIA. SDD conduce el desarrollo desde principios de gobernanza hasta issues en GitHub — o vitaminiza tu proceso operativo buscando, creando y desplegando habilidades.
 
 ---
 
-## Quick Start
+## Inicio Rápido
 
 ```bash
-/sdd:tour              # Guided onboarding (8 interactive steps)
-/sdd:demo              # Generate demo project + dashboard
-/sdd:init              # Initialize a real project
-/sdd:menu              # Command palette — all 37 commands
+/sdd:tour              # Onboarding guiado (8 pasos interactivos)
+/sdd:demo              # Generar proyecto demo + dashboard
+/sdd:init              # Inicializar un proyecto real
+/sdd:menu              # Paleta de comandos — los 39 comandos
 ```
 
-## Features
+## Características
 
-### 9-Phase Pipeline
-Constitution → Specify → Plan → Checklist → Testify → Tasks → Analyze → Implement → Issues. Quality gates G1-G3 halt on violations. Never skip phases.
+### Pipeline de 9 Fases
+Constitución → Especificar → Planificar → Checklist → Testificar → Tareas → Analizar → Implementar → Issues. Las puertas de calidad G1-G3 detienen el avance ante violaciones. Nunca se saltan fases.
 
-### Ambient Heartbeat
-Per-prompt intelligence via `UserPromptSubmit` hook. Runs < 100ms on every prompt. Detects stale artifacts, missing files, health regression — silently when healthy.
+### Heartbeat Ambiental
+Inteligencia por prompt vía hook `UserPromptSubmit`. Se ejecuta en < 100ms en cada prompt. Detecta artefactos obsoletos, archivos faltantes y regresión de salud — silencioso cuando todo está bien.
 
-### Knowledge Graph
-Full traceability: Constitution principles → Requirements (FR) → Test specs (TS) → Tasks (T). Detects orphans automatically. Renders as force-directed SVG in dashboard.
+### Grafo de Conocimiento
+Trazabilidad completa: Principios de Constitución → Requisitos (FR) → Especificaciones de prueba (TS) → Tareas (T). Detecta huérfanos automáticamente. Se renderiza como SVG de fuerza dirigida en el dashboard.
 
 ### ALM — Application Lifecycle Manager
-Visual ALM as a micro-frontend: 6 interconnected pages tracking the full SDD pipeline for any project. Health gauge, pipeline board, spec story map, test traceability, insights sparklines, workspace explorer. Not domain-specific — works on any codebase where SDD is initialized.
+ALM visual como micro-frontend: 10 páginas interconectadas que rastrean el pipeline SDD completo para cualquier proyecto. Medidor de salud, tablero de pipeline, mapa de historias, trazabilidad de pruebas, sparklines de insights, explorador de workspace con sesiones por tarea. No es específico de dominio — funciona en cualquier codebase donde SDD esté inicializado.
 
-### RAG Memory
-Session inputs captured as `rag-memory-of-{slug}.md` with auto-detected MIME type, HTML structure extraction, abstract + key takeaways + full content. Indexed in JSON.
+### Sesiones de Workspace por Tarea
+Cada tarea crea una carpeta fechada (`workspace/yyyy-mm-dd-nombre/`) con inputs, archivos RAG, logs y tasklog. El workspace activo enruta automáticamente las capturas RAG y los logs de sesión. Se integra con el dashboard ALM.
 
-### Onboarding Tour
-8-step interactive walkthrough: pipeline, dashboard, heartbeat, knowledge graph, commands. Neo-Swiss dark glassmorphism modals.
+### Memoria RAG
+Los inputs de sesión se capturan como `rag-memory-of-{slug}.md` con detección automática de tipo MIME, extracción de estructura HTML, resumen + conclusiones clave + contenido completo. Indexado en JSON. Enrutamiento consciente del workspace activo.
+
+### Tour de Onboarding
+Recorrido interactivo de 8 pasos: pipeline, dashboard, heartbeat, grafo de conocimiento, comandos. Modales oscuros de glassmorfismo Neo-Swiss.
 
 ---
 
 ## Pipeline
 
-| Phase | Command | Alias | Gate |
-|-------|---------|-------|------|
+| Fase | Comando | Alias | Puerta |
+|------|---------|-------|--------|
 | Init | `/sdd:core` | `/sdd:init` | — |
 | 0 | `/sdd:00-constitution` | — | — |
 | 1 | `/sdd:01-specify` | `/sdd:spec` | — |
@@ -57,14 +60,14 @@ Session inputs captured as `rag-memory-of-{slug}.md` with auto-detected MIME typ
 | 7 | `/sdd:07-implement` | `/sdd:impl` | **G3** |
 | 8 | `/sdd:08-issues` | `/sdd:issues` | — |
 
-**Utility:** `/sdd:clarify` `/sdd:bugfix` `/sdd:feature` `/sdd:verify` `/sdd:hooks` `/sdd:sync`
-**Intelligence:** `/sdd:sentinel` `/sdd:insights` `/sdd:graph` `/sdd:dashboard`
-**Memory:** `/sdd:capture` `/sdd:memory`
-**Experience:** `/sdd:tour` `/sdd:demo` `/sdd:seed` `/sdd:menu`
+**Utilidades:** `/sdd:clarify` `/sdd:bugfix` `/sdd:feature` `/sdd:workspace` `/sdd:verify` `/sdd:hooks` `/sdd:sync`
+**Inteligencia:** `/sdd:sentinel` `/sdd:insights` `/sdd:graph` `/sdd:qa` `/sdd:dashboard`
+**Memoria:** `/sdd:capture` `/sdd:memory`
+**Experiencia:** `/sdd:tour` `/sdd:demo` `/sdd:seed` `/sdd:menu`
 
 ---
 
-## Installation
+## Instalación
 
 ```bash
 git clone https://github.com/JaviMontano/sdd-metodologia.git ~/.claude/plugins/sdd-metodologia
@@ -72,72 +75,75 @@ git clone https://github.com/JaviMontano/sdd-metodologia.git ~/.claude/plugins/s
 
 ---
 
-## Architecture
+## Arquitectura
 
 ```
 sdd-metodologia/
-├── .claude-plugin/plugin.json     # v3.3.0 manifest
-├── AGENTS.md (→ CLAUDE.md)        # Orchestrator
-├── CONSTITUTION.md                # Framework governance
-├── HEARTBEAT.md                   # Sentinel spec (perceive-decide-act)
-├── CLARIFICATIONS.md              # Decision registry
-├── commands/                      # 37 command definitions
+├── .claude-plugin/plugin.json     # Manifiesto v3.4.0
+├── AGENTS.md (→ CLAUDE.md)        # Orquestador
+├── FORK.md                        # Documentación del fork mejorado
+├── CONSTITUTION.md                # Gobernanza del framework
+├── HEARTBEAT.md                   # Especificación del sentinel (percibir-decidir-actuar)
+├── CLARIFICATIONS.md              # Registro de decisiones
+├── commands/                      # 39 definiciones de comandos
 ├── scripts/
-│   ├── sdd-heartbeat-lite.sh      # Per-prompt heartbeat (< 100ms)
-│   ├── sdd-knowledge-graph.js     # Traceability graph builder
-│   ├── sdd-sentinel.sh            # Full sentinel cycle
-│   ├── sdd-insights.js            # Health scores + recommendations
-│   ├── sdd-seed-demo.sh           # Demo generator
-│   ├── sdd-rag-capture.sh         # RAG memory with MIME detect
-│   ├── sdd-tour.html              # Onboarding tour
-│   ├── generate-dashboard.js      # Dashboard generator
-│   ├── command-center/            # Micro-frontend
-│   └── ...                        # Utility scripts
-├── .claude/skills/                # 12 IIKit skills
-├── hooks/hooks.json               # 4 hook events
+│   ├── sdd-heartbeat-lite.sh      # Heartbeat por prompt (< 100ms)
+│   ├── sdd-workspace.sh           # Sesiones de workspace por tarea
+│   ├── sdd-knowledge-graph.js     # Constructor del grafo de trazabilidad
+│   ├── sdd-sentinel.sh            # Ciclo completo del sentinel
+│   ├── sdd-insights.js            # Puntuaciones de salud + recomendaciones
+│   ├── sdd-seed-demo.sh           # Generador de demo
+│   ├── sdd-rag-capture.sh         # Memoria RAG con detección MIME
+│   ├── sdd-session-log.sh         # Log de sesión con dual-write
+│   ├── sdd-tour.html              # Tour de onboarding
+│   ├── generate-dashboard.js      # Generador del dashboard
+│   ├── command-center/            # Micro-frontend (10 páginas)
+│   └── ...                        # Scripts de utilidad
+├── .claude/skills/                # 12 skills IIKit
+├── hooks/hooks.json               # 4 eventos de hook
 ├── references/
-│   ├── design-tokens.json         # Neo-Swiss brand tokens
-│   ├── sequence-diagrams.md       # 7 Mermaid diagrams
-│   └── data-schemas.md            # JSON schemas
-└── landing.html                   # Branded landing page
+│   ├── design-tokens.json         # Tokens de marca Neo-Swiss
+│   ├── sequence-diagrams.md       # 7 diagramas Mermaid
+│   └── data-schemas.md            # Esquemas JSON
+└── landing.html                   # Página de aterrizaje con marca
 ```
 
 ---
 
 ## Hooks
 
-| Event | Script | Purpose |
-|-------|--------|---------|
-| `UserPromptSubmit` | `sdd-heartbeat-lite.sh` | Per-prompt health check |
-| `PostToolUse (Write\|Edit)` | `sdd-session-log.sh` | Audit trail |
-| `SessionStart` | `sdd-heartbeat-lite.sh --init` | Context restore |
-| `PreCompact` | `sdd-session-log.sh` | State snapshot |
+| Evento | Script | Propósito |
+|--------|--------|-----------|
+| `UserPromptSubmit` | `sdd-heartbeat-lite.sh` | Chequeo de salud por prompt |
+| `PostToolUse (Write\|Edit)` | `sdd-session-log.sh` | Pista de auditoría + dual-write |
+| `SessionStart` | `sdd-heartbeat-lite.sh --init` | Restauración de contexto |
+| `PreCompact` | `sdd-session-log.sh` | Instantánea de estado |
 
 ---
 
-## Brand: Neo-Swiss Dark
+## Marca: Neo-Swiss Dark
 
-| Token | Value |
+| Token | Valor |
 |-------|-------|
 | Body | `#020617` |
 | Navy | `#122562` |
 | Gold | `#FFD700` |
-| Blue | `#137DC5` (never green) |
-| Headings | Poppins |
-| Body | Montserrat |
-| Code | JetBrains Mono |
-| Cards | `blur(16px) saturate(180%)` |
+| Blue | `#137DC5` (nunca verde) |
+| Encabezados | Poppins |
+| Cuerpo | Montserrat |
+| Código | JetBrains Mono |
+| Tarjetas | `blur(16px) saturate(180%)` |
 
 ---
 
-## Credits
+## Créditos
 
-- **Co-creators**: Javier Montano & Katherin Oquendo
+- **Co-creadores**: Javier Montaño & Katherin Oquendo
 - **Upstream**: [Intent Integrity Chain / Kit](https://github.com/intent-integrity-chain/kit) (MIT)
-- **Brand**: MetodologIA (GPL-3.0)
-- **Aesthetic**: Neo-Swiss Clean
-- **Powered by**: Claude Code, Antigravity & Agente Pristino
+- **Marca**: MetodologIA (GPL-3.0)
+- **Estética**: Neo-Swiss Clean
+- **Potenciado por**: Claude Code, Antigravity & Agente Pristino
 
-*Built with much love.*
+*Construido con mucho amor.*
 
-*SDD v3.2 · Spec Driven Development · by metodologIA*
+*SDD v3.4 · Spec Driven Development · by metodologIA*
