@@ -121,18 +121,22 @@ sdd-metodologia/
 
 ---
 
-## Marca: Neo-Swiss Dark
+## Marca: Neo-Swiss Clean and Soft Explainer
 
 | Token | Valor |
 |-------|-------|
-| Body | `#020617` |
-| Navy | `#122562` |
-| Gold | `#FFD700` |
+| Body | `#1F2833` (charcoal) |
+| Superficies | `#122562` (navy) |
+| Gold | `#FFD700` (acentos, CTAs) |
 | Blue | `#137DC5` (nunca verde) |
-| Encabezados | Poppins |
-| Cuerpo | Montserrat |
+| Lavender | `#BBA0CC` (texto secundario) |
+| Gray | `#808080` (muted, disabled) |
+| Titulares | Poppins |
+| Cuerpo | Trebuchet MS |
+| Notas | Futura |
 | Código | JetBrains Mono |
-| Tarjetas | `blur(16px) saturate(180%)` |
+| Tarjetas | Glassmorphism `blur(16px) saturate(180%)` |
+| Grid | Swiss 8px |
 
 ---
 
