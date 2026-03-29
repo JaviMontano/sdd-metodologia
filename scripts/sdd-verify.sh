@@ -210,4 +210,4 @@ elif [[ $WARNINGS -gt 0 ]]; then
 else
   echo -e "${BLUE}${BOLD}ALL CHECKS PASSED${RESET}"
 fi
-echo -e "${MUTED}SDD v3.4 · MetodologIA · $(date +%Y-%m-%d)${RESET}"
+echo -e "${MUTED}SDD v3.5 · MetodologIA · $(date +%Y-%m-%d)${RESET}"

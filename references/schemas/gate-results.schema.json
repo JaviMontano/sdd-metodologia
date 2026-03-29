@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gate Results",
+  "description": "Quality gate evaluation results",
+  "type": "object",
+  "required": ["gates"],
+  "properties": {
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "phase", "result", "timestamp"],
+        "properties": {
+          "gate": { "type": "string", "enum": ["G1", "G2", "G3"] },
+          "phase": { "type": "string", "pattern": "^0[0-8]$" },
+          "result": { "type": "string", "enum": ["PASS", "CONDITIONAL", "FAIL"] },
+          "timestamp": { "type": "string" },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "severity": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] },
+                "message": { "type": "string" }
+              }
+            }
+          },
+          "score": { "type": "number", "minimum": 0, "maximum": 100 }
+        }
+      }
+    }
+  }
+}

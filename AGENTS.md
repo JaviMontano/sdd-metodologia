@@ -167,22 +167,26 @@ workspace/
 - Heartbeat nudges if no workspace is active on SDD projects
 - Dashboard Workspace page shows session cards with status and stats
 
-## Scripts (23)
+## Scripts (27)
 
 | Script | Purpose |
 |--------|---------|
 | `sdd-heartbeat-lite.sh` | **Per-prompt ambient heartbeat** (< 100ms, zero LLM) |
 | `sdd-sentinel.sh` | Full sentinel perceive-decide-act cycle |
+| `sdd-gate-check.sh` | **Mandatory quality gate enforcement** (G1/G2/G3 — hard stops) |
+| `sdd-phase-complete.sh` | Pipeline state updater (context.json completedPhases) |
+| `sdd-validate-artifact.sh` | Schema + content validation (JSON + markdown artifacts) |
+| `sdd-assertion-hash.sh` | **Cryptographic SHA-256 hashing** for .feature files |
 | `sdd-insights.js` | Health scores, traceability, risk analysis engine |
 | `sdd-knowledge-graph.js` | Knowledge graph builder (Constitution→FR→TS→Tasks) |
 | `sdd-seed-demo.sh` | Generate realistic demo project (3 features) |
 | `sdd-workspace.sh` | Per-task workspace session management (create/list/select/archive) |
-| `sdd-rag-capture.sh` | RAG memory capture with auto-detect + indexing (workspace-aware) |
-| `sdd-session-log.sh` | Session event logging (PostToolUse + PreCompact) |
-| `sdd-init.sh` | Project initialization with GitHub sync |
+| `sdd-rag-capture.sh` | RAG memory capture with safety guards (10MB limit, binary detect) |
+| `sdd-session-log.sh` | Session event logging with flock concurrency (PostToolUse + PreCompact) |
+| `sdd-init.sh` | Project initialization with post-validation + GitHub sync |
 | `sdd-status.sh` | Visual pipeline table with phase dots |
 | `sdd-next-step.sh` | Next command advisor |
-| `sdd-prereqs.sh` | Phase prerequisite validation |
+| `sdd-prereqs.sh` | Phase prerequisite validation (content checks + fail-fast) |
 | `sdd-feature.sh` | Create/select/list features |
 | `sdd-verify.sh` | Full verification suite (8 checks) |
 | `sdd-hooks-install.sh` | Git hook installation |
@@ -193,8 +197,7 @@ workspace/
 | `brand-overlay.sh` | MetodologIA branding overlay |
 | `brand-html-patch.js` | HTML structural patches |
 | `sync-upstream.sh` | Upstream IIC/kit sync |
-| `verify-brand.sh` | Brand integrity verification |
-| `dashboard-template.html` | Dashboard HTML template (11 views) |
+| `verify-brand.sh` | Brand integrity verification (palette + fonts + tokens) |
 
 ## Brand Rules
 

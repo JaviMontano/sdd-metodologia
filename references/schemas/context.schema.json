@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SDD Context",
+  "description": "Pipeline state for .specify/context.json",
+  "type": "object",
+  "required": ["version", "brand", "pipeline"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "brand": { "type": "string", "minLength": 1 },
+    "product": { "type": "string" },
+    "created": { "type": "string" },
+    "features": { "type": "array", "items": { "type": "string" } },
+    "activeFeature": { "type": ["string", "null"] },
+    "pipeline": {
+      "type": "object",
+      "required": ["currentPhase"],
+      "properties": {
+        "currentPhase": { "type": "string" },
+        "completedPhases": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^(0[0-8]|done)$" }
+        },
+        "lastCompleted": { "type": "string" },
+        "lastGateResult": { "type": "string", "enum": ["PASS", "CONDITIONAL", "FAIL"] }
+      }
+    }
+  }
+}

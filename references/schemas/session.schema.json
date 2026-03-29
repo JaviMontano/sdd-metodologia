@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Workspace Session",
+  "description": "Per-task workspace session metadata",
+  "type": "object",
+  "required": ["schemaVersion", "taskName", "created", "status"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+    "taskName": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "created": { "type": "string" },
+    "status": { "type": "string", "enum": ["active", "paused", "archived", "completed"] },
+    "inputCount": { "type": "integer", "minimum": 0 },
+    "ragCount": { "type": "integer", "minimum": 0 },
+    "lastActivity": { "type": "string" },
+    "feature": { "type": ["string", "null"] }
+  }
+}

@@ -65,6 +65,44 @@ if [[ ! -f "$RAG_INDEX" ]]; then
   echo '[]' > "$RAG_INDEX"
 fi
 
+# ── Safety guards (R-04, R-12) ──
+MAX_FILE_SIZE=$((10 * 1024 * 1024))  # 10MB limit
+
+validate_file() {
+  local file="$1"
+
+  # Resolve symlinks to prevent loops
+  local resolved
+  resolved=$(readlink -f "$file" 2>/dev/null || realpath "$file" 2>/dev/null || echo "$file")
+  if [[ ! -f "$resolved" ]]; then
+    echo -e "${RED}Error:${RESET} File not found or broken symlink: $file" >&2
+    return 1
+  fi
+
+  # Size check
+  local size
+  size=$(wc -c < "$resolved" 2>/dev/null | tr -d ' ')
+  if [[ "$size" -gt "$MAX_FILE_SIZE" ]]; then
+    echo -e "${RED}Error:${RESET} File too large (${size} bytes > 10MB limit): $file" >&2
+    echo -e "${MUTED}Tip: Split or summarize the file before capturing.${RESET}" >&2
+    return 1
+  fi
+
+  # Binary detection
+  local mime
+  mime=$(file -b --mime-type "$resolved" 2>/dev/null || echo "unknown")
+  case "$mime" in
+    application/octet-stream|application/x-mach-binary|application/x-executable)
+      echo -e "${MUTED}Binary file detected:${RESET} $file — capturing metadata only" >&2
+      echo "BINARY"
+      return 0
+      ;;
+  esac
+
+  echo "OK"
+  return 0
+}
+
 classify_file() {
   local file="$1"
   # Try system MIME detection first

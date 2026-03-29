@@ -30,8 +30,19 @@ if [[ -z "$ACTIVE" ]] && [[ -d "$SPECS_DIR" ]]; then
   ACTIVE=$(ls -1d "$SPECS_DIR"/[0-9][0-9][0-9]-*/ 2>/dev/null | sort -r | head -1 | xargs basename 2>/dev/null || echo "")
 fi
 
+# R-13: Fail fast if no active feature for phases that need one
 FP="$SPECS_DIR/$ACTIVE"
 ERRORS=0
+
+if [[ -z "$ACTIVE" ]] && echo "01 02 03 04 05 06 07 08 specify plan checklist testify tasks analyze implement issues" | grep -qw "$PHASE"; then
+  echo -e "  ${RED}✗${RESET} No active feature. Run ${GOLD}/sdd:feature create <name>${RESET} first."
+  ERRORS=$((ERRORS + 1))
+fi
+
+if [[ -n "$ACTIVE" ]] && [[ ! -d "$FP" ]] && echo "02 03 04 05 06 07 08" | grep -qw "$PHASE"; then
+  echo -e "  ${RED}✗${RESET} Feature directory missing: $FP"
+  ERRORS=$((ERRORS + 1))
+fi
 
 check() {
   local label="$1"
@@ -56,6 +67,7 @@ case "$PHASE" in
   02|plan)
     check "CONSTITUTION.md exists" "[[ -f '$PROJECT_PATH/CONSTITUTION.md' ]]"
     check "spec.md exists" "[[ -f '$FP/spec.md' ]]"
+    check "spec.md has FR-NNN" "grep -qE 'FR-[0-9]{3}' '$FP/spec.md' 2>/dev/null"
     ;;
   03|checklist)
     check "spec.md exists" "[[ -f '$FP/spec.md' ]]"
@@ -80,6 +92,7 @@ case "$PHASE" in
     check "spec.md exists" "[[ -f '$FP/spec.md' ]]"
     check "plan.md exists" "[[ -f '$FP/plan.md' ]]"
     check "tasks.md exists" "[[ -f '$FP/tasks.md' ]]"
+    check "tasks.md has T-NNN" "grep -qE 'T-[0-9]{3}' '$FP/tasks.md' 2>/dev/null"
     ;;
   08|issues)
     check "tasks.md exists" "[[ -f '$FP/tasks.md' ]]"

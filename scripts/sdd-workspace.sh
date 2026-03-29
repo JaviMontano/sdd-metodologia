@@ -14,7 +14,7 @@
 #
 # Limits:
 #   - One active workspace at a time (tracked via .specify/active-workspace)
-#   - Task names > 60 chars are truncated in the slug
+#   - Task names > 40 chars are truncated in the slug (date prefix=11, total<=51)
 #   - No nested workspace sessions (flat workspace/ directory)
 #   - Archive is soft-delete (status flag only); use rm -rf for hard delete
 #
@@ -52,7 +52,7 @@ slugify() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | \
     sed 's/[áàäâ]/a/g; s/[éèëê]/e/g; s/[íìïî]/i/g; s/[óòöô]/o/g; s/[úùüû]/u/g; s/ñ/n/g' | \
     sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g; s/^-//; s/-$//' | \
-    cut -c1-60
+    cut -c1-40
 }
 
 iso_date() { date +"%Y-%m-%d" 2>/dev/null || echo "unknown"; }
@@ -150,7 +150,7 @@ cmd_create() {
   if [ -d "$session_dir" ]; then
     echo -e "${GOLD}Workspace already exists:${RESET} $session_id"
     echo -e "${MUTED}Selecting as active workspace${RESET}"
-    echo "$session_id" > "$ACTIVE_WS_FILE"
+    echo "$session_id" > "$ACTIVE_WS_FILE.tmp" && mv "$ACTIVE_WS_FILE.tmp" "$ACTIVE_WS_FILE"
     exit 0
   fi
 
@@ -195,8 +195,8 @@ EOMD
   # Create .gitkeep in inputs/ so git tracks empty dir
   touch "$session_dir/inputs/.gitkeep"
 
-  # Set as active
-  echo "$session_id" > "$ACTIVE_WS_FILE"
+  # Set as active (atomic write)
+  echo "$session_id" > "$ACTIVE_WS_FILE.tmp" && mv "$ACTIVE_WS_FILE.tmp" "$ACTIVE_WS_FILE"
 
   echo -e "${GOLD}Workspace created:${RESET} ${WHITE}$session_id${RESET}"
   echo -e "${MUTED}  inputs/    — Drop raw inputs here (auto-indexed)${RESET}"
@@ -280,7 +280,7 @@ cmd_select() {
 
   # Exact match first
   if [ -d "$WORKSPACE_DIR/$name" ]; then
-    echo "$name" > "$ACTIVE_WS_FILE"
+    echo "$name" > "$ACTIVE_WS_FILE.tmp" && mv "$ACTIVE_WS_FILE.tmp" "$ACTIVE_WS_FILE"
     echo -e "${BLUE}Active workspace:${RESET} ${WHITE}$name${RESET}"
     exit 0
   fi
@@ -320,7 +320,7 @@ cmd_current() {
   elif [ ! -d "$WORKSPACE_DIR/$active" ]; then
     echo -e "${RED}Active workspace missing:${RESET} ${WHITE}$active${RESET}"
     echo -e "${MUTED}The folder was deleted. Run /sdd:workspace create or /sdd:workspace select.${RESET}"
-    echo "" > "$ACTIVE_WS_FILE"
+    echo "" > "$ACTIVE_WS_FILE.tmp" && mv "$ACTIVE_WS_FILE.tmp" "$ACTIVE_WS_FILE"
   else
     local counts
     counts=$(count_session "$WORKSPACE_DIR/$active")
@@ -357,7 +357,7 @@ cmd_set_status() {
   local active
   active=$(get_active)
   if [ "$active" = "$name" ]; then
-    echo "" > "$ACTIVE_WS_FILE"
+    echo "" > "$ACTIVE_WS_FILE.tmp" && mv "$ACTIVE_WS_FILE.tmp" "$ACTIVE_WS_FILE"
   fi
 
   local label=""

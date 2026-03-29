@@ -13,17 +13,21 @@ PROJECT_PATH="${4:-.}"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
 [ -z "$DESCRIPTION" ] && DESCRIPTION="Hook: $TYPE"
 
-# Append a JSON event to a log file (atomic write via tmp + rename).
-# Uses env vars to avoid shell interpolation in python.
+# Append a JSON event to a log file with file locking + atomic write.
+# Uses flock to prevent concurrent corruption (R-07).
+# Falls back to unlocked write if flock unavailable (macOS without coreutils).
 append_event() {
   local target="$1"
   [ -f "$target" ] || echo '{"events":[]}' > "$target"
-  SDD_LOG_FILE="$target" \
-  SDD_TIMESTAMP="$TIMESTAMP" \
-  SDD_TYPE="$TYPE" \
-  SDD_DESC="$DESCRIPTION" \
-  SDD_CMD="$COMMAND" \
-  python3 -c '
+  local lockfile="${target}.lock"
+
+  _do_append() {
+    SDD_LOG_FILE="$target" \
+    SDD_TIMESTAMP="$TIMESTAMP" \
+    SDD_TYPE="$TYPE" \
+    SDD_DESC="$DESCRIPTION" \
+    SDD_CMD="$COMMAND" \
+    python3 -c '
 import json, os
 f = os.environ["SDD_LOG_FILE"]
 try:
@@ -39,7 +43,18 @@ data["events"] = data["events"][-200:]
 tmp = f + ".tmp"
 with open(tmp, "w") as fh: json.dump(data, fh, indent=2)
 os.rename(tmp, f)
-' 2>/dev/null || true
+' 2>/dev/null
+  }
+
+  # Try flock (non-blocking, with 1 retry)
+  if command -v flock &>/dev/null; then
+    flock -w 1 "$lockfile" bash -c "$(declare -f _do_append); _do_append" 2>/dev/null || \
+    flock -w 1 "$lockfile" bash -c "$(declare -f _do_append); _do_append" 2>/dev/null || \
+    _do_append 2>/dev/null || true
+  else
+    # macOS fallback: no flock, direct write (atomic via rename)
+    _do_append 2>/dev/null || true
+  fi
 }
 
 # Global log (always)

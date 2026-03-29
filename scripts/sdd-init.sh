@@ -32,8 +32,11 @@ echo ""
 UPSTREAM_INIT="$ROOT_DIR/.claude/skills/iikit-core/scripts/bash/init-project.sh"
 if [[ -x "$UPSTREAM_INIT" ]]; then
   echo -e "${BLUE}Step 1:${RESET} Running upstream IIC/kit init..."
-  bash "$UPSTREAM_INIT" --json "$PROJECT_PATH" 2>/dev/null || true
-  echo -e "  ${MUTED}Upstream init complete${RESET}"
+  if bash "$UPSTREAM_INIT" --json "$PROJECT_PATH" 2>&1; then
+    echo -e "  ${MUTED}Upstream init complete${RESET}"
+  else
+    echo -e "  ${RED}Upstream init failed — continuing in standalone mode${RESET}"
+  fi
 else
   echo -e "${MUTED}Step 1: Upstream init-project.sh not found (standalone mode)${RESET}"
 fi
@@ -64,7 +67,13 @@ CTXEOF
     TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   fi
   sed -i '' "s/TIMESTAMP/$TS/" "$SPECIFY_DIR/context.json" 2>/dev/null || sed -i "s/TIMESTAMP/$TS/" "$SPECIFY_DIR/context.json"
-  echo -e "${BLUE}Step 2:${RESET} Created .specify/context.json"
+  # Post-creation validation (R-08)
+  if python3 -c "import json; json.load(open('$SPECIFY_DIR/context.json'))" 2>/dev/null; then
+    echo -e "${BLUE}Step 2:${RESET} Created .specify/context.json ${GOLD}✓${RESET}"
+  else
+    rm -f "$SPECIFY_DIR/context.json"
+    echo -e "${RED}Step 2: context.json creation failed — invalid JSON. Re-run /sdd:init${RESET}"
+  fi
 else
   echo -e "${MUTED}Step 2: .specify/context.json already exists${RESET}"
 fi
