@@ -245,21 +245,47 @@ function buildGraph(projectPath) {
     }
   }
 
-  // 5. Compute orphans
+  // 5. Compute orphans — bidirectional validation (R-05 BMAD)
   const nodeIds = new Set(allNodes.map(n => n.id));
-  const edgeFroms = new Set(allEdges.map(e => e.from));
-  const edgeTos = new Set(allEdges.map(e => e.to));
 
+  // Forward: requirements without tests
   const untestedReqs = allNodes
     .filter(n => n.type === 'requirement' && !allEdges.some(e => e.from === n.id && e.type === 'verified_by'))
     .map(n => n.id);
 
+  // Forward: principles without any governed requirements
   const untracedPrinciples = principles
     .filter(p => !allEdges.some(e => e.from === p.id))
     .map(p => p.id);
 
+  // Forward: tasks not linked to any requirement
   const unlinkedTasks = allNodes
     .filter(n => n.type === 'task' && !allEdges.some(e => e.to === n.id))
+    .map(n => n.id);
+
+  // Backward: edges referencing non-existent nodes (broken refs)
+  const brokenRefs = allEdges
+    .filter(e => !nodeIds.has(e.from) || !nodeIds.has(e.to))
+    .map(e => ({
+      edge: `${e.from} → ${e.to}`,
+      type: e.type,
+      missing: !nodeIds.has(e.from) ? e.from : e.to
+    }));
+
+  // Backward: tasks referencing FR-NNN that doesn't exist in any spec
+  const reqIds = new Set(allNodes.filter(n => n.type === 'requirement').map(n => n.id));
+  const tasksWithBrokenFR = allEdges
+    .filter(e => e.type === 'implemented_by' && !reqIds.has(e.from))
+    .map(e => ({ task: e.to, missingFR: e.from }));
+
+  // Backward: tests referencing FR-NNN that doesn't exist
+  const testsWithBrokenFR = allEdges
+    .filter(e => e.type === 'verified_by' && !reqIds.has(e.from))
+    .map(e => ({ test: e.to, missingFR: e.from }));
+
+  // Requirements without any task implementing them
+  const unimplementedReqs = allNodes
+    .filter(n => n.type === 'requirement' && !allEdges.some(e => e.from === n.id && e.type === 'implemented_by'))
     .map(n => n.id);
 
   // 6. Stats
@@ -273,7 +299,11 @@ function buildGraph(projectPath) {
     orphans: {
       untested_requirements: untestedReqs,
       untraced_principles: untracedPrinciples,
-      unlinked_tasks: unlinkedTasks
+      unlinked_tasks: unlinkedTasks,
+      unimplemented_requirements: unimplementedReqs,
+      broken_refs: brokenRefs,
+      tasks_with_broken_fr: tasksWithBrokenFR,
+      tests_with_broken_fr: testsWithBrokenFR
     },
     stats: {
       nodes: allNodes.length,
@@ -312,7 +342,8 @@ fs.writeFileSync(target, JSON.stringify(graph, null, 2));
 // Summary
 const o = graph.orphans;
 const s = graph.stats;
-console.error(`Knowledge Graph: ${s.nodes} nodes, ${s.edges} edges, ${o.untested_requirements.length + o.untraced_principles.length + o.unlinked_tasks.length} orphans, coverage: ${Math.round(s.coverage * 100)}%`);
+const orphanTotal = o.untested_requirements.length + o.untraced_principles.length + o.unlinked_tasks.length + o.unimplemented_requirements.length + o.broken_refs.length;
+console.error(`Knowledge Graph: ${s.nodes} nodes, ${s.edges} edges, ${orphanTotal} orphans (${o.broken_refs.length} broken refs), coverage: ${Math.round(s.coverage * 100)}%`);
 
 if (jsonMode) {
   console.log(JSON.stringify(graph, null, 2));

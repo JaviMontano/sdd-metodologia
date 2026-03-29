@@ -297,8 +297,21 @@ const avgProgress = features.length > 0
   ? Math.round(features.reduce((sum, f) => sum + f.progress, 0) / features.length) : 0;
 
 // ── Assemble ──
+// ── Empty state flags (R-10) ──
+const isEmpty = {
+  features: features.length === 0,
+  constitution: principles.length === 0,
+  workspace: workspaceSessions.length === 0 && workspaceTree.length === 0,
+  tests: features.every(f => f.testCount === 0),
+  tasks: features.every(f => f.totalTasks === 0),
+  logs: (!sessionLog || sessionLog.length === 0) && changelogEntries.length === 0,
+  graph: !kgraph || (kgraph.nodes || []).length === 0,
+  backlog: backlog.length === 0,
+};
+
 const data = {
   isDemo: false, // Real project data — demo badge hidden
+  isEmpty,
   generatedAt: new Date().toISOString(),
   project: { name: path.basename(path.resolve(projectPath)) },
   premise: hasPremise ? { name: path.basename(path.resolve(projectPath)) } : null,
@@ -327,7 +340,8 @@ const data = {
   knowledgeGraph: kgraph ? {
     nodes: (kgraph.nodes || []).length,
     edges: (kgraph.edges || []).length,
-    orphans: (kgraph.orphans || []).length,
+    orphans: kgraph.orphans || {},
+    stats: kgraph.stats || {},
   } : null,
   backlog,
   qaplan: qaplan || null,

@@ -1,7 +1,17 @@
-/* SDD ALM Data — Generated 2026-03-25T20:01:07.016Z */
+/* SDD ALM Data — Generated 2026-03-29T12:20:29.498Z */
 window.DASHBOARD_DATA = {
   "isDemo": false,
-  "generatedAt": "2026-03-25T20:01:07.016Z",
+  "isEmpty": {
+    "features": false,
+    "constitution": false,
+    "workspace": false,
+    "tests": true,
+    "tasks": false,
+    "logs": false,
+    "graph": false,
+    "backlog": true
+  },
+  "generatedAt": "2026-03-29T12:20:29.498Z",
   "project": {
     "name": "sdd-metodologia"
   },
@@ -531,13 +541,6 @@ window.DASHBOARD_DATA = {
         "type": "dir",
         "children": [
           {
-            "name": "active-workspace",
-            "path": ".specify/active-workspace",
-            "type": "file",
-            "size": 1,
-            "mtime": "2026-03-25T20:01:00.146Z"
-          },
-          {
             "name": "context.json",
             "path": ".specify/context.json",
             "type": "file",
@@ -550,6 +553,20 @@ window.DASHBOARD_DATA = {
             "type": "file",
             "size": 123,
             "mtime": "2026-03-22T19:22:28.479Z"
+          },
+          {
+            "name": "gate-results.json",
+            "path": ".specify/gate-results.json",
+            "type": "file",
+            "size": 386,
+            "mtime": "2026-03-29T12:15:25.153Z"
+          },
+          {
+            "name": "knowledge-graph.json",
+            "path": ".specify/knowledge-graph.json",
+            "type": "file",
+            "size": 29225,
+            "mtime": "2026-03-29T12:18:44.087Z"
           },
           {
             "name": "score-history.json",
@@ -569,8 +586,8 @@ window.DASHBOARD_DATA = {
             "name": "session-log.json",
             "path": ".specify/session-log.json",
             "type": "file",
-            "size": 6229,
-            "mtime": "2026-03-25T20:00:36.897Z"
+            "size": 9205,
+            "mtime": "2026-03-26T02:07:11.462Z"
           },
           {
             "name": "shared",
@@ -581,77 +598,8 @@ window.DASHBOARD_DATA = {
                 "name": "data.js",
                 "path": ".specify/shared/data.js",
                 "type": "file",
-                "size": 33312,
-                "mtime": "2026-03-25T19:51:53.808Z"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "workspace",
-        "path": "workspace",
-        "type": "dir",
-        "children": [
-          {
-            "name": "2026-03-25-excellence-loop-final",
-            "path": "workspace/2026-03-25-excellence-loop-final",
-            "type": "dir",
-            "children": [
-              {
-                "name": "inputs",
-                "path": "workspace/2026-03-25-excellence-loop-final/inputs",
-                "type": "dir",
-                "children": []
-              },
-              {
-                "name": "logs",
-                "path": "workspace/2026-03-25-excellence-loop-final/logs",
-                "type": "dir",
-                "children": [
-                  {
-                    "name": "session-log.json",
-                    "path": "workspace/2026-03-25-excellence-loop-final/logs/session-log.json",
-                    "type": "file",
-                    "size": 142,
-                    "mtime": "2026-03-25T20:00:36.925Z"
-                  }
-                ]
-              },
-              {
-                "name": "rag",
-                "path": "workspace/2026-03-25-excellence-loop-final/rag",
-                "type": "dir",
-                "children": [
-                  {
-                    "name": "rag-memory-of-readme.md",
-                    "path": "workspace/2026-03-25-excellence-loop-final/rag/rag-memory-of-readme.md",
-                    "type": "file",
-                    "size": 6236,
-                    "mtime": "2026-03-25T20:00:36.809Z"
-                  }
-                ]
-              },
-              {
-                "name": "rag-index.json",
-                "path": "workspace/2026-03-25-excellence-loop-final/rag-index.json",
-                "type": "file",
-                "size": 208,
-                "mtime": "2026-03-25T20:00:36.864Z"
-              },
-              {
-                "name": "session.json",
-                "path": "workspace/2026-03-25-excellence-loop-final/session.json",
-                "type": "file",
-                "size": 288,
-                "mtime": "2026-03-25T20:01:00.140Z"
-              },
-              {
-                "name": "tasklog.md",
-                "path": "workspace/2026-03-25-excellence-loop-final/tasklog.md",
-                "type": "file",
-                "size": 220,
-                "mtime": "2026-03-25T20:00:27.788Z"
+                "size": 33243,
+                "mtime": "2026-03-25T20:01:07.017Z"
               }
             ]
           }
@@ -673,88 +621,132 @@ window.DASHBOARD_DATA = {
       }
     ],
     "ragMemories": [],
-    "sessions": [
-      {
-        "id": "2026-03-25-excellence-loop-final",
-        "name": "excellence loop final",
-        "created": "2026-03-25T20:00:27Z",
-        "status": "done",
-        "lastActivity": "2026-03-25T20:01:00Z",
-        "inputCount": 0,
-        "ragCount": 1,
-        "tasklogEntries": 0,
-        "ragFiles": [
-          {
-            "filename": "rag-memory-of-readme.md",
-            "type": "text",
-            "abstract": "> text file (143 lines): > **by metodolog*IA***",
-            "size": 6236,
-            "mtime": "2026-03-25T20:00:36.809Z"
-          }
-        ],
-        "tree": [
-          {
-            "name": "inputs",
-            "path": "workspace/2026-03-25-excellence-loop-final/inputs",
-            "type": "dir",
-            "children": []
-          },
-          {
-            "name": "logs",
-            "path": "workspace/2026-03-25-excellence-loop-final/logs",
-            "type": "dir",
-            "children": [
-              {
-                "name": "session-log.json",
-                "path": "workspace/2026-03-25-excellence-loop-final/logs/session-log.json",
-                "type": "file",
-                "size": 142,
-                "mtime": "2026-03-25T20:00:36.925Z"
-              }
-            ]
-          },
-          {
-            "name": "rag",
-            "path": "workspace/2026-03-25-excellence-loop-final/rag",
-            "type": "dir",
-            "children": [
-              {
-                "name": "rag-memory-of-readme.md",
-                "path": "workspace/2026-03-25-excellence-loop-final/rag/rag-memory-of-readme.md",
-                "type": "file",
-                "size": 6236,
-                "mtime": "2026-03-25T20:00:36.809Z"
-              }
-            ]
-          },
-          {
-            "name": "rag-index.json",
-            "path": "workspace/2026-03-25-excellence-loop-final/rag-index.json",
-            "type": "file",
-            "size": 208,
-            "mtime": "2026-03-25T20:00:36.864Z"
-          },
-          {
-            "name": "session.json",
-            "path": "workspace/2026-03-25-excellence-loop-final/session.json",
-            "type": "file",
-            "size": 288,
-            "mtime": "2026-03-25T20:01:00.140Z"
-          },
-          {
-            "name": "tasklog.md",
-            "path": "workspace/2026-03-25-excellence-loop-final/tasklog.md",
-            "type": "file",
-            "size": 220,
-            "mtime": "2026-03-25T20:00:27.788Z"
-          }
-        ]
-      }
-    ],
+    "sessions": [],
     "activeSession": null,
-    "fileCount": 38
+    "fileCount": 29
   },
-  "knowledgeGraph": null,
+  "knowledgeGraph": {
+    "nodes": 85,
+    "edges": 0,
+    "orphans": {
+      "untested_requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-013",
+        "FR-014",
+        "FR-015",
+        "FR-016",
+        "FR-017"
+      ],
+      "untraced_principles": [
+        "P-I",
+        "P-II",
+        "P-III",
+        "P-IV",
+        "P-V",
+        "P-VI",
+        "P-VII",
+        "P-VIII"
+      ],
+      "unlinked_tasks": [
+        "T-auto-031-bdd-verification-chain-1",
+        "T-auto-031-bdd-verification-chain-2",
+        "T-auto-031-bdd-verification-chain-3",
+        "T-auto-031-bdd-verification-chain-4",
+        "T-auto-031-bdd-verification-chain-5",
+        "T-auto-031-bdd-verification-chain-6",
+        "T-auto-031-bdd-verification-chain-7",
+        "T-auto-031-bdd-verification-chain-8",
+        "T-auto-031-bdd-verification-chain-9",
+        "T-auto-031-bdd-verification-chain-10",
+        "T-auto-031-bdd-verification-chain-11",
+        "T-auto-031-bdd-verification-chain-12",
+        "T-auto-031-bdd-verification-chain-13",
+        "T-auto-031-bdd-verification-chain-14",
+        "T-auto-031-bdd-verification-chain-15",
+        "T-auto-031-bdd-verification-chain-16",
+        "T-auto-031-bdd-verification-chain-17",
+        "T-auto-031-bdd-verification-chain-18",
+        "T-auto-031-bdd-verification-chain-19",
+        "T-auto-031-bdd-verification-chain-20",
+        "T-auto-031-bdd-verification-chain-21",
+        "T-auto-031-bdd-verification-chain-22",
+        "T-auto-031-bdd-verification-chain-23",
+        "T-auto-031-bdd-verification-chain-24",
+        "T-auto-031-bdd-verification-chain-25",
+        "T-auto-031-bdd-verification-chain-26",
+        "T-auto-031-bdd-verification-chain-27",
+        "T-auto-031-bdd-verification-chain-28",
+        "T-auto-031-bdd-verification-chain-29",
+        "T-auto-031-bdd-verification-chain-30",
+        "T-auto-031-bdd-verification-chain-31",
+        "T-auto-031-bdd-verification-chain-32",
+        "T-auto-031-bdd-verification-chain-33",
+        "T-auto-031-bdd-verification-chain-34",
+        "T-auto-031-bdd-verification-chain-35",
+        "T-auto-031-bdd-verification-chain-36",
+        "T-auto-031-bdd-verification-chain-37",
+        "T-auto-031-bdd-verification-chain-38",
+        "T-auto-031-bdd-verification-chain-39",
+        "T-auto-031-bdd-verification-chain-40",
+        "T-auto-031-bdd-verification-chain-41",
+        "T-auto-031-bdd-verification-chain-42",
+        "T-auto-031-bdd-verification-chain-43",
+        "T-auto-031-bdd-verification-chain-44",
+        "T-auto-031-bdd-verification-chain-45",
+        "T-auto-031-bdd-verification-chain-46",
+        "T-auto-031-bdd-verification-chain-47",
+        "T-auto-031-bdd-verification-chain-48",
+        "T-auto-031-bdd-verification-chain-49",
+        "T-auto-031-bdd-verification-chain-50",
+        "T-auto-031-bdd-verification-chain-51",
+        "T-auto-031-bdd-verification-chain-52",
+        "T-auto-031-bdd-verification-chain-53"
+      ],
+      "unimplemented_requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-013",
+        "FR-014",
+        "FR-015",
+        "FR-016",
+        "FR-017"
+      ],
+      "broken_refs": [],
+      "tasks_with_broken_fr": [],
+      "tests_with_broken_fr": []
+    },
+    "stats": {
+      "nodes": 85,
+      "edges": 0,
+      "coverage": 0,
+      "principlesCovered": 0,
+      "principlesTotal": 8,
+      "requirementsTested": 0,
+      "requirementsTotal": 17,
+      "features": 1
+    }
+  },
   "backlog": [],
   "qaplan": null,
   "changelog": [],
@@ -771,104 +763,104 @@ window.DASHBOARD_DATA = {
   },
   "sessionLog": [
     {
-      "timestamp": "2026-03-25T19:47:36Z",
+      "timestamp": "2026-03-26T01:41:32Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:48:06Z",
+      "timestamp": "2026-03-26T01:41:40Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:48:13Z",
+      "timestamp": "2026-03-26T01:41:40Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:48:25Z",
+      "timestamp": "2026-03-26T01:41:47Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:48:52Z",
+      "timestamp": "2026-03-26T01:41:55Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:48:57Z",
+      "timestamp": "2026-03-26T01:42:12Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:49:43Z",
+      "timestamp": "2026-03-26T01:42:20Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:50:35Z",
+      "timestamp": "2026-03-26T01:42:20Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:50:51Z",
+      "timestamp": "2026-03-26T01:42:31Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:56:32Z",
+      "timestamp": "2026-03-26T01:42:47Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:56:42Z",
+      "timestamp": "2026-03-26T01:42:47Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:56:55Z",
+      "timestamp": "2026-03-26T02:05:27Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:57:02Z",
+      "timestamp": "2026-03-26T02:05:59Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:57:14Z",
+      "timestamp": "2026-03-26T02:06:08Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:58:14Z",
+      "timestamp": "2026-03-26T02:06:14Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:58:52Z",
+      "timestamp": "2026-03-26T02:06:21Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:59:05Z",
+      "timestamp": "2026-03-26T02:06:27Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:59:19Z",
+      "timestamp": "2026-03-26T02:06:39Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T19:59:33Z",
+      "timestamp": "2026-03-26T02:07:00Z",
       "type": "post-write",
       "description": "Hook: post-write"
     },
     {
-      "timestamp": "2026-03-25T20:00:36Z",
-      "type": "test",
-      "description": "Excellence loop test"
+      "timestamp": "2026-03-26T02:07:11Z",
+      "type": "post-write",
+      "description": "Hook: post-write"
     }
   ],
   "smartNav": {

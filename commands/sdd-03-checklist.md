@@ -7,5 +7,14 @@ user-invocable: true
 
 Generate domain-specific quality checklists validating requirements completeness. Gates before implementation.
 
+## Gate G1 (Mandatory — hard stop)
+
+Before execution, run the gate check:
+```bash
+bash scripts/sdd-gate-check.sh 03 "$PROJECT_PATH"
+```
+If result is FAIL: **HALT**. Plan must have architecture + data model sections.
+If result is CONDITIONAL: warn but proceed.
+
 ## Execution
 Run the skill at `.claude/skills/iikit-03-checklist/SKILL.md` with the user's input.
