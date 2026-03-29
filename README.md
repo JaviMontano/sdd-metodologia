@@ -2,12 +2,13 @@
 
 > **by metodolog*IA***
 
-[![Version](https://img.shields.io/badge/version-3.4.0-FFD700?style=flat-square&labelColor=122562)](https://github.com/JaviMontano/sdd-metodologia)
+[![Version](https://img.shields.io/badge/version-3.5.0-FFD700?style=flat-square&labelColor=122562)](https://github.com/JaviMontano/sdd-metodologia)
 [![License](https://img.shields.io/badge/license-GPL--3.0-137DC5?style=flat-square&labelColor=122562)](LICENSE)
 [![Commands](https://img.shields.io/badge/commands-39-FFD700?style=flat-square&labelColor=122562)]()
+[![Scripts](https://img.shields.io/badge/scripts-27-137DC5?style=flat-square&labelColor=122562)]()
 [![Upstream](https://img.shields.io/badge/upstream-IIC%2Fkit-137DC5?style=flat-square&labelColor=122562)](https://github.com/intent-integrity-chain/kit)
 
-Desarrollo de software dirigido por especificación con verificación BDD criptográfica, inteligencia ambiental y branding Neo-Swiss de MetodologIA. SDD conduce el desarrollo desde principios de gobernanza hasta issues en GitHub — o vitaminiza tu proceso operativo buscando, creando y desplegando habilidades.
+Desarrollo de software dirigido por especificación con puertas de calidad mandatorias, hashing criptográfico de aserciones BDD, validación de esquemas, inteligencia ambiental y estética Neo-Swiss de MetodologIA. SDD conduce el desarrollo desde principios de gobernanza hasta issues en GitHub — o vitaminiza tu proceso operativo buscando, creando y desplegando habilidades.
 
 ---
 
@@ -22,26 +23,29 @@ Desarrollo de software dirigido por especificación con verificación BDD cripto
 
 ## Características
 
-### Pipeline de 9 Fases
-Constitución → Especificar → Planificar → Checklist → Testificar → Tareas → Analizar → Implementar → Issues. Las puertas de calidad G1-G3 detienen el avance ante violaciones. Nunca se saltan fases.
+### Pipeline de 9 Fases con Puertas Mandatorias
+Constitución → Especificar → Planificar → Checklist → Testificar → Tareas → Analizar → Implementar → Issues. Tres puertas de calidad (G1, G2, G3) **detienen el pipeline** ante violaciones — no son advertencias. Cada fase actualiza `context.json` con `completedPhases[]` para prevenir saltos.
+
+### Hashing Criptográfico de Aserciones
+SHA-256 sobre bloques de escenarios en archivos `.feature`. Se genera en la Fase 4 (Testificar) y se verifica en la Fase 7 (Implementar). Si un `.feature` se modifica después del hashing, la puerta G3 detecta la manipulación y detiene el pipeline.
+
+### Validación de Esquemas
+Esquemas JSON para `context.json`, `session.json` y `gate-results.json`. Validadores de contenido para `spec.md` (patrones FR-NNN), `plan.md` (secciones de modelo de datos y arquitectura), `tasks.md` (identificadores T-NNN y dependencias).
 
 ### Heartbeat Ambiental
-Inteligencia por prompt vía hook `UserPromptSubmit`. Se ejecuta en < 100ms en cada prompt. Detecta artefactos obsoletos, archivos faltantes y regresión de salud — silencioso cuando todo está bien.
+Inteligencia por prompt vía hook `UserPromptSubmit`. Se ejecuta en < 100ms en cada prompt. Escaneo por `stat` limitado a 50 archivos. Detecta artefactos obsoletos, archivos faltantes y regresión de salud — silencioso cuando todo está bien.
 
-### Grafo de Conocimiento
-Trazabilidad completa: Principios de Constitución → Requisitos (FR) → Especificaciones de prueba (TS) → Tareas (T). Detecta huérfanos automáticamente. Se renderiza como SVG de fuerza dirigida en el dashboard.
+### Grafo de Conocimiento con Detección de Huérfanos
+Trazabilidad bidireccional: Principios → Requisitos (FR) → Pruebas (TS) → Tareas (T). Detecta huérfanos en ambas direcciones: requisitos sin pruebas, tareas con FR inexistentes, pruebas con FR rotos. Se renderiza como SVG de fuerza dirigida en el dashboard.
 
 ### ALM — Application Lifecycle Manager
-ALM visual como micro-frontend: 10 páginas interconectadas que rastrean el pipeline SDD completo para cualquier proyecto. Medidor de salud, tablero de pipeline, mapa de historias, trazabilidad de pruebas, sparklines de insights, explorador de workspace con sesiones por tarea. No es específico de dominio — funciona en cualquier codebase donde SDD esté inicializado.
+ALM visual como micro-frontend: 10 páginas interconectadas que rastrean el pipeline SDD completo. Medidor de salud, tablero de pipeline, mapa de historias, trazabilidad de pruebas, sparklines de insights, explorador de workspace con sesiones por tarea. Funciona en cualquier proyecto donde SDD esté inicializado.
 
 ### Sesiones de Workspace por Tarea
-Cada tarea crea una carpeta fechada (`workspace/yyyy-mm-dd-nombre/`) con inputs, archivos RAG, logs y tasklog. El workspace activo enruta automáticamente las capturas RAG y los logs de sesión. Se integra con el dashboard ALM.
+Cada tarea crea una carpeta fechada (`workspace/yyyy-mm-dd-nombre/`) con inputs, archivos RAG, logs y tasklog. El workspace activo enruta automáticamente las capturas RAG y los logs de sesión. Escrituras atómicas (patrón `mv`) y concurrencia por `flock`.
 
-### Memoria RAG
-Los inputs de sesión se capturan como `rag-memory-of-{slug}.md` con detección automática de tipo MIME, extracción de estructura HTML, resumen + conclusiones clave + contenido completo. Indexado en JSON. Enrutamiento consciente del workspace activo.
-
-### Tour de Onboarding
-Recorrido interactivo de 8 pasos: pipeline, dashboard, heartbeat, grafo de conocimiento, comandos. Modales oscuros de glassmorfismo Neo-Swiss.
+### Memoria RAG con Guardas de Seguridad
+Los inputs se capturan como `rag-memory-of-{slug}.md` con detección MIME, límite de 10 MB, resolución de symlinks y detección de archivos binarios. Enrutamiento consciente del workspace activo.
 
 ---
 
@@ -52,13 +56,13 @@ Recorrido interactivo de 8 pasos: pipeline, dashboard, heartbeat, grafo de conoc
 | Init | `/sdd:core` | `/sdd:init` | — |
 | 0 | `/sdd:00-constitution` | — | — |
 | 1 | `/sdd:01-specify` | `/sdd:spec` | — |
-| 2 | `/sdd:02-plan` | `/sdd:plan` | **G1** |
-| 3 | `/sdd:03-checklist` | `/sdd:check` | — |
+| 2 | `/sdd:02-plan` | `/sdd:plan` | — |
+| 3 | `/sdd:03-checklist` | `/sdd:check` | **G1** |
 | 4 | `/sdd:04-testify` | `/sdd:test` | — |
-| 5 | `/sdd:05-tasks` | `/sdd:tasks` | **G2** |
+| 5 | `/sdd:05-tasks` | `/sdd:tasks` | — |
 | 6 | `/sdd:06-analyze` | `/sdd:analyze` | — |
-| 7 | `/sdd:07-implement` | `/sdd:impl` | **G3** |
-| 8 | `/sdd:08-issues` | `/sdd:issues` | — |
+| 7 | `/sdd:07-implement` | `/sdd:impl` | **G2** |
+| 8 | `/sdd:08-issues` | `/sdd:issues` | **G3** |
 
 **Utilidades:** `/sdd:clarify` `/sdd:bugfix` `/sdd:feature` `/sdd:workspace` `/sdd:verify` `/sdd:hooks` `/sdd:sync`
 **Inteligencia:** `/sdd:sentinel` `/sdd:insights` `/sdd:graph` `/sdd:qa` `/sdd:dashboard`
@@ -79,33 +83,32 @@ git clone https://github.com/JaviMontano/sdd-metodologia.git ~/.claude/plugins/s
 
 ```
 sdd-metodologia/
-├── .claude-plugin/plugin.json     # Manifiesto v3.4.0
+├── .claude-plugin/plugin.json     # Manifiesto v3.5.0
 ├── AGENTS.md (→ CLAUDE.md)        # Orquestador
 ├── FORK.md                        # Documentación del fork mejorado
 ├── CONSTITUTION.md                # Gobernanza del framework
-├── HEARTBEAT.md                   # Especificación del sentinel (percibir-decidir-actuar)
-├── CLARIFICATIONS.md              # Registro de decisiones
 ├── commands/                      # 39 definiciones de comandos
 ├── scripts/
+│   ├── sdd-gate-check.sh          # Puertas mandatorias G1/G2/G3
+│   ├── sdd-phase-complete.sh      # Actualizador de estado del pipeline
+│   ├── sdd-validate-artifact.sh   # Validación de esquemas y contenido
+│   ├── sdd-assertion-hash.sh      # Hashing SHA-256 de aserciones BDD
 │   ├── sdd-heartbeat-lite.sh      # Heartbeat por prompt (< 100ms)
 │   ├── sdd-workspace.sh           # Sesiones de workspace por tarea
-│   ├── sdd-knowledge-graph.js     # Constructor del grafo de trazabilidad
+│   ├── sdd-knowledge-graph.js     # Grafo de trazabilidad bidireccional
 │   ├── sdd-sentinel.sh            # Ciclo completo del sentinel
-│   ├── sdd-insights.js            # Puntuaciones de salud + recomendaciones
-│   ├── sdd-seed-demo.sh           # Generador de demo
-│   ├── sdd-rag-capture.sh         # Memoria RAG con detección MIME
-│   ├── sdd-session-log.sh         # Log de sesión con dual-write
-│   ├── sdd-tour.html              # Tour de onboarding
-│   ├── generate-dashboard.js      # Generador del dashboard
-│   ├── command-center/            # Micro-frontend (10 páginas)
-│   └── ...                        # Scripts de utilidad
+│   ├── sdd-insights.js            # Puntuaciones de salud
+│   ├── sdd-rag-capture.sh         # Memoria RAG (10MB, symlink, binario)
+│   ├── sdd-session-log.sh         # Log con concurrencia flock
+│   ├── command-center/            # Micro-frontend ALM (10 páginas)
+│   └── ...                        # 15 scripts adicionales
+├── references/
+│   ├── design-tokens.json         # Tokens Neo-Swiss v2.0 (paleta + voz)
+│   ├── schemas/                   # Esquemas JSON (context, session, gates)
+│   └── data-schemas.md            # Esquemas de datos
 ├── .claude/skills/                # 12 skills IIKit
 ├── hooks/hooks.json               # 4 eventos de hook
-├── references/
-│   ├── design-tokens.json         # Tokens de marca Neo-Swiss
-│   ├── sequence-diagrams.md       # 7 diagramas Mermaid
-│   └── data-schemas.md            # Esquemas JSON
-└── landing.html                   # Página de aterrizaje con marca
+└── landing.html                   # Página de aterrizaje
 ```
 
 ---
@@ -145,9 +148,9 @@ sdd-metodologia/
 - **Co-creadores**: Javier Montaño & Katherin Oquendo
 - **Upstream**: [Intent Integrity Chain / Kit](https://github.com/intent-integrity-chain/kit) (MIT)
 - **Marca**: MetodologIA (GPL-3.0)
-- **Estética**: Neo-Swiss Clean
+- **Estética**: Neo-Swiss Clean and Soft Explainer
 - **Potenciado por**: Claude Code, Antigravity & Agente Pristino
 
 *Construido con mucho amor.*
 
-*SDD v3.4 · Spec Driven Development · by metodologIA*
+*SDD v3.5 · Spec Driven Development · by metodologIA*
