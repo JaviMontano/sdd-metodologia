@@ -2,7 +2,7 @@
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 skills · 9 pipeline phases · 39 commands · 27 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
+> 12 skills · 9 pipeline phases · 39 commands · 29 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -167,7 +167,7 @@ workspace/
 - Heartbeat nudges if no workspace is active on SDD projects
 - Dashboard Workspace page shows session cards with status and stats
 
-## Scripts (27)
+## Scripts (29)
 
 | Script | Purpose |
 |--------|---------|
@@ -193,6 +193,8 @@ workspace/
 | `generate-dashboard.js` | Single-file dashboard HTML generator (legacy) |
 | `generate-command-center-data.js` | Multi-page ALM data generator (`shared/data.js`) |
 | `sdd-qa-plan.js` | QA Plan generator (QA-PLAN.md + qa-plan.json) |
+| `sdd-quick-flow-triage.sh` | **Quick Flow scope triage** (BMAD AP-06 guard) |
+| `sdd-dod-check.sh` | **Definition of Done** enforcement (8-phase + request DoD) |
 | `sdd-demo-serve.sh` | Serve demo data with npx serve for local preview |
 | `brand-overlay.sh` | MetodologIA branding overlay |
 | `brand-html-patch.js` | HTML structural patches |

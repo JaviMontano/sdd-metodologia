@@ -1,6 +1,10 @@
 ---
-description: "SDD Phase 2 — Technical Specs — architecture, data model, API contracts, technology decisions [CRITICAL GATE]"
+description: "SDD Phase 2 — Technical Specs — architecture, data model, API contracts, technology decisions"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [spec.md, PREMISE.md]
+  never: [tasks.md, "*.feature", analysis.md]
 ---
 
 # /sdd:02-plan

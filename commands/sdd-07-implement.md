@@ -1,6 +1,10 @@
 ---
-description: "SDD Phase 7 — Deliver — iterative TDD implementation (red/green/refactor per task) from task list [CRITICAL GATE]"
+description: "SDD Phase 7 — Deliver — iterative TDD implementation (red/green/refactor per task) [GATE G2]"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [tasks.md, plan.md, "*.feature"]
+  never: [spec.md, analysis.md]
 ---
 
 # /sdd:07-implement

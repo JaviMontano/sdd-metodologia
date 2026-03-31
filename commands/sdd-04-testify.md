@@ -1,6 +1,10 @@
 ---
 description: "SDD Phase 4 — BDD Gherkin test specs with assertion hashing"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [spec.md, plan.md, checklist.md]
+  never: [tasks.md, analysis.md]
 ---
 
 # /sdd:04-testify

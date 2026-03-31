@@ -1,6 +1,10 @@
 ---
 description: "SDD Phase 0 — Define project governance principles and coding standards"
 user-invocable: true
+context-scope:
+  always: [.specify/context.json]
+  load: [PREMISE.md]
+  never: [spec.md, plan.md, tasks.md, "*.feature"]
 ---
 
 # /sdd:00-constitution

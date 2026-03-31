@@ -1,6 +1,10 @@
 ---
-description: "SDD Phase 8 — Ship — export to GitHub Issues, deploy, close loop"
+description: "SDD Phase 8 — Ship — export to GitHub Issues, deploy, close loop [GATE G3]"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [tasks.md]
+  never: [spec.md, plan.md, "*.feature", analysis.md]
 ---
 
 # /sdd:08-issues

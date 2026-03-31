@@ -1,6 +1,10 @@
 ---
 description: "SDD Phase 1 — User Specs — user stories, functional requirements (FR), success criteria (SC) from natural language"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [PREMISE.md]
+  never: [plan.md, tasks.md, "*.feature", analysis.md]
 ---
 
 # /sdd:01-specify

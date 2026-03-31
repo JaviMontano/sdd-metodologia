@@ -1,0 +1,61 @@
+# SDD Quality Gate — GitHub Actions Workflow Template
+# Copy to your project's .github/workflows/sdd-gate.yml
+# Runs assertion hash verification and artifact validation on PRs.
+#
+# Prerequisites:
+#   - SDD initialized (/sdd:init)
+#   - .specify/ directory committed (or generated in CI)
+#   - Python 3.x available in runner
+
+name: SDD Quality Gate
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'specs/**'
+      - 'tests/**/*.feature'
+      - '.specify/**'
+
+jobs:
+  sdd-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Verify assertion hashes
+        run: |
+          if [ -f ".specify/assertion-hashes.json" ]; then
+            bash scripts/sdd-assertion-hash.sh verify .
+          else
+            echo "No assertion hashes — skipping (generate with /sdd:testify)"
+          fi
+
+      - name: Validate artifacts
+        run: |
+          # Validate context.json
+          if [ -f ".specify/context.json" ]; then
+            bash scripts/sdd-validate-artifact.sh context .specify/context.json .
+          fi
+
+          # Validate specs for active feature
+          ACTIVE=""
+          [ -f ".specify/active-feature" ] && ACTIVE=$(cat .specify/active-feature | tr -d '[:space:]')
+          if [ -n "$ACTIVE" ] && [ -f "specs/$ACTIVE/spec.md" ]; then
+            bash scripts/sdd-validate-artifact.sh spec "specs/$ACTIVE/spec.md" .
+          fi
+
+      - name: Run gate check
+        run: |
+          # Determine which gate to check based on changed files
+          CHANGED=$(git diff --name-only HEAD~1 2>/dev/null || echo "")
+          if echo "$CHANGED" | grep -q "tasks.md"; then
+            bash scripts/sdd-gate-check.sh 07 .  # G2 check
+          elif echo "$CHANGED" | grep -q "plan.md"; then
+            bash scripts/sdd-gate-check.sh 03 .  # G1 check
+          fi

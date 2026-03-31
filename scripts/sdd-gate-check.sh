@@ -155,9 +155,26 @@ case "$PHASE" in
     else
       fail "No active feature"
     fi
-    # Constitution alignment
-    if [[ -f "$PROJECT_PATH/CONSTITUTION.md" ]] && [[ -f "$FP/plan.md" ]]; then
-      pass "Constitution + plan both present for alignment check"
+    # G1 Alignment checklist (BMAD M-03): FR→plan mapping
+    if [[ -f "$FP/spec.md" ]] && [[ -f "$FP/plan.md" ]]; then
+      # Every FR in spec must be referenced in plan
+      SPEC_FRS=$(grep -oE 'FR-[0-9]{3,4}' "$FP/spec.md" 2>/dev/null | sort -u)
+      if [[ -n "$SPEC_FRS" ]]; then
+        UNMAPPED=0
+        while IFS= read -r fr; do
+          if ! grep -q "$fr" "$FP/plan.md" 2>/dev/null; then
+            UNMAPPED=$((UNMAPPED + 1))
+          fi
+        done <<< "$SPEC_FRS"
+        FR_TOTAL=$(echo "$SPEC_FRS" | wc -l | tr -d ' ')
+        if [[ $UNMAPPED -eq 0 ]]; then
+          pass "G1 Alignment: all $FR_TOTAL FRs referenced in plan.md"
+        elif [[ $UNMAPPED -le 2 ]]; then
+          warn "G1 Alignment: $UNMAPPED/$FR_TOTAL FRs not referenced in plan.md"
+        else
+          fail "G1 Alignment: $UNMAPPED/$FR_TOTAL FRs not referenced in plan.md — plan incomplete"
+        fi
+      fi
     fi
     ;;
   04|05) # Testify, Tasks — needs previous phases

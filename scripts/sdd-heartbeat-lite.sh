@@ -114,12 +114,41 @@ if [ -f "$HH" ]; then
   fi
 fi
 
+# Specification rot detection (M-05): spec older than code by >7 days
+SPEC_ROT=0
+if [ -d "specs" ] && [ -d "src" -o -d "lib" -o -d "app" ]; then
+  SPEC_MTIME=0
+  for sf in specs/*/spec.md; do
+    [ -f "$sf" ] || continue
+    MT=$(stat -f %m "$sf" 2>/dev/null || stat -c %Y "$sf" 2>/dev/null || echo "0")
+    [ "$MT" -gt "$SPEC_MTIME" ] && SPEC_MTIME=$MT
+  done
+  CODE_MTIME=0
+  for cd in src lib app; do
+    [ -d "$cd" ] || continue
+    for cf in "$cd"/*; do
+      [ -f "$cf" ] || continue
+      MT=$(stat -f %m "$cf" 2>/dev/null || stat -c %Y "$cf" 2>/dev/null || echo "0")
+      [ "$MT" -gt "$CODE_MTIME" ] && CODE_MTIME=$MT
+      break  # Only check newest — bounded
+    done
+  done
+  if [ "$CODE_MTIME" -gt 0 ] && [ "$SPEC_MTIME" -gt 0 ]; then
+    DRIFT=$((CODE_MTIME - SPEC_MTIME))
+    if [ "$DRIFT" -gt 604800 ]; then  # 7 days in seconds
+      SPEC_ROT=1
+      FINDINGS=$((FINDINGS + 1))
+    fi
+  fi
+fi
+
 # ── Report (single line to minimize context noise) ──
 if [ "$FINDINGS" -gt 0 ] || [ "$WS_NUDGE" -gt 0 ]; then
   MSG=""
   [ "$STALE" -gt 0 ] && MSG="${MSG}${STALE} stale"
   [ "$MISSING" -gt 0 ] && { [ -n "$MSG" ] && MSG="${MSG}, "; MSG="${MSG}${MISSING} missing"; }
   [ -n "$HEALTH" ] && { [ -n "$MSG" ] && MSG="${MSG}, "; MSG="${MSG}health:${HEALTH}"; }
+  [ "$SPEC_ROT" -gt 0 ] && { [ -n "$MSG" ] && MSG="${MSG}, "; MSG="${MSG}spec-drift"; }
   [ "$WS_NUDGE" -gt 0 ] && { [ -n "$MSG" ] && MSG="${MSG} | "; MSG="${MSG}no workspace"; }
   HINT="/sdd:sentinel"
   [ "$WS_NUDGE" -gt 0 ] && [ "$FINDINGS" -eq 0 ] && HINT="/sdd:workspace create <name>"

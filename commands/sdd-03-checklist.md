@@ -1,6 +1,10 @@
 ---
-description: "SDD Phase 3 — BDD Analysis — requirements quality checklists (not implementation testing)"
+description: "SDD Phase 3 — BDD Analysis — requirements quality checklists (not implementation testing) [GATE G1]"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [spec.md, plan.md]
+  never: [tasks.md, "*.feature", analysis.md]
 ---
 
 # /sdd:03-checklist
