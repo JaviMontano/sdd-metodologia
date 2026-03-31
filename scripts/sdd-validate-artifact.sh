@@ -50,62 +50,53 @@ validate_json() {
   fi
   pass "Valid JSON syntax"
 
-  # Schema validation (if schema exists and jsonschema available)
+  # Schema validation — single python block with jsonschema or manual fallback
   if [[ -f "$schema" ]]; then
-    if python3 -c "
+    RESULT=$(python3 << PYEOF
 import json, sys
+
+with open('$file') as f: data = json.load(f)
+with open('$schema') as f: sch = json.load(f)
+
+# Try jsonschema first
 try:
     from jsonschema import validate, ValidationError
-    with open('$file') as f: data = json.load(f)
-    with open('$schema') as f: sch = json.load(f)
-    validate(data, sch)
-    print('PASS')
-except ImportError:
-    print('SKIP:no-jsonschema')
-except ValidationError as e:
-    print('FAIL:' + e.message[:200])
-except Exception as e:
-    print('FAIL:' + str(e)[:200])
-" 2>/dev/null | grep -q "^PASS"; then
-      pass "Schema validation passed"
-    elif python3 -c "
-import json, sys
-try:
-    from jsonschema import validate, ValidationError
-    with open('$file') as f: data = json.load(f)
-    with open('$schema') as f: sch = json.load(f)
-    validate(data, sch)
-except ImportError:
-    print('SKIP')
+    try:
+        validate(data, sch)
+        print('PASS')
+    except ValidationError as e:
+        print('FAIL:' + e.message[:200])
     sys.exit(0)
-except ValidationError as e:
-    print(e.message[:200])
-    sys.exit(1)
-" 2>/dev/null; then
-      pass "Schema validation passed"
-    else
-      RESULT=$(python3 -c "
-import json, sys
-try:
-    from jsonschema import validate, ValidationError
-    with open('$file') as f: data = json.load(f)
-    with open('$schema') as f: sch = json.load(f)
-    validate(data, sch)
-    print('PASS')
 except ImportError:
-    print('SKIP')
-except ValidationError as e:
-    print('FAIL:' + e.message[:200])
-except Exception as e:
-    print('ERROR:' + str(e)[:200])
-" 2>&1 || echo "ERROR")
-      case "$RESULT" in
-        PASS) pass "Schema validation passed" ;;
-        SKIP*) warn "jsonschema not installed — schema check skipped" ;;
-        FAIL:*) fail "Schema: ${RESULT#FAIL:}" ;;
-        *) warn "Schema check inconclusive" ;;
-      esac
-    fi
+    pass
+
+# Fallback: manual required-field check from schema
+required = sch.get('required', [])
+missing = [r for r in required if r not in data]
+if missing:
+    print('FAIL:Missing required fields: ' + ', '.join(missing))
+else:
+    # Check nested required (one level deep)
+    props = sch.get('properties', {})
+    nested_errors = []
+    for key, prop_schema in props.items():
+        if key in data and isinstance(prop_schema, dict):
+            nested_req = prop_schema.get('required', [])
+            if isinstance(data[key], dict):
+                nested_missing = [r for r in nested_req if r not in data[key]]
+                if nested_missing:
+                    nested_errors.append(f'{key}: missing {", ".join(nested_missing)}')
+    if nested_errors:
+        print('FAIL:' + '; '.join(nested_errors))
+    else:
+        print('PASS:manual')
+PYEOF
+    )
+    case "$RESULT" in
+      PASS*) pass "Schema validation passed (${RESULT#PASS:})" ;;
+      FAIL:*) fail "Schema: ${RESULT#FAIL:}" ;;
+      *) warn "Schema check inconclusive: $RESULT" ;;
+    esac
   else
     warn "No schema file found for $schema_name"
   fi

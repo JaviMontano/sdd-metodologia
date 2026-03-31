@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # sdd-session-log.sh — Append events to .specify/session-log.json
 # Dual-writes to workspace log when active. MUST exit 0 always.
+# Uses Python fcntl.flock for cross-platform file locking (macOS + Linux).
 
 TYPE="${1:-}"
 DESCRIPTION="${2:-}"
@@ -13,48 +14,62 @@ PROJECT_PATH="${4:-.}"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
 [ -z "$DESCRIPTION" ] && DESCRIPTION="Hook: $TYPE"
 
-# Append a JSON event to a log file with file locking + atomic write.
-# Uses flock to prevent concurrent corruption (R-07).
-# Falls back to unlocked write if flock unavailable (macOS without coreutils).
+# Append a JSON event with file locking (fcntl.flock — works on macOS + Linux).
+# Atomic write via tmp + rename. Keeps last 200 events.
 append_event() {
   local target="$1"
   [ -f "$target" ] || echo '{"events":[]}' > "$target"
-  local lockfile="${target}.lock"
 
-  _do_append() {
-    SDD_LOG_FILE="$target" \
-    SDD_TIMESTAMP="$TIMESTAMP" \
-    SDD_TYPE="$TYPE" \
-    SDD_DESC="$DESCRIPTION" \
-    SDD_CMD="$COMMAND" \
-    python3 -c '
-import json, os
+  SDD_LOG_FILE="$target" \
+  SDD_TIMESTAMP="$TIMESTAMP" \
+  SDD_TYPE="$TYPE" \
+  SDD_DESC="$DESCRIPTION" \
+  SDD_CMD="$COMMAND" \
+  python3 -c '
+import json, os, fcntl, time
+
 f = os.environ["SDD_LOG_FILE"]
-try:
-    with open(f, "r") as fh: data = json.load(fh)
-except Exception:
-    data = {"events": []}
-if "events" not in data: data["events"] = []
-event = {"timestamp": os.environ["SDD_TIMESTAMP"], "type": os.environ["SDD_TYPE"], "description": os.environ["SDD_DESC"]}
-cmd = os.environ.get("SDD_CMD", "")
-if cmd: event["command"] = cmd
-data["events"].append(event)
-data["events"] = data["events"][-200:]
-tmp = f + ".tmp"
-with open(tmp, "w") as fh: json.dump(data, fh, indent=2)
-os.rename(tmp, f)
-' 2>/dev/null
-  }
+lock_path = f + ".lock"
+max_retries = 3
 
-  # Try flock (non-blocking, with 1 retry)
-  if command -v flock &>/dev/null; then
-    flock -w 1 "$lockfile" bash -c "$(declare -f _do_append); _do_append" 2>/dev/null || \
-    flock -w 1 "$lockfile" bash -c "$(declare -f _do_append); _do_append" 2>/dev/null || \
-    _do_append 2>/dev/null || true
-  else
-    # macOS fallback: no flock, direct write (atomic via rename)
-    _do_append 2>/dev/null || true
-  fi
+for attempt in range(max_retries):
+    try:
+        lock_fd = open(lock_path, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            with open(f, "r") as fh:
+                data = json.load(fh)
+        except Exception:
+            data = {"events": []}
+        if "events" not in data:
+            data["events"] = []
+        event = {
+            "timestamp": os.environ["SDD_TIMESTAMP"],
+            "type": os.environ["SDD_TYPE"],
+            "description": os.environ["SDD_DESC"]
+        }
+        cmd = os.environ.get("SDD_CMD", "")
+        if cmd:
+            event["command"] = cmd
+        data["events"].append(event)
+        data["events"] = data["events"][-200:]
+        tmp = f + ".tmp"
+        with open(tmp, "w") as fh:
+            json.dump(data, fh, indent=2)
+        os.rename(tmp, f)
+        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+        lock_fd.close()
+        break
+    except (IOError, OSError):
+        try:
+            lock_fd.close()
+        except Exception:
+            pass
+        if attempt < max_retries - 1:
+            time.sleep(0.05 * (attempt + 1))
+    except Exception:
+        break
+' 2>/dev/null || true
 }
 
 # Global log (always)
