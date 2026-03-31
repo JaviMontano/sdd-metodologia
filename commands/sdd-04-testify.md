@@ -9,3 +9,15 @@ Generate Gherkin .feature files with BDD verification and cryptographic assertio
 
 ## Execution
 Run the skill at `.claude/skills/iikit-04-testify/SKILL.md` with the user's input.
+
+## Assertion Hashing
+After .feature files are generated, hash all scenario blocks:
+```bash
+bash scripts/sdd-assertion-hash.sh generate "$PROJECT_PATH"
+```
+Hashes are verified at G3 (Phase 8) — any modification between now and then will be detected.
+
+## Phase Completion
+```bash
+bash scripts/sdd-phase-complete.sh 04 "$PROJECT_PATH"
+```

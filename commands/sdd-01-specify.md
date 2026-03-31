@@ -9,3 +9,9 @@ Generate a feature specification: PRD, user stories, acceptance criteria from na
 
 ## Execution
 Run the skill at `.claude/skills/iikit-01-specify/SKILL.md` with the user's input.
+
+## Phase Completion
+After spec.md is created with FR-NNN requirements:
+```bash
+bash scripts/sdd-phase-complete.sh 01 "$PROJECT_PATH"
+```

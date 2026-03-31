@@ -1,7 +1,7 @@
 # SDD Sequence Diagrams — Tool Use Flows
 
 > Mermaid diagrams documenting every SDD automation flow.
-> SDD v3.0 · MetodologIA
+> SDD v3.5 · MetodologIA
 
 ---
 

@@ -236,4 +236,4 @@ echo -e "  ${GOLD}5.${RESET} /sdd:tour             ${MUTED}— Guided onboarding
 echo -e "  ${GOLD}6.${RESET} /sdd:menu             ${MUTED}— See all available commands${RESET}"
 echo ""
 echo -e "${MUTED}Project: $(cd "$PROJECT_PATH" && pwd)${RESET}"
-echo -e "${MUTED}SDD v3.0 · MetodologIA · $(date +%Y-%m-%d)${RESET}"
+echo -e "${MUTED}SDD v3.5 · MetodologIA · $(date +%Y-%m-%d)${RESET}"

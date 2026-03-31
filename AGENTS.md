@@ -1,8 +1,8 @@
-# SDD v3.4 — Spec Driven Development · MetodologIA Edition
+# SDD v3.5 — Spec Driven Development · MetodologIA Edition
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 skills · 9 pipeline phases · 39 commands · 23 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
+> 12 skills · 9 pipeline phases · 39 commands · 27 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -40,13 +40,13 @@ SDD runs a **per-prompt heartbeat** via `UserPromptSubmit` hook. On every user p
 | 0 | `/sdd:00-constitution` | — | Governance principles — base of the system + user Phase 0 requests + derived from user specs analysis |
 | 1 | `/sdd:01-specify` | `/sdd:spec` | **User Specs** — user stories, FR, SC from natural language |
 | — | `/sdd:clarify` | — | Resolve ambiguities in any artifact |
-| 2 | `/sdd:02-plan` | `/sdd:plan` | **Technical Specs** — architecture, data model, API contracts **[GATE G1]** |
-| 3 | `/sdd:03-checklist` | `/sdd:check` | **BDD Analysis** — requirements quality checklists |
+| 2 | `/sdd:02-plan` | `/sdd:plan` | **Technical Specs** — architecture, data model, API contracts |
+| 3 | `/sdd:03-checklist` | `/sdd:check` | **BDD Analysis** — requirements quality checklists **[GATE G1]** |
 | 4 | `/sdd:04-testify` | `/sdd:test` | **Test** — Gherkin BDD scenarios with assertion hashing |
 | 5 | `/sdd:05-tasks` | `/sdd:tasks` | **Task** — dependency-ordered task breakdown |
-| 6 | `/sdd:06-analyze` | `/sdd:analyze` | **Organize Plan** — cross-artifact consistency **[GATE G2]** |
-| 7 | `/sdd:07-implement` | `/sdd:impl` | **Deliver** — iterative TDD implementation **[GATE G3]** |
-| 8 | `/sdd:08-issues` | `/sdd:issues` | **Ship** — export to GitHub Issues, deploy, close loop |
+| 6 | `/sdd:06-analyze` | `/sdd:analyze` | **Organize Plan** — cross-artifact consistency |
+| 7 | `/sdd:07-implement` | `/sdd:impl` | **Deliver** — iterative TDD implementation **[GATE G2]** |
+| 8 | `/sdd:08-issues` | `/sdd:issues` | **Ship** — export to GitHub Issues, deploy, close loop **[GATE G3]** |
 | Bug | `/sdd:bugfix` | `/sdd:fix` | Bug report + fix tasks |
 
 **Pipeline flow**: Constitution (WHY) → User Specs (WHAT) → Technical Specs (HOW) → BDD Analysis (QUALITY) → Test (PROOF) → Task (WORK) → Organize Plan (VALIDATE) → Deliver (BUILD) → Ship (RELEASE)

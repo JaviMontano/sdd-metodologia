@@ -18,3 +18,9 @@ If result is CONDITIONAL: warn but proceed.
 
 ## Execution
 Run the skill at `.claude/skills/iikit-03-checklist/SKILL.md` with the user's input.
+
+## Phase Completion
+After checklists are generated:
+```bash
+bash scripts/sdd-phase-complete.sh 03 "$PROJECT_PATH"
+```

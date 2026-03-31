@@ -63,6 +63,18 @@ echo "║  Gate Check — Phase $PHASE                         ║"
 echo "╚══════════════════════════════════════════════════╝"
 echo ""
 
+# ─── Schema validation helper (S3-C) ───
+validate_artifact() {
+  local type="$1" file="$2"
+  if [[ -f "$file" ]] && [[ -x "$SCRIPT_DIR/sdd-validate-artifact.sh" ]]; then
+    if bash "$SCRIPT_DIR/sdd-validate-artifact.sh" "$type" "$file" "$PROJECT_PATH" 2>/dev/null | grep -q "INVALID"; then
+      fail "Schema validation FAILED for $type: $file"
+    else
+      pass "Schema validated: $type"
+    fi
+  fi
+}
+
 # ─── Phase-specific prerequisite checks ───
 check_file() {
   local file="$1" label="$2" required="${3:-hard}"
@@ -102,9 +114,10 @@ case "$PHASE" in
     check_file "$PROJECT_PATH/CONSTITUTION.md" "CONSTITUTION.md"
     check_completed_phase "00"
     ;;
-  02) # Plan — needs spec (G1 gate)
+  02) # Plan — needs spec
     check_file "$PROJECT_PATH/CONSTITUTION.md" "CONSTITUTION.md"
     check_completed_phase "01"
+    validate_artifact "context" "$CONTEXT_FILE"
     if [[ -n "$ACTIVE_FEATURE" && -d "$FP" ]]; then
       check_file "$FP/spec.md" "spec.md"
       # Content validation: FR count
@@ -123,6 +136,7 @@ case "$PHASE" in
   03) # Checklist — G1 GATE: plan must be complete
     echo "── G1 Gate Check ──"
     check_completed_phase "02"
+    validate_artifact "context" "$CONTEXT_FILE"
     if [[ -n "$ACTIVE_FEATURE" && -d "$FP" ]]; then
       check_file "$FP/plan.md" "plan.md"
       # Content: data model section
@@ -163,6 +177,7 @@ case "$PHASE" in
   07) # Implement — G2 GATE: analysis must pass
     echo "── G2 Gate Check ──"
     check_completed_phase "06"
+    validate_artifact "context" "$CONTEXT_FILE"
     if [[ -n "$ACTIVE_FEATURE" && -d "$FP" ]]; then
       check_file "$FP/spec.md" "spec.md"
       check_file "$FP/plan.md" "plan.md"
