@@ -12,7 +12,7 @@ context-scope:
 Generate a feature specification: PRD, user stories, acceptance criteria from natural language description.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-01-specify/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-01-specify/SKILL.md` with the user's input.
 
 ## Phase Completion
 After spec.md is created with FR-NNN requirements:

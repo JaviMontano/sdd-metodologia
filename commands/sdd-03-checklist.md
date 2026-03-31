@@ -21,7 +21,7 @@ If result is FAIL: **HALT**. Plan must have architecture + data model sections.
 If result is CONDITIONAL: warn but proceed.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-03-checklist/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-03-checklist/SKILL.md` with the user's input.
 
 ## Phase Completion
 After checklists are generated:

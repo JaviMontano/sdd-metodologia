@@ -12,7 +12,7 @@ context-scope:
 Validate cross-artifact consistency: requirements traceability, conflict detection. HALTS on inconsistencies.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-06-analyze/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-06-analyze/SKILL.md` with the user's input.
 
 ## Phase Completion
 After analysis passes with zero HIGH findings:

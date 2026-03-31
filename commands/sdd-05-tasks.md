@@ -12,7 +12,7 @@ context-scope:
 Break features into implementable tasks with dependency ordering and parallel markers.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-05-tasks/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-05-tasks/SKILL.md` with the user's input.
 
 ## Phase Completion
 After tasks.md is created with T-NNN identifiers:

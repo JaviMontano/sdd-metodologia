@@ -17,4 +17,4 @@ If result is ESCALATE: redirect to `/sdd:spec` for full pipeline.
 If result is OK or CAUTION: proceed with bugfix.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-bugfix/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-bugfix/SKILL.md` with the user's input.

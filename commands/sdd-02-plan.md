@@ -12,7 +12,7 @@ context-scope:
 Create technical design: tech stack, data models, API contracts, research. HALTS if decisions violate constitution.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-02-plan/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-02-plan/SKILL.md` with the user's input.
 
 ## Phase Completion
 After plan.md is created with architecture + data model:

@@ -12,7 +12,7 @@ context-scope:
 Define project rules, coding standards, quality gates, TDD requirements, and non-negotiable development principles.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-00-constitution/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-00-constitution/SKILL.md` with the user's input.
 
 ## Phase Completion
 After CONSTITUTION.md is created/updated:

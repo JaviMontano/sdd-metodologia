@@ -21,7 +21,7 @@ If result is FAIL: **HALT**. Tests must pass and assertion hashes must verify.
 If result is CONDITIONAL: warn (e.g., no test runner detected) but proceed.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-08-taskstoissues/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-08-taskstoissues/SKILL.md` with the user's input.
 
 ## Post-Export Verification
 

@@ -12,7 +12,7 @@ context-scope:
 Generate Gherkin .feature files with BDD verification and cryptographic assertion integrity hashing.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-04-testify/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-04-testify/SKILL.md` with the user's input.
 
 ## Assertion Hashing
 After .feature files are generated, hash all scenario blocks:

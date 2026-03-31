@@ -21,7 +21,7 @@ If result is FAIL: **HALT**. Show findings and ask user to resolve before procee
 If result is CONDITIONAL: warn but proceed.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-07-implement/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-07-implement/SKILL.md` with the user's input.
 
 ## Post-Implementation Verification (G3 prep)
 

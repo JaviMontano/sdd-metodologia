@@ -8,4 +8,4 @@ user-invocable: true
 Ask targeted questions with option tables and write answers back into the artifact's Clarifications section.
 
 ## Execution
-Run the skill at `.claude/skills/iikit-clarify/SKILL.md` with the user's input.
+Run the skill at `skills/sdd-clarify/SKILL.md` with the user's input.
