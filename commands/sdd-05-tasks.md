@@ -1,6 +1,10 @@
 ---
 description: "SDD Phase 5 — Task — dependency-ordered, parallelism-marked task breakdown"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [spec.md, plan.md, "*.feature"]
+  never: [analysis.md]
 ---
 
 # /sdd:05-tasks

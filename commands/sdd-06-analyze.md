@@ -1,6 +1,10 @@
 ---
 description: "SDD Phase 6 — Organize Plan — cross-artifact consistency validation, traceability FR→TS→Tasks"
 user-invocable: true
+context-scope:
+  always: [CONSTITUTION.md, .specify/context.json]
+  load: [spec.md, plan.md, tasks.md, "*.feature"]
+  never: []
 ---
 
 # /sdd:06-analyze

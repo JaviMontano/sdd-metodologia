@@ -58,10 +58,65 @@ install_hook() {
 }
 
 echo -e "${WHITE}Installing SDD git hooks...${RESET}"
-install_hook "pre-commit" "$UPSTREAM_PRE"
-install_hook "post-commit" "$UPSTREAM_POST"
+
+# Try upstream hooks first, fallback to SDD-native
+if [[ -f "$UPSTREAM_PRE" ]]; then
+  install_hook "pre-commit" "$UPSTREAM_PRE"
+else
+  # SDD-native pre-commit: verify assertion hashes on .feature changes (M-04)
+  SDD_PRE="$HOOKS_DIR/pre-commit"
+  if [[ ! -f "$SDD_PRE" ]] || grep -q "SDD\|IIKit\|iikit" "$SDD_PRE" 2>/dev/null; then
+    cat > "$SDD_PRE" << 'HOOKEOF'
+#!/usr/bin/env bash
+# SDD pre-commit hook — assertion integrity verification
+# Blocks commit if .feature files were modified and hashes don't match.
+
+HASH_FILE=".specify/assertion-hashes.json"
+SCRIPT_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+# Only check if .feature files are staged AND hashes exist
+STAGED_FEATURES=$(git diff --cached --name-only -- '*.feature' 2>/dev/null)
+if [ -z "$STAGED_FEATURES" ]; then
+  exit 0  # No .feature files staged — allow commit
+fi
+
+if [ ! -f "$HASH_FILE" ]; then
+  exit 0  # No hashes generated yet — allow (first-time setup)
+fi
+
+# Run verification
+VERIFY_SCRIPT="$SCRIPT_DIR/scripts/sdd-assertion-hash.sh"
+if [ -x "$VERIFY_SCRIPT" ]; then
+  if ! bash "$VERIFY_SCRIPT" verify "$SCRIPT_DIR" 2>/dev/null | grep -q "ALL.*verified"; then
+    echo ""
+    echo "╔══════════════════════════════════════════════════╗"
+    echo "║  SDD: Assertion hash MISMATCH detected          ║"
+    echo "╚══════════════════════════════════════════════════╝"
+    echo ""
+    echo "  .feature files were modified after hashing."
+    echo "  This may indicate unintended test tampering."
+    echo ""
+    echo "  To update hashes:  bash scripts/sdd-assertion-hash.sh generate"
+    echo "  To force commit:   git commit --no-verify"
+    echo ""
+    exit 1
+  fi
+fi
+
+exit 0
+HOOKEOF
+    chmod +x "$SDD_PRE"
+    echo -e "  ${BLUE}pre-commit${RESET}: SDD-native assertion integrity hook installed"
+  else
+    echo -e "  ${GOLD}pre-commit${RESET}: existing non-SDD hook preserved"
+  fi
+fi
+
+if [[ -f "$UPSTREAM_POST" ]]; then
+  install_hook "post-commit" "$UPSTREAM_POST"
+fi
 
 echo ""
-echo -e "${BLUE}Hooks installed.${RESET} Assertion integrity will be verified on each commit."
-echo -e "${MUTED}Pre-commit: validates .feature file hashes against context.json${RESET}"
-echo -e "${MUTED}Post-commit: stores assertion hashes as git notes${RESET}"
+echo -e "${BLUE}Hooks installed.${RESET} Assertion integrity verified on each commit."
+echo -e "${MUTED}Pre-commit: blocks commit if .feature hashes don't match${RESET}"
+echo -e "${MUTED}Re-hash after spec changes: bash scripts/sdd-assertion-hash.sh generate${RESET}"
