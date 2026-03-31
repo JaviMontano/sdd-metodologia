@@ -1,0 +1,99 @@
+[
+  {
+    "id": "specify-basic-feature",
+    "type": "positive",
+    "description": "Basic single-feature specification from natural language",
+    "input": "I want users to be able to reset their password via email",
+    "expected": {
+      "triggers_skill": true,
+      "output_contains": ["FR-001", "SC-001", "Given", "When", "Then", "spec.md"],
+      "creates_files": ["specs/*/spec.md", "specs/*/checklists/requirements.md"],
+      "no_redirect": true
+    },
+    "tags": ["positive", "basic"]
+  },
+  {
+    "id": "specify-complex-multi-fr",
+    "type": "positive",
+    "description": "Complex feature with multiple functional requirements and scenarios",
+    "input": "Build a multi-tenant dashboard where admins can manage users, assign roles (viewer, editor, admin), view audit logs of all actions, and export reports in CSV and PDF formats. Each tenant should have isolated data.",
+    "expected": {
+      "triggers_skill": true,
+      "output_contains": ["FR-001", "FR-002", "FR-003", "SC-001", "SC-002", "Given", "When", "Then"],
+      "min_fr_count": 4,
+      "min_sc_count": 6,
+      "creates_files": ["specs/*/spec.md", "specs/*/checklists/requirements.md", "specs/*/qa/acceptance-criteria.md"],
+      "no_redirect": true
+    },
+    "tags": ["positive", "complex", "multi-fr"]
+  },
+  {
+    "id": "specify-prd-sourced",
+    "type": "positive",
+    "description": "Specification derived from a PRD-style description with business context",
+    "input": "Per the product brief: We need a notification center that supports in-app, email, and push channels. Users must be able to configure preferences per channel. Marketing needs to send bulk campaigns. SLA: 99.9% delivery within 30 seconds. Target: 50k DAU at launch.",
+    "expected": {
+      "triggers_skill": true,
+      "output_contains": ["FR-001", "SC-001", "notification", "preferences", "campaign"],
+      "min_fr_count": 3,
+      "creates_files": ["specs/*/spec.md"],
+      "no_implementation_details": true
+    },
+    "tags": ["positive", "prd", "business-context"]
+  },
+  {
+    "id": "specify-false-positive-bug-report",
+    "type": "false-positive",
+    "description": "Bug report should redirect to /iikit-bugfix, not create a specification",
+    "input": "The login page is broken — users get a 500 error when they try to sign in with Google OAuth. This started after yesterday's deploy.",
+    "expected": {
+      "triggers_skill": true,
+      "should_redirect": "/iikit-bugfix",
+      "output_contains": ["bug", "bugfix", "/iikit-bugfix"],
+      "does_not_create": ["specs/*/spec.md"]
+    },
+    "tags": ["false-positive", "bug-redirect"]
+  },
+  {
+    "id": "specify-false-positive-plan-request",
+    "type": "false-positive",
+    "description": "User asking for a technical plan, not a specification — should suggest /iikit-02-plan",
+    "input": "Create a technical architecture plan for the payment microservice. I need database schema, API endpoints, and deployment strategy.",
+    "expected": {
+      "triggers_skill": false,
+      "better_skill": "/iikit-02-plan",
+      "reason": "User is requesting implementation details (schema, endpoints, deployment) which belong in Phase 02 (Plan), not Phase 01 (Specify)"
+    },
+    "tags": ["false-positive", "plan-redirect"]
+  },
+  {
+    "id": "specify-edge-vague-input",
+    "type": "edge-case",
+    "description": "Input too vague (under 20 words) should trigger clarification",
+    "input": "Add search",
+    "expected": {
+      "triggers_skill": true,
+      "asks_clarification": true,
+      "output_contains": ["clarif", "more detail", "what kind"],
+      "does_not_create": ["specs/*/spec.md"],
+      "suggests": ["/iikit-clarify"]
+    },
+    "tags": ["edge-case", "vague-input"]
+  },
+  {
+    "id": "specify-edge-duplicate-feature",
+    "type": "edge-case",
+    "description": "Feature with same name already exists in specs/ directory",
+    "preconditions": {
+      "existing_dirs": ["specs/001-user-auth/"]
+    },
+    "input": "I want to add user authentication with email and password",
+    "expected": {
+      "triggers_skill": true,
+      "detects_collision": true,
+      "output_contains": ["already exists", "overwrite", "version"],
+      "offers_options": ["append version suffix", "overwrite", "choose different name"]
+    },
+    "tags": ["edge-case", "duplicate-feature"]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-feature",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-create-feature",
+      "type": "positive",
+      "prompt": "/sdd:feature create payment-processing",
+      "expected": { "activates_skill": true, "assertions": ["Creates specs/NNN-payment-processing/", "Sets as active feature", "Suggests /sdd:01-specify next"] }
+    },
+    {
+      "id": "E02-list-features",
+      "type": "positive",
+      "prompt": "List my features",
+      "expected": { "activates_skill": true, "assertions": ["Shows feature table with stages", "Highlights active feature"] }
+    },
+    {
+      "id": "E03-select-feature",
+      "type": "positive",
+      "prompt": "Switch to feature 002",
+      "expected": { "activates_skill": true, "assertions": ["Finds feature by number", "Updates active-feature", "Reports current stage"] }
+    },
+    {
+      "id": "E04-fp-workspace",
+      "type": "false-positive",
+      "prompt": "Create a new workspace",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-workspace, not sdd-feature" }
+    },
+    {
+      "id": "E05-edge-no-features",
+      "type": "edge-case",
+      "prompt": "/sdd:feature list",
+      "setup": "No features in specs/",
+      "expected": { "activates_skill": true, "assertions": ["Shows empty table", "Suggests /sdd:feature create"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 1, "edge_cases": 1, "total": 5 }
+}

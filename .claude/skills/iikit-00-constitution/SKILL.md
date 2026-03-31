@@ -1,14 +1,19 @@
 ---
 name: iikit-00-constitution
 description: >-
-  Create or update a CONSTITUTION.md that defines project governance — establishes coding standards, quality gates, TDD policy, review requirements, and non-negotiable development principles with versioned amendment tracking.
-  Use when defining project rules, setting up coding standards, establishing quality gates, configuring TDD requirements, or creating non-negotiable development principles.
+  This skill should be used when the user asks to "define project governance",
+  "create a constitution", "establish development principles", "set up project rules",
+  or "configure phase 0 governance".
+  It creates CONSTITUTION.md with governance principles, coding standards, and pipeline rules
+  that all subsequent phases must respect.
+  Use this skill whenever the user mentions governance, principles, or project setup rules,
+  even if they don't explicitly ask for "constitution".
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Constitution
+# Intent Integrity Kit Constitution [EXPLICIT]
 
 Create or update the project constitution at `CONSTITUTION.md` — the governing principles for specification-driven development.
 
@@ -116,3 +121,68 @@ Next: [/clear → ] <next_step> (model: <tier>)
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+---
+
+## Assumptions and Limits
+
+| # | Assumption / Limit | Impact if Violated |
+|---|---|---|
+| 1 | PREMISE.md exists and has been validated before this skill runs | Skill halts with error; user must run `/iikit-core init` first |
+| 2 | Constitution principles are declarative and testable (not vague aspirations) | Downstream phases cannot enforce governance; quality gates become meaningless |
+| 3 | At least 3 principles are required for a valid constitution | Fewer than 3 triggers auto-generation of additional principles from project context |
+| 4 | Constitution does NOT contain technology-specific content (frameworks, DBs) | Phase separation violation; auto-fix removes tech content and references plan instead |
+| 5 | Amendment versioning follows semver (MAJOR/MINOR/PATCH) | Dashboard and traceability reports display incorrect version lineage |
+
+## Edge Cases
+
+| # | Edge Case | Expected Behavior |
+|---|---|---|
+| 1 | No PREMISE.md exists yet | ERROR with clear message: "Run `/iikit-core init` first" — skill does NOT proceed |
+| 2 | Conflicting governance with existing constitution (re-run) | Semantic diff shown; breaking changes flagged; user confirms before overwrite |
+| 3 | User wants to modify constitution after specs already exist | Sync Impact Report generated; downstream artifacts flagged for review |
+| 4 | Empty or minimal user input (no arguments provided) | Skill infers principles from PREMISE.md and repo context; asks clarifying questions if ambiguous |
+| 5 | Constitution principles conflict with each other (e.g., "no tests" + "TDD mandatory") | Validation step detects contradiction; halts with conflict report and asks user to resolve |
+
+## Good vs Bad Example
+
+**Good Example** -- structured constitution with numbered principles and clear enforcement:
+
+```markdown
+## Principle P-I: Test-Driven Development
+**Rules**: All production code must have tests written BEFORE implementation.
+Coverage threshold: 80% line coverage minimum.
+**Rationale**: Ensures intent preservation from spec to code.
+**Enforcement**: Gate G3 blocks implementation without passing tests.
+
+## Principle P-II: Single Responsibility
+**Rules**: Each module handles exactly one concern. Max 200 LOC per file.
+**Rationale**: Reduces cognitive load and merge conflicts.
+**Enforcement**: Code review checklist item; automated linter rule.
+```
+
+**Bad Example** -- vague principles with no enforcement mechanism:
+
+```markdown
+## Principles
+- Be good
+- Write clean code
+- Test stuff
+- Follow best practices
+```
+
+Why it fails: No principle IDs (P-I, P-II), no enforcement rules, no rationale, not testable or measurable, impossible for downstream gates to validate compliance.
+
+## Validation Gate
+
+Before marking this skill complete, verify ALL of the following:
+
+- [ ] CONSTITUTION.md exists and contains at least 3 numbered principles (P-I, P-II, P-III)
+- [ ] Each principle has: name, rules, rationale, and enforcement mechanism
+- [ ] No remaining bracket tokens `[ALL_CAPS_IDENTIFIER]` in the output
+- [ ] No technology-specific content (frameworks, databases, tools) — only governance
+- [ ] Quality Governance section referencing QA-PLAN.md is present
+- [ ] Version follows semver and matches Sync Impact Report
+- [ ] Dates are in ISO 8601 format (YYYY-MM-DD)
+- [ ] TDD determination stored in `.specify/context.json`
+- [ ] Git commit created with constitution and context.json

@@ -1,0 +1,103 @@
+{
+  "skill": "iikit-04-testify",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01",
+      "type": "positive",
+      "input": "Generate BDD tests from my spec. I have 3 functional requirements (FR-001, FR-002, FR-003) and 5 success criteria (SC-001 through SC-005).",
+      "expected": {
+        "activates": true,
+        "generates_feature_files": true,
+        "all_SC_covered": true,
+        "assertion_hashes_present": true,
+        "traceability_tags": ["@FR-001", "@FR-002", "@FR-003", "@SC-001", "@SC-002", "@SC-003", "@SC-004", "@SC-005"]
+      },
+      "description": "Standard BDD generation from a spec with 3 FRs and 5 SCs. All scenarios must have Given/When/Then, traceability tags, and SHA-256 assertion hashes."
+    },
+    {
+      "id": "E02",
+      "type": "positive",
+      "input": "I want to write tests first before any implementation. Generate failing test scenarios for my user registration feature using TDD.",
+      "expected": {
+        "activates": true,
+        "tdd_mode_detected": true,
+        "generates_failing_stubs": true,
+        "suggests_implement_phase": true,
+        "next_step": "/iikit-07-implement"
+      },
+      "description": "TDD mode: skill detects 'test first' intent, generates red-phase test stubs that will fail, and suggests /iikit-07-implement for the green phase."
+    },
+    {
+      "id": "E03",
+      "type": "positive",
+      "input": "Regenerate the BDD tests for the authentication feature. The spec has been updated with new scenarios and I need the hashes refreshed.",
+      "expected": {
+        "activates": true,
+        "idempotency_check": true,
+        "offers_regenerate_options": true,
+        "hashes_updated": true,
+        "deprecated_scenarios_marked": true
+      },
+      "description": "Regeneration of existing feature files with hash update. Must detect existing files, offer options (regenerate/append/skip), and update assertion-hashes.json."
+    },
+    {
+      "id": "E04",
+      "type": "false-positive",
+      "input": "Implement the login feature based on the technical plan. Write the actual code for the authentication module.",
+      "expected": {
+        "activates": false,
+        "correct_skill": "/iikit-07-implement"
+      },
+      "description": "Should NOT activate for implementation requests. The user wants code, not tests. Correct skill is /iikit-07-implement."
+    },
+    {
+      "id": "E05",
+      "type": "false-positive",
+      "input": "Run my tests and show me the results. Execute the test suite and report failures.",
+      "expected": {
+        "activates": false,
+        "reason": "User wants to execute existing tests, not generate new test specifications. This is a runtime/CI concern, not a spec-generation concern."
+      },
+      "description": "Should NOT activate for 'run my tests' requests. Testify generates .feature files; it does not execute test runners."
+    },
+    {
+      "id": "E06",
+      "type": "edge-case",
+      "input": "Create BDD tests from this spec. Note: some of my success criteria are written as plain text without Given/When/Then structure, like 'SC-003: The system validates email format'.",
+      "expected": {
+        "activates": true,
+        "detects_vague_sc": true,
+        "converts_or_flags": true,
+        "suggests_clarify": "/iikit-clarify"
+      },
+      "description": "Spec with vague SC entries lacking Given/When/Then structure. Skill must detect incomplete scenarios and either convert them to proper Gherkin or flag for /iikit-clarify."
+    },
+    {
+      "id": "E07",
+      "type": "edge-case",
+      "input": "Generate test scenarios for the payment feature. There are already .feature files in the tests directory from a previous run, but the spec has changed significantly.",
+      "expected": {
+        "activates": true,
+        "detects_existing_files": true,
+        "offers_three_options": ["regenerate and rehash", "append new scenarios only", "skip"],
+        "never_silently_overwrites": true,
+        "hash_conflict_handled": true
+      },
+      "description": "Feature file already exists with different hashes. Skill must detect conflict, present options, and never silently overwrite existing test files."
+    },
+    {
+      "id": "E08",
+      "type": "edge-case",
+      "input": "Write BDD tests for the order management feature. FR-002 references the external payment gateway API defined in plan.md with POST /api/payments endpoint.",
+      "expected": {
+        "activates": true,
+        "detects_api_references": true,
+        "generates_contract_tests": true,
+        "includes_mock_expectations": true,
+        "tags_include": ["@contract", "@FR-002"]
+      },
+      "description": "Spec references external API contracts from plan.md. Skill must generate API contract test scenarios with mock expectations and appropriate @contract tags."
+    }
+  ]
+}

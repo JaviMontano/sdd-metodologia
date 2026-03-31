@@ -1,16 +1,19 @@
 ---
 name: iikit-clarify
 description: >-
-  Resolve ambiguities in any project artifact — auto-detects the most recent artifact (spec, plan, checklist, testify, tasks, or constitution),
-  asks targeted questions with option tables, and writes answers back into the artifact's Clarifications section.
-  Use when requirements are unclear, a plan has trade-off gaps, checklist thresholds feel wrong, test scenarios are imprecise,
-  task dependencies seem off, or constitution principles are vague.
+  This skill should be used when the user asks to "resolve ambiguities",
+  "clarify requirements", "fix unclear specs", "disambiguate stories",
+  or "refine vague acceptance criteria". It auto-detects the most recent artifact
+  (spec, plan, checklist, testify, tasks, or constitution), asks targeted questions
+  with option tables, and writes answers back into the artifact's Clarifications section.
+  Use this skill whenever the user mentions unclear requirements, vague criteria,
+  trade-off gaps, or needs to sharpen any pipeline artifact.
 license: MIT
 metadata:
-  version: "2.5.0"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Clarify (Generic Utility)
+# Intent Integrity Kit Clarify (Generic Utility) [EXPLICIT]
 
 Ask targeted clarification questions to reduce ambiguity in the detected (or user-specified) artifact, then encode answers back into it.
 
@@ -168,3 +171,61 @@ Next: /clear → <next_step>
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+## Assumptions and Limits
+
+| # | Assumption | Handling |
+|---|-----------|----------|
+| 1 | Target artifact must exist before clarifying | If artifact missing, suggest the appropriate `/iikit-*` command to create it first. [EXPLICIT] |
+| 2 | Clarification does not modify original artifact content — only appends to Clarifications section | Preserves all existing content; answers are additive. [EXPLICIT] |
+| 3 | User confirmation required before writing resolutions | Present options, wait for selection, then write. Never auto-resolve. [EXPLICIT] |
+| 4 | Supports all artifact types: spec, plan, checklist, testify, tasks, constitution | Auto-detection prioritizes most recent artifact. User can override with explicit path. [EXPLICIT] |
+| 5 | context.json tracks clarification status per feature | Updated after each clarification session. [EXPLICIT] |
+
+## Edge Cases
+
+| Scenario | Detection | Handling |
+|----------|-----------|----------|
+| No artifacts exist in project | specs/ empty, no CONSTITUTION.md | Suggest `/iikit-core init` or `/iikit-01-specify` to create first artifact. [EXPLICIT] |
+| Circular ambiguities | Resolution of A depends on B which depends on A | Flag circular dependency, suggest resolving the most foundational ambiguity first. [INFERRED] |
+| Conflicting stakeholder inputs | Multiple answers contradict each other | Present conflicts explicitly, ask user to choose or create synthesis. Never silently pick one. [EXPLICIT] |
+| Already-clarified artifact re-clarification | Clarifications section already has entries | Append new clarifications without modifying existing ones. [EXPLICIT] |
+| Ambiguity in constitution principles | CONSTITUTION.md has vague governance rules | Treat as highest-priority clarification — constitution ambiguity propagates to all downstream artifacts. [EXPLICIT] |
+
+## Good vs Bad Example
+
+**Good**: User runs `/iikit-clarify` and gets targeted questions
+```
+Detected: spec.md for 001-user-auth (most recent artifact)
+
+Ambiguities found (3):
+  1. FR-003: "fast response time" — what threshold? Options:
+     A) < 200ms p95  B) < 500ms p95  C) < 1s p95
+  2. SC-005: "appropriate error message" — what content?
+     A) Technical details  B) User-friendly only  C) Both with toggle
+  3. FR-007: "admin users" — who qualifies?
+     A) Role-based (RBAC)  B) Email domain  C) Manual assignment
+
+→ Select options to resolve (e.g., "1A 2B 3A")
+```
+
+**Bad**: Clarification with vague questions
+```
+✗ "The spec needs more detail" — no specific ambiguities identified
+✗ No options presented for resolution
+✗ No artifact auto-detection
+```
+
+**Why**: Clarify must identify specific ambiguities with evidence from the artifact, present concrete options for resolution, and write answers back. [EXPLICIT]
+
+## Validation Gate
+
+Before marking clarification as complete, verify: [EXPLICIT]
+
+- [ ] V1: Target artifact detected or specified by user
+- [ ] V2: Ambiguities identified with specific references (FR-NNN, SC-NNN)
+- [ ] V3: Resolution options presented for each ambiguity
+- [ ] V4: User confirmed selections before writing
+- [ ] V5: Clarifications section updated in target artifact
+- [ ] V6: context.json updated with clarification status
+- [ ] V7: No new ambiguities introduced by resolutions

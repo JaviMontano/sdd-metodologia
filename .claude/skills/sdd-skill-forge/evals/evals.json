@@ -1,0 +1,139 @@
+{
+  "skill": "sdd-skill-forge",
+  "version": "1.0.0",
+  "evals": [
+    {
+      "id": "E01-create-pipeline-skill",
+      "type": "positive",
+      "description": "Create a new pipeline phase skill from scratch",
+      "prompt": "Create a new SDD skill for phase 6 analysis that validates cross-artifact consistency between specs, plans, and tests",
+      "expected": {
+        "activates_skill": true,
+        "mode": "create",
+        "produces": ["SKILL.md", "evals/evals.json"],
+        "assertions": [
+          "SKILL.md follows Template A structure",
+          "Frontmatter has kebab-case name, 3rd-person description with 3+ triggers",
+          "Contains Validation Gate with 5+ checkboxes",
+          "Contains Assumptions and Limits section",
+          "Contains Edge Cases section with 3+ entries",
+          "Contains Good vs Bad Example",
+          "Evidence tags on 80%+ factual claims"
+        ]
+      }
+    },
+    {
+      "id": "E02-upgrade-existing-skill",
+      "type": "positive",
+      "description": "Upgrade an existing skill to gold standard",
+      "prompt": "Upgrade the iikit-01-specify skill to meet gold standard quality — add evals, evidence tags, examples, and edge cases",
+      "expected": {
+        "activates_skill": true,
+        "mode": "upgrade",
+        "assertions": [
+          "Reads existing SKILL.md before modifying",
+          "Preserves existing functionality and commands",
+          "Adds evals/evals.json with 5+ tests",
+          "Adds evidence tags [EXPLICIT] [INFERRED] [OPEN]",
+          "Adds Good vs Bad Example section",
+          "Adds Edge Cases with scenario/detection/handling",
+          "Upgrades description to 3rd-person pushy format"
+        ]
+      }
+    },
+    {
+      "id": "E03-audit-mode",
+      "type": "positive",
+      "description": "Audit a skill and produce a scorecard",
+      "prompt": "Audit the iikit-core skill against the gold standard and show me the gaps",
+      "expected": {
+        "activates_skill": true,
+        "mode": "audit",
+        "produces": ["scorecard"],
+        "assertions": [
+          "Runs S1-S9 structural checks",
+          "Runs M1-M5 MOAT checks",
+          "Runs D1-D5 SDD-specific checks",
+          "Runs B1-B3 brand compliance checks",
+          "Reports pass/fail per check with evidence",
+          "Produces prioritized remediation list",
+          "Does NOT modify any files"
+        ]
+      }
+    },
+    {
+      "id": "E04-false-positive-not-skill-request",
+      "type": "false-positive",
+      "description": "Should NOT activate for general SDD pipeline questions",
+      "prompt": "How does the SDD pipeline work? What are the 9 phases?",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User is asking about SDD knowledge, not requesting skill creation/upgrade/audit"
+      }
+    },
+    {
+      "id": "E05-false-positive-implementation",
+      "type": "false-positive",
+      "description": "Should NOT activate when user wants to run an existing skill",
+      "prompt": "Run /sdd:01-specify for my user registration feature",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants to execute iikit-01-specify, not create/upgrade a skill"
+      }
+    },
+    {
+      "id": "E06-edge-case-no-specify-dir",
+      "type": "edge-case",
+      "description": "Project without .specify/ directory",
+      "prompt": "Create a new SDD skill for dependency visualization in this project",
+      "setup": "Project has no .specify/ directory or SDD initialization",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects missing .specify/ directory",
+          "Warns that SDD is not initialized but proceeds with skill creation",
+          "Generated skill includes .specify/ prerequisite check",
+          "Suggests running /sdd:init first"
+        ]
+      }
+    },
+    {
+      "id": "E07-edge-case-conflicting-name",
+      "type": "edge-case",
+      "description": "Requested skill name conflicts with existing skill",
+      "prompt": "Create a skill called iikit-core that handles project initialization",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects name collision with existing iikit-core",
+          "Warns user about the conflict",
+          "Suggests alternative name or upgrade mode",
+          "Does NOT overwrite existing skill without explicit confirmation"
+        ]
+      }
+    },
+    {
+      "id": "E08-edge-case-orchestrator-tier",
+      "type": "edge-case",
+      "description": "Skill request that requires orchestrator tier (400+ lines)",
+      "prompt": "Create a comprehensive SDD skill that orchestrates the entire pipeline from constitution to issues, managing all 9 phases with gate enforcement",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Classifies as Orchestrator tier (400+ lines)",
+          "Requires scripts/ directory",
+          "Requires references/ directory",
+          "Generates hook integration if applicable",
+          "Warns about complexity and suggests breaking into sub-skills if appropriate"
+        ]
+      }
+    }
+  ],
+  "coverage": {
+    "modes_tested": ["create", "upgrade", "audit"],
+    "false_positives": 2,
+    "edge_cases": 3,
+    "total": 8,
+    "minimum_required": 5
+  }
+}

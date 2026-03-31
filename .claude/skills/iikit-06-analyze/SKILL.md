@@ -1,14 +1,18 @@
 ---
 name: iikit-06-analyze
 description: >-
-  Validate cross-artifact consistency — checks that every spec requirement traces to tasks, plan tech stack matches task file paths, and constitution principles are satisfied across all artifacts.
-  Use when running a consistency check, verifying requirements traceability, detecting conflicts between design docs, or auditing alignment before implementation begins.
+  Performs cross-artifact validation ensuring specs, plans, tests, and tasks are internally consistent with full traceability. This is GATE G2.
+  This skill should be used when the user asks to "validate cross-artifact consistency",
+  "check spec-plan-test alignment", "run the analysis gate", "verify traceability",
+  or "audit pipeline artifacts".
+  It is invoked whenever the user mentions validation, consistency checking,
+  or pipeline auditing, even if they do not explicitly ask for "analyze".
 license: MIT
 metadata:
-  version: "1.7.6"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Analyze
+# Intent Integrity Kit Analyze [EXPLICIT]
 
 Non-destructive cross-artifact consistency analysis across spec.md, plan.md, and tasks.md.
 
@@ -207,3 +211,59 @@ Next: [/clear → ] <next_step> (model: <tier>)
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+---
+
+## Assumptions and Limits
+
+| # | Assumption / Limit | Rationale |
+|---|---|---|
+| 1 | All source artifacts (spec.md, plan.md, tasks.md) exist before invocation | Prerequisites script enforces this; skill is read-only and cannot create missing artifacts |
+| 2 | Constitution is non-negotiable — violations are always CRITICAL severity | Governance principles override all other artifact content |
+| 3 | Maximum 50 findings per analysis run to avoid information overload | Findings beyond 50 are suppressed; user can re-run after fixing top issues |
+| 4 | Health score formula is deterministic: `100 - (critical*20 + high*5 + medium*2 + low*0.5)` | Consistent scoring enables trend tracking across runs |
+| 5 | Skill writes only `analysis.md` and `.specify/score-history.json` — never modifies source artifacts | Read-only principle ensures analysis never introduces new inconsistencies |
+
+## Edge Cases
+
+| # | Edge Case | Expected Behavior |
+|---|---|---|
+| 1 | Orphan requirements — FR-NNN in spec.md with no corresponding task in tasks.md | Flagged as HIGH severity coverage gap; listed in Coverage Summary |
+| 2 | Orphan tasks — T-NNN in tasks.md referencing a non-existent FR-NNN | Flagged as MEDIUM severity; recommend removing or re-linking the task |
+| 3 | Partial pipeline — some phases missing (e.g., no test specs yet) | Analyze available artifacts only; note missing phases as informational findings |
+| 4 | All checks pass — zero findings (healthy fast path) | Report zero issues gracefully with full coverage statistics and score 100/100 |
+| 5 | Constitution violations detected in plan.md | Auto-CRITICAL severity; recommend resolving before `/iikit-07-implement`; halt gate |
+
+## Good vs Bad Example
+
+**Good output** (structured, actionable, traceable):
+```markdown
+## Specification Analysis Report
+
+| ID | Category | Severity | Location(s) | Summary | Recommendation |
+|----|----------|----------|-------------|---------|----------------|
+| F-001 | Coverage Gap | HIGH | spec.md:FR-003 | FR-003 has no task in tasks.md | Add task for FR-003 in Phase 3 |
+| F-002 | Ambiguity | MEDIUM | spec.md:L42 | "fast response" lacks measurable criteria | Define SLA: < 200ms p95 |
+
+**Health Score**: 85/100 (-> stable)
+```
+
+**Bad output** (vague, no IDs, no actionable recommendations):
+```
+The spec looks mostly fine. There might be some issues with coverage.
+Some requirements may not have tasks. The plan seems aligned.
+Score: good.
+```
+Problems: no finding IDs, no severity, no specific locations, no measurable score, no traceability.
+
+## Validation Gate
+
+Before marking this skill invocation as complete, verify ALL of the following:
+
+- [ ] All seven detection passes (A through H) were executed
+- [ ] Every finding has an ID, category, severity, location, summary, and recommendation
+- [ ] Constitution alignment status reported for every principle (ALIGNED or VIOLATION)
+- [ ] Coverage summary table includes every FR-NNN and SC-NNN from spec.md
+- [ ] Health score computed and persisted to `.specify/score-history.json`
+- [ ] Trend indicator displayed (improving / declining / stable)
+- [ ] `analysis.md` written to the correct `FEATURE_DIR` path

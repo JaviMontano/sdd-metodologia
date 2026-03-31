@@ -1,14 +1,19 @@
 ---
 name: iikit-02-plan
 description: >-
-  Generate a technical design document from a feature spec — selects frameworks, defines data models, produces API contracts, and creates a dependency-ordered implementation strategy.
-  Use when planning how to build a feature, writing a technical design doc, choosing libraries, defining database schemas, or setting up Tessl tiles for runtime library knowledge.
+  This skill should be used when the user asks to "create a technical plan",
+  "design the architecture", "define API contracts", "plan the data model",
+  or "write technical specifications".
+  It transforms user specs into technical plans with architecture decisions,
+  data models, API contracts, and component design.
+  Use this skill whenever the user discusses technical design or architecture,
+  even if they don't explicitly ask for "plan".
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Plan
+# Intent Integrity Kit Plan [EXPLICIT]
 
 Generate design artifacts from the feature specification using the plan template.
 
@@ -185,3 +190,76 @@ Next: [/clear → ] <next_step> (model: <tier>)
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+---
+
+## Assumptions and Limits
+
+| # | Assumption / Limit | Impact if Violated |
+|---|---|---|
+| 1 | spec.md exists and has at least 1 FR-XXX requirement | Skill halts at prerequisites check; user must run `/iikit-01-specify` first |
+| 2 | Constitution is loaded and enforced as a hard gate | Technical decisions may violate governance principles; plan rejected at Gate G1 |
+| 3 | All technology choices are justified with rationale in research.md | Unjustified choices create tech debt and block downstream review |
+| 4 | Architecture diagram uses ASCII box-drawing for node classification | Dashboard planview cannot render architecture nodes without classification data |
+| 5 | Plan does NOT contain governance content (principles, quality gates) | Phase separation violation; auto-fix replaces with constitution references |
+
+## Edge Cases
+
+| # | Edge Case | Expected Behavior |
+|---|---|---|
+| 1 | Spec has no clear technical requirements (pure business language) | Skill infers technical needs from FRs; marks inferences as "NEEDS CLARIFICATION"; recommends `/iikit-clarify` |
+| 2 | Conflicting architecture decisions (e.g., REST + GraphQL for same API) | Validation detects conflict; halts with explanation and asks user to choose one approach |
+| 3 | Microservices vs monolith ambiguity in spec | Skill asks clarifying question about scale/team-size before proceeding; documents decision in research.md |
+| 4 | Spec references undefined external systems (e.g., "integrate with CRM") | External systems listed as "NEEDS CLARIFICATION" with risk flag; contracts marked as provisional |
+| 5 | Constitution conflicts with proposed architecture (e.g., "no cloud" but plan uses AWS) | Post-design constitution check catches violation; STOPS with violation report and compliant alternative |
+
+## Good vs Bad Example
+
+**Good Example** -- plan.md with clear architecture, data model, and API contracts:
+
+```markdown
+## Architecture
+┌─────────┐     ┌───────────┐     ┌────────────┐
+│ React    │────▶│ Express   │────▶│ PostgreSQL │
+│ SPA      │     │ API       │     │            │
+└─────────┘     └───────────┘     └────────────┘
+
+## Data Model
+### User Entity
+| Field      | Type    | Constraints          |
+|------------|---------|----------------------|
+| id         | UUID    | PK, auto-generated   |
+| email      | VARCHAR | UNIQUE, NOT NULL     |
+| created_at | TIMESTAMP | DEFAULT NOW()     |
+
+## API Contracts
+### POST /api/users
+- **Request**: `{ email: string, name: string }`
+- **Response 201**: `{ id: string, email: string }`
+- **Response 400**: `{ error: "validation_failed", details: [...] }`
+```
+
+**Bad Example** -- vague plan with no actionable design:
+
+```markdown
+## Technical Plan
+We will use a database to store data.
+The frontend will talk to the backend.
+We might use some API endpoints.
+```
+
+Why it fails: No architecture diagram, no data model with fields/types, no API contracts with endpoints/methods/payloads, no technology justification, impossible for downstream tasks to implement from.
+
+## Validation Gate
+
+Before marking this skill complete, verify ALL of the following:
+
+- [ ] plan.md exists in the feature directory with architecture section
+- [ ] data-model.md exists with entity definitions (fields, types, constraints)
+- [ ] At least one API contract defined in contracts/ with endpoints, methods, and payloads
+- [ ] research.md documents all technology choices with rationale
+- [ ] No "NEEDS CLARIFICATION" items remain unresolved (or explicitly deferred)
+- [ ] Constitution check passed — no governance violations in technical decisions
+- [ ] Phase separation clean — no governance content in plan artifacts
+- [ ] Node classifications written to `.specify/context.json` (if architecture diagram exists)
+- [ ] Git commit created with all plan artifacts
