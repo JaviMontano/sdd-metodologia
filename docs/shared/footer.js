@@ -4,7 +4,7 @@
   f.className='docs-footer';
   f.innerHTML=`
     <div class="footer-inner">
-      <p><strong>SDD v3.0</strong> · Spec Driven Development</p>
+      <p><strong>SDD v3.5</strong> · Spec Driven Development</p>
       <p class="footer-muted">by metodolog<span style="color:var(--brand-gold)">IA</span> · Javier Montano · <a href="https://github.com/JaviMontano/sdd-metodologia">GitHub</a> · <a href="https://github.com/JaviMontano/jm-agentic-development-kit">Dev Kit</a></p>
       <p class="footer-muted" style="font-size:0.7rem;margin-top:0.5rem">Upstream: <a href="https://github.com/intent-integrity-chain/kit">IIC/kit</a> (MIT) · Brand: GPL-3.0</p>
     </div>`;

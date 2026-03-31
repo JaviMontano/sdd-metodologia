@@ -296,6 +296,27 @@ features.forEach(f => {
 const avgProgress = features.length > 0
   ? Math.round(features.reduce((sum, f) => sum + f.progress, 0) / features.length) : 0;
 
+// ── Gate results (S3-F) ──
+const gateResults = readJSON(path.join(specifyDir, 'gate-results.json'));
+const gateHistory = gateResults ? (gateResults.gates || []) : [];
+
+// ── Assertion hashes (S3-F) ──
+const assertionHashes = readJSON(path.join(specifyDir, 'assertion-hashes.json'));
+const assertionStatus = assertionHashes ? {
+  count: assertionHashes.count || 0,
+  generated: assertionHashes.generated || null,
+  algorithm: assertionHashes.algorithm || 'sha256',
+} : null;
+
+// ── Pipeline state from context.json (S3-F) ──
+const contextData = readJSON(path.join(specifyDir, 'context.json'));
+const pipelineState = contextData ? {
+  currentPhase: (contextData.pipeline || {}).currentPhase || 'init',
+  completedPhases: (contextData.pipeline || {}).completedPhases || [],
+  lastGateResult: (contextData.pipeline || {}).lastGateResult || null,
+  lastCompleted: (contextData.pipeline || {}).lastCompleted || null,
+} : null;
+
 // ── Assemble ──
 // ── Empty state flags (R-10) ──
 const isEmpty = {
@@ -343,6 +364,9 @@ const data = {
     orphans: kgraph.orphans || {},
     stats: kgraph.stats || {},
   } : null,
+  gateHistory,
+  assertionStatus,
+  pipelineState,
   backlog,
   qaplan: qaplan || null,
   changelog: changelogEntries,

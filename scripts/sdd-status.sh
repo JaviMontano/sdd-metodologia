@@ -139,6 +139,38 @@ else
   done
 fi
 
+# ─── Pipeline State (from context.json) ───
+CTX_FILE="$SPECIFY_DIR/context.json"
+if [[ -f "$CTX_FILE" ]] && command -v python3 &>/dev/null; then
+  PIPE_DATA=$(python3 -c "
+import json
+try:
+    ctx = json.load(open('$CTX_FILE'))
+    pipe = ctx.get('pipeline', {})
+    completed = pipe.get('completedPhases', [])
+    current = pipe.get('currentPhase', 'unknown')
+    gate = pipe.get('lastGateResult', '')
+    print(f'{len(completed)}|{\",\".join(completed)}|{current}|{gate}')
+except Exception:
+    print('0||unknown|')
+" 2>/dev/null)
+  PIPE_DONE=$(echo "$PIPE_DATA" | cut -d'|' -f1)
+  PIPE_LIST=$(echo "$PIPE_DATA" | cut -d'|' -f2)
+  PIPE_CURRENT=$(echo "$PIPE_DATA" | cut -d'|' -f3)
+  PIPE_GATE=$(echo "$PIPE_DATA" | cut -d'|' -f4)
+  echo ""
+  echo -e "${WHITE}Pipeline State:${RESET}"
+  echo -e "  Completed: ${BLUE}$PIPE_DONE/9${RESET} phases ${MUTED}[$PIPE_LIST]${RESET}"
+  echo -e "  Current:   ${GOLD}$PIPE_CURRENT${RESET}"
+  if [[ -n "$PIPE_GATE" ]]; then
+    case "$PIPE_GATE" in
+      PASS) echo -e "  Last gate: ${BLUE}$PIPE_GATE${RESET}" ;;
+      FAIL) echo -e "  Last gate: ${RED}$PIPE_GATE${RESET}" ;;
+      *)    echo -e "  Last gate: ${AMBER}$PIPE_GATE${RESET}" ;;
+    esac
+  fi
+fi
+
 # ─── Workspace Sessions ───
 WS_DIR="$PROJECT_PATH/workspace"
 ACTIVE_WS_FILE="$SPECIFY_DIR/active-workspace"
@@ -165,4 +197,4 @@ fi
 
 echo ""
 echo -e "${MUTED}Legend: ${BLUE}●${MUTED} done  ${AMBER}◐${MUTED} in progress  ${MUTED}○ pending${RESET}"
-echo -e "${MUTED}SDD v3.4 · MetodologIA · $(date +%Y-%m-%d)${RESET}"
+echo -e "${MUTED}SDD v3.5 · MetodologIA · $(date +%Y-%m-%d)${RESET}"

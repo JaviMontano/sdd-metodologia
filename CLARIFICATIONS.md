@@ -1,4 +1,4 @@
-# SDD v3.0 — Clarifications Registry
+# SDD v3.5 — Clarifications Registry
 
 > Decisions made via /sdd:clarify cycles. Each entry is immutable once recorded.
 

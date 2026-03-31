@@ -9,3 +9,9 @@ Create technical design: tech stack, data models, API contracts, research. HALTS
 
 ## Execution
 Run the skill at `.claude/skills/iikit-02-plan/SKILL.md` with the user's input.
+
+## Phase Completion
+After plan.md is created with architecture + data model:
+```bash
+bash scripts/sdd-phase-complete.sh 02 "$PROJECT_PATH"
+```

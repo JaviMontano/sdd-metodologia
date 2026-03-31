@@ -131,6 +131,33 @@ else
   fi
 fi
 
+# ─── Check 6b: Gate results + assertion hashes ───
+echo ""
+echo -e "${WHITE}6b. Gate Results & Assertion Hashes${RESET}"
+GATE_FILE="$PROJECT_PATH/.specify/gate-results.json"
+HASH_FILE="$PROJECT_PATH/.specify/assertion-hashes.json"
+if [[ -f "$GATE_FILE" ]]; then
+  if python3 -c "import json; json.load(open('$GATE_FILE'))" 2>/dev/null; then
+    GATE_COUNT=$(python3 -c "import json; print(len(json.load(open('$GATE_FILE')).get('gates',[])))")
+    LAST_RESULT=$(python3 -c "import json; g=json.load(open('$GATE_FILE')).get('gates',[]); print(g[-1]['result'] if g else 'none')")
+    pass "gate-results.json: $GATE_COUNT entries, last: $LAST_RESULT"
+  else
+    fail "gate-results.json: invalid JSON"
+  fi
+else
+  echo -e "  ${MUTED}No gate results yet (run a gate phase)${RESET}"
+fi
+if [[ -f "$HASH_FILE" ]]; then
+  if python3 -c "import json; json.load(open('$HASH_FILE'))" 2>/dev/null; then
+    HASH_COUNT=$(python3 -c "import json; print(json.load(open('$HASH_FILE')).get('count',0))")
+    pass "assertion-hashes.json: $HASH_COUNT files hashed"
+  else
+    fail "assertion-hashes.json: invalid JSON"
+  fi
+else
+  echo -e "  ${MUTED}No assertion hashes yet (run /sdd:testify)${RESET}"
+fi
+
 # ─── Check 7: Plugin integrity ───
 echo ""
 echo -e "${WHITE}7. Plugin Structure${RESET}"

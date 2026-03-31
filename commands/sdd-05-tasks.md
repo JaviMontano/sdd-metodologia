@@ -9,3 +9,9 @@ Break features into implementable tasks with dependency ordering and parallel ma
 
 ## Execution
 Run the skill at `.claude/skills/iikit-05-tasks/SKILL.md` with the user's input.
+
+## Phase Completion
+After tasks.md is created with T-NNN identifiers:
+```bash
+bash scripts/sdd-phase-complete.sh 05 "$PROJECT_PATH"
+```

@@ -9,3 +9,9 @@ Validate cross-artifact consistency: requirements traceability, conflict detecti
 
 ## Execution
 Run the skill at `.claude/skills/iikit-06-analyze/SKILL.md` with the user's input.
+
+## Phase Completion
+After analysis passes with zero HIGH findings:
+```bash
+bash scripts/sdd-phase-complete.sh 06 "$PROJECT_PATH"
+```
