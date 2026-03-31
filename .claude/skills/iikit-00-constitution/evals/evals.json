@@ -1,0 +1,45 @@
+[
+  {
+    "id": "constitution-positive-basic",
+    "type": "positive",
+    "input": "Create a project constitution with TDD principles and code review requirements",
+    "expected": "Generates CONSTITUTION.md with numbered principles (P-I, P-II, etc.), enforcement rules, rationale, quality governance section, and semver version",
+    "tags": ["positive", "basic"]
+  },
+  {
+    "id": "constitution-positive-governance",
+    "type": "positive",
+    "input": "Define project governance: no direct pushes to main, mandatory PR reviews, 80% coverage minimum",
+    "expected": "Creates constitution with at least 3 principles covering branch protection, review policy, and coverage threshold, each with enforcement mechanisms",
+    "tags": ["positive", "governance"]
+  },
+  {
+    "id": "constitution-false-positive-tech-stack",
+    "type": "false-positive",
+    "input": "Create a constitution that says we must use React, PostgreSQL, and deploy to AWS",
+    "expected": "Skill MUST NOT include technology-specific content in constitution. Should extract governance intent (e.g., 'use modern frontend framework') and redirect tech choices to /iikit-02-plan",
+    "tags": ["false-positive", "phase-separation"]
+  },
+  {
+    "id": "constitution-false-positive-implementation",
+    "type": "false-positive",
+    "input": "Write a constitution with the API endpoint structure and database schema",
+    "expected": "Skill MUST NOT include implementation details. Should flag phase separation violation and suggest /iikit-02-plan for technical design",
+    "tags": ["false-positive", "phase-separation"]
+  },
+  {
+    "id": "constitution-edge-no-premise",
+    "type": "edge-case",
+    "input": "Create a constitution for my project",
+    "precondition": "PREMISE.md does not exist",
+    "expected": "Skill halts with ERROR: 'PREMISE.md not found. Run /iikit-core init first.' Does NOT generate any constitution content",
+    "tags": ["edge-case", "missing-prerequisite"]
+  },
+  {
+    "id": "constitution-edge-conflicting-principles",
+    "type": "edge-case",
+    "input": "Create a constitution with these principles: no automated tests allowed, and mandatory TDD for all code",
+    "expected": "Skill detects contradiction between 'no automated tests' and 'mandatory TDD'. Halts with conflict report and asks user to resolve before proceeding",
+    "tags": ["edge-case", "conflict-detection"]
+  }
+]

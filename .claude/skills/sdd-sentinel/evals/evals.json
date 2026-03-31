@@ -1,0 +1,51 @@
+{
+  "skill": "sdd-sentinel",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-sentinel",
+      "type": "positive",
+      "prompt": "/sdd:sentinel",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-sentinel.sh", "Executes P1-P5 perceive checks", "Applies D1-D6 decide rules", "Reports health score 0-100", "Lists findings by severity"] }
+    },
+    {
+      "id": "E02-sentinel-health",
+      "type": "positive",
+      "prompt": "Check my project health",
+      "expected": { "activates_skill": true, "assertions": ["Runs sentinel cycle", "Reports 4-factor health model", "Shows health delta since last run"] }
+    },
+    {
+      "id": "E03-sentinel-drift",
+      "type": "positive",
+      "prompt": "Detect any drift in my specifications",
+      "expected": { "activates_skill": true, "assertions": ["P3 checks assertion hashes", "P4 checks traceability", "Reports specific drift findings"] }
+    },
+    {
+      "id": "E04-fp-run-tests",
+      "type": "false-positive",
+      "prompt": "Run my test suite",
+      "expected": { "activates_skill": false, "reason": "User wants to execute tests, not check project health" }
+    },
+    {
+      "id": "E05-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the next feature",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-07-implement, not sentinel" }
+    },
+    {
+      "id": "E06-edge-new-project",
+      "type": "edge-case",
+      "prompt": "/sdd:sentinel",
+      "setup": "Empty project, no .specify/ directory",
+      "expected": { "activates_skill": true, "assertions": ["Detects uninitialized project", "Reports health 0/100", "Suggests /sdd:init"] }
+    },
+    {
+      "id": "E07-edge-hash-mismatch",
+      "type": "edge-case",
+      "prompt": "/sdd:sentinel",
+      "setup": ".feature file modified after hash was recorded",
+      "expected": { "activates_skill": true, "assertions": ["P3 detects hash mismatch", "Critical finding reported", "Suggests /sdd:04-testify to re-hash"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 2, "total": 7 }
+}

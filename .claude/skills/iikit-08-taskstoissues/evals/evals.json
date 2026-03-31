@@ -1,0 +1,108 @@
+{
+  "skill": "iikit-08-taskstoissues",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-export-all-tasks",
+      "type": "positive",
+      "description": "Export all tasks from active feature to GitHub Issues",
+      "prompt": "/iikit-08-taskstoissues",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Runs check-prerequisites.sh --phase 08 --json",
+          "Validates GitHub remote URL",
+          "Parses tasks.md for T-NNN entries",
+          "Creates GitHub Issues with labels and dependencies",
+          "Reports issue count and numbers"
+        ]
+      }
+    },
+    {
+      "id": "E02-export-with-labels",
+      "type": "positive",
+      "description": "Export tasks with phase and user story labels",
+      "prompt": "Export my tasks to GitHub Issues with proper labels",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Creates labels (iikit, phase-N, us-N, parallel) if missing",
+          "Applies correct labels to each issue",
+          "Links dependencies via #NNN cross-references"
+        ]
+      }
+    },
+    {
+      "id": "E03-export-with-merge-offer",
+      "type": "positive",
+      "description": "Export tasks and offer merge/PR on feature branch",
+      "prompt": "/iikit-08-taskstoissues",
+      "setup": "On a feature branch with completed tasks",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Creates issues successfully",
+          "Detects feature branch",
+          "Offers merge/PR/skip options"
+        ]
+      }
+    },
+    {
+      "id": "E04-false-positive-create-tasks",
+      "type": "false-positive",
+      "description": "Should NOT activate for task generation",
+      "prompt": "Generate tasks for my user authentication feature",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants iikit-05-tasks to generate tasks, not export to GitHub"
+      }
+    },
+    {
+      "id": "E05-false-positive-github-status",
+      "type": "false-positive",
+      "description": "Should NOT activate for GitHub status checks",
+      "prompt": "Check the status of my GitHub Issues",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants to view existing issues, not create new ones"
+      }
+    },
+    {
+      "id": "E06-edge-no-github-remote",
+      "type": "edge-case",
+      "description": "Project without GitHub remote configured",
+      "prompt": "/iikit-08-taskstoissues",
+      "setup": "Git remote is not a GitHub URL",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects non-GitHub remote",
+          "STOPS with clear error message",
+          "Does not attempt to create issues"
+        ]
+      }
+    },
+    {
+      "id": "E07-edge-empty-tasks",
+      "type": "edge-case",
+      "description": "tasks.md exists but contains no T-NNN entries",
+      "prompt": "/iikit-08-taskstoissues",
+      "setup": "tasks.md is empty or has no parseable tasks",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects empty task list",
+          "Reports 'no tasks found'",
+          "Suggests /iikit-05-tasks to generate tasks"
+        ]
+      }
+    }
+  ],
+  "coverage": {
+    "modes_tested": ["export-all", "export-with-labels", "merge-offer"],
+    "false_positives": 2,
+    "edge_cases": 2,
+    "total": 7,
+    "minimum_required": 5
+  }
+}

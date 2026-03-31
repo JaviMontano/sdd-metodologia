@@ -1,14 +1,19 @@
 ---
 name: iikit-04-testify
 description: >-
-  Generate Gherkin .feature files from requirements before implementation — produces executable BDD scenarios with traceability tags, computes assertion integrity hashes, and locks acceptance criteria for test-driven development.
-  Use when writing tests first, doing TDD, creating test cases from a spec, locking acceptance criteria, or setting up red-green-refactor with hash-verified assertions.
+  This skill should be used when the user asks to "generate test scenarios",
+  "create BDD tests", "write Gherkin features", "add acceptance criteria tests",
+  or "verify requirements with assertion hashing".
+  It produces cryptographically-verified .feature files with SHA-256 assertion hashes
+  that prevent unauthorized test modification by AI agents.
+  Use this skill whenever the user mentions testing, BDD, or Gherkin,
+  even if they don't explicitly ask for "testify".
 license: MIT
 metadata:
   version: "1.7.0"
 ---
 
-# Intent Integrity Kit Testify
+# Intent Integrity Kit Testify [EXPLICIT]
 
 Generate executable Gherkin `.feature` files from requirement artifacts before implementation. Enables TDD by creating hash-locked BDD scenarios that serve as acceptance criteria.
 
@@ -202,3 +207,61 @@ Next: [/clear → ] <next_step> (model: <tier>)
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+## Assumptions and Limits
+
+| # | Assumption | Handling |
+|---|-----------|----------|
+| 1 | spec.md exists with FR-NNN and SC-NNN identifiers | Prerequisite check validates; blocks execution if missing. [EXPLICIT] |
+| 2 | plan.md exists with technical decisions | Prerequisite check validates; blocks if missing. Tests need architecture context. [EXPLICIT] |
+| 3 | SHA-256 hashing requires each scenario to have a unique assertion block | Duplicate assertions are detected and rejected during hash generation. [EXPLICIT] |
+| 4 | .feature files follow Gherkin syntax (Given/When/Then) | Template enforces structure; malformed scenarios are caught during validation. [EXPLICIT] |
+| 5 | Assertion hashes are immutable once committed | Pre-commit hook validates hash integrity; modified assertions fail the hook. [EXPLICIT] |
+
+## Edge Cases
+
+| Scenario | Detection | Handling |
+|----------|-----------|----------|
+| Spec has scenarios without Given/When/Then structure | SC-NNN entries missing keywords | Convert to proper Gherkin structure or flag as incomplete for /iikit-clarify. [EXPLICIT] |
+| Assertion hash collision (astronomically rare with SHA-256) | Duplicate hash detected in assertion-hashes.json | Append scenario ID to hash input to guarantee uniqueness. [EXPLICIT] |
+| Feature file already exists for this spec | .feature file found in feature directory | Offer: (a) regenerate and rehash, (b) append new scenarios only, (c) skip. Never silently overwrite. [EXPLICIT] |
+| TDD mode: tests before implementation | User invokes with --tdd flag or mentions "test first" | Generate test stubs that will fail (red phase), suggest /iikit-07-implement for green phase. [EXPLICIT] |
+| Spec references external API contracts | FR-NNN contains API endpoint references from plan.md | Generate API contract test scenarios with mock expectations. [INFERRED] |
+
+## Good vs Bad Example
+
+**Good**: Properly hashed BDD scenario
+```gherkin
+Feature: User Registration
+  @FR-001 @SC-001
+  Scenario: Successful registration with valid credentials
+    Given a new user with email "test@example.com"
+    And a password meeting strength requirements
+    When the user submits the registration form
+    Then an account is created with status "pending_verification"
+    And a verification email is sent to "test@example.com"
+    # assertion-hash: a3f2b8c1d4e5f6... (SHA-256 of normalized scenario)
+```
+
+**Bad**: Untraceable, unhashed scenario
+```gherkin
+Scenario: Registration works
+  Given a user
+  When they register
+  Then it works
+```
+
+**Why**: Good scenarios have FR/SC traceability tags, specific Given/When/Then steps with concrete data, and a cryptographic assertion hash that prevents unauthorized modification. Bad scenarios lack traceability, use vague language, and have no integrity verification. [EXPLICIT]
+
+## Validation Gate
+
+Before marking testify as complete, verify: [EXPLICIT]
+
+- [ ] V1: Every SC-NNN from spec.md has a corresponding Gherkin scenario
+- [ ] V2: All scenarios have @FR-NNN and @SC-NNN tags for traceability
+- [ ] V3: Every scenario has a SHA-256 assertion hash comment
+- [ ] V4: assertion-hashes.json is updated with all new hashes
+- [ ] V5: No duplicate assertion hashes exist
+- [ ] V6: Gherkin syntax validates (Given/When/Then present in every scenario)
+- [ ] V7: Pre-commit hook is installed for hash verification
+- [ ] V8: Next step recommendation displayed (/iikit-05-tasks or /iikit-06-analyze)

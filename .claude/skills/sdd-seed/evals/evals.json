@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-seed",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-seed-data",
+      "type": "positive",
+      "prompt": "/sdd:seed",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-seed-demo.sh", "Creates 3 features", "Reports file inventory", "Does NOT generate dashboard"] }
+    },
+    {
+      "id": "E02-populate-examples",
+      "type": "positive",
+      "prompt": "Populate my project with sample data",
+      "expected": { "activates_skill": true, "assertions": ["Seeds demo data", "Reports created files", "Suggests /sdd:dashboard for visualization"] }
+    },
+    {
+      "id": "E03-fp-demo",
+      "type": "false-positive",
+      "prompt": "Give me a full demo with dashboard",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-demo which includes dashboard generation" }
+    },
+    {
+      "id": "E04-fp-init",
+      "type": "false-positive",
+      "prompt": "Initialize my real project",
+      "expected": { "activates_skill": false, "reason": "User wants /sdd:init for real initialization" }
+    },
+    {
+      "id": "E05-edge-repeated-seed",
+      "type": "edge-case",
+      "prompt": "/sdd:seed",
+      "setup": "Demo data already seeded",
+      "expected": { "activates_skill": true, "assertions": ["Overwrites cleanly (idempotent)", "Reports refreshed data"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "tasks-pos-01",
+    "type": "positive",
+    "input": "Break down the user authentication feature into implementation tasks",
+    "expected": "Generates tasks.md with T-NNN IDs, phase structure (Setup, Foundational, User Stories, Polish), dependency graph, and parallel markers",
+    "assertion": "Output contains sequential task IDs (T001, T002...), phase headers, and checkbox format '- [ ] T0XX'"
+  },
+  {
+    "id": "tasks-pos-02",
+    "type": "positive",
+    "input": "Create a task list for the payment processing feature with test references",
+    "expected": "Generates tasks.md with explicit TS-NNN references in comma-separated format, user story labels [USn], and file paths",
+    "assertion": "Output contains [TS-001, TS-002] format (not prose ranges), [US1] labels, and concrete file paths"
+  },
+  {
+    "id": "tasks-fp-01",
+    "type": "false-positive",
+    "input": "List the tasks I completed yesterday",
+    "expected": "Skill should NOT activate — this is a personal task recall, not a spec-to-task breakdown",
+    "assertion": "Skill does not generate tasks.md or invoke check-prerequisites.sh"
+  },
+  {
+    "id": "tasks-fp-02",
+    "type": "false-positive",
+    "input": "What tasks does the CI pipeline run?",
+    "expected": "Skill should NOT activate — this is asking about CI/CD steps, not generating implementation tasks from specs",
+    "assertion": "Skill does not produce T-NNN task output or write to specs/ directory"
+  },
+  {
+    "id": "tasks-edge-01",
+    "type": "edge-case",
+    "input": "Generate tasks for a feature where tasks.md already exists with 3 completed tasks",
+    "expected": "Performs semantic diff, preserves [x] completion status on matched tasks, warns about changes to completed tasks, asks confirmation before overwrite",
+    "assertion": "Output includes semantic diff report and preserves existing [x] markers for completed tasks"
+  },
+  {
+    "id": "tasks-edge-02",
+    "type": "edge-case",
+    "input": "Break down a trivial feature that only needs one implementation step",
+    "expected": "Generates a valid tasks.md with a single task in Phase 1, skips dependency graph validation, does not force artificial complexity",
+    "assertion": "Output contains exactly one task (T001) and does not report dependency graph errors"
+  }
+]

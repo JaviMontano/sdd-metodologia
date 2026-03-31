@@ -1,14 +1,18 @@
 ---
 name: iikit-08-taskstoissues
 description: >-
-  Convert tasks from tasks.md into GitHub Issues with labels and dependencies.
-  Use when exporting work items to GitHub, setting up project boards, or assigning tasks to team members.
+  This skill should be used when the user asks to "export tasks to GitHub Issues",
+  "create issues from tasks", "ship tasks to GitHub", "publish task breakdown",
+  or "set up project board from tasks". It converts SDD task breakdowns into
+  tracked GitHub Issues with labels, milestones, and dependency references.
+  Use this skill whenever the user mentions issue creation, task export,
+  GitHub integration, or shipping work items from the SDD pipeline.
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Tasks to Issues
+# Intent Integrity Kit Tasks to Issues [EXPLICIT]
 
 Convert existing tasks into dependency-ordered GitHub issues for project tracking.
 
@@ -109,3 +113,57 @@ Format:
 Issues exported! Review in GitHub, assign team members, add to project boards.
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+## Assumptions and Limits
+
+| # | Assumption | Handling |
+|---|-----------|----------|
+| 1 | GitHub remote configured (`git@github.com:` or `https://github.com/`) | If not a GitHub remote, STOP with error. Non-GitHub remotes are not supported. [EXPLICIT] |
+| 2 | `gh` CLI available or `curl` + GitHub token for API access | Prefer `gh issue create`; fall back to `curl` with GitHub API. Warn if neither available. [EXPLICIT] |
+| 3 | tasks.md exists with T-NNN formatted task IDs | If tasks.md missing, suggest `/iikit-05-tasks` first. Non-standard IDs may be skipped. [EXPLICIT] |
+| 4 | Labels may not exist in the GitHub repository | Create labels (`iikit`, `phase-N`, `us-N`, `parallel`) if they don't exist. [EXPLICIT] |
+| 5 | GitHub API rate limits may throttle bulk issue creation | Batch issues in parallel chunks but respect rate limits. Report partial failures. [INFERRED] |
+
+## Edge Cases
+
+| Scenario | Detection | Handling |
+|----------|-----------|----------|
+| No GitHub remote configured | `git config --get remote.origin.url` returns empty or non-GitHub URL | STOP with error message, suggest configuring remote first. [EXPLICIT] |
+| Tasks already exported (duplicate issues) | Issue titles already exist in the repository | Warn user about potential duplicates, offer to skip existing or create new. Never auto-create duplicates. [EXPLICIT] |
+| Partial failure during bulk creation | Some `gh issue create` calls fail (network, permissions) | Report successful and failed issues separately. Link dependencies only for successful ones. [EXPLICIT] |
+| Empty task list | tasks.md exists but contains no T-NNN entries | Report "no tasks found", suggest `/iikit-05-tasks` to generate tasks. [EXPLICIT] |
+| Very large task list (50+ tasks) | Task count exceeds typical project size | Chunk into parallel batches (5-10 per batch), show progress indicator. [INFERRED] |
+
+## Good vs Bad Example
+
+**Good**: User runs `/iikit-08-taskstoissues` and gets tracked issues
+```
+✓ Parsed 12 tasks from tasks.md (3 phases, 2 user stories)
+✓ Created 12 GitHub Issues (#45-#56)
+✓ Labels applied: iikit, phase-3, phase-4, us-1, us-2
+✓ Dependencies linked via #NNN cross-references
+→ View: https://github.com/owner/repo/issues
+→ Workflow complete — assign team members and add to project boards
+```
+
+**Bad**: Issues created without structure
+```
+✗ 12 issues created with no labels
+✗ No dependency cross-references
+✗ No link to repository issues page
+✗ Duplicate issues created for already-exported tasks
+```
+
+**Why**: Issue export must apply labels, link dependencies, prevent duplicates, and provide a direct link to the repository issues page. [EXPLICIT]
+
+## Validation Gate
+
+Before marking issue export as complete, verify: [EXPLICIT]
+
+- [ ] V1: tasks.md exists and contains T-NNN formatted tasks
+- [ ] V2: GitHub remote is configured and accessible
+- [ ] V3: All issues created with correct title format `[FeatureID/TaskID] [Story] Description`
+- [ ] V4: Labels applied (iikit, phase-N, us-N) — created if missing
+- [ ] V5: Dependency cross-references linked via `#NNN` syntax
+- [ ] V6: No duplicate issues created for previously exported tasks
+- [ ] V7: Summary report displayed with issue count, numbers, and repo link

@@ -1,0 +1,51 @@
+{
+  "skill": "sdd-insights",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-insights",
+      "type": "positive",
+      "prompt": "/sdd:insights",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-insights.js", "Reports aggregate health score", "Shows traceability coverage", "Lists risk indicators", "Provides recommendations"] }
+    },
+    {
+      "id": "E02-risk-analysis",
+      "type": "positive",
+      "prompt": "Show me risk indicators for my project",
+      "expected": { "activates_skill": true, "assertions": ["Analyzes risk patterns", "Reports flagged indicators with severity", "Maps to remediation commands"] }
+    },
+    {
+      "id": "E03-recommendations",
+      "type": "positive",
+      "prompt": "What should I work on next based on project health?",
+      "expected": { "activates_skill": true, "assertions": ["Generates prioritized recommendations", "Links to /sdd:* commands"] }
+    },
+    {
+      "id": "E04-fp-create-spec",
+      "type": "false-positive",
+      "prompt": "Create a new feature specification",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-01-specify, not insights analysis" }
+    },
+    {
+      "id": "E05-fp-dashboard",
+      "type": "false-positive",
+      "prompt": "Open my dashboard",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-dashboard, not insights" }
+    },
+    {
+      "id": "E06-edge-no-graph",
+      "type": "edge-case",
+      "prompt": "/sdd:insights",
+      "setup": "No knowledge-graph.json exists",
+      "expected": { "activates_skill": true, "assertions": ["Detects missing graph", "Suggests /sdd:graph first or auto-builds"] }
+    },
+    {
+      "id": "E07-edge-perfect-health",
+      "type": "edge-case",
+      "prompt": "/sdd:insights",
+      "setup": "All features at 100% health",
+      "expected": { "activates_skill": true, "assertions": ["Reports 100/100 health", "Suggests /sdd:08-issues to ship"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 2, "total": 7 }
+}

@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-capture",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-capture-file",
+      "type": "positive",
+      "prompt": "/sdd:capture docs/api-spec.md",
+      "expected": { "activates_skill": true, "assertions": ["Reads source file", "Creates rag-memory-of-api-spec.md", "Generates abstract and takeaways", "Updates rag-index.json"] }
+    },
+    {
+      "id": "E02-capture-natural",
+      "type": "positive",
+      "prompt": "Save this document to my knowledge base",
+      "expected": { "activates_skill": true, "assertions": ["Prompts for file path if not provided", "Routes to active workspace or global"] }
+    },
+    {
+      "id": "E03-fp-memory-browse",
+      "type": "false-positive",
+      "prompt": "Browse my captured files",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-memory to browse, not capture new files" }
+    },
+    {
+      "id": "E04-fp-workspace",
+      "type": "false-positive",
+      "prompt": "Create a new workspace session",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-workspace for session management" }
+    },
+    {
+      "id": "E05-edge-no-file",
+      "type": "edge-case",
+      "prompt": "/sdd:capture",
+      "setup": "No file argument provided",
+      "expected": { "activates_skill": true, "assertions": ["ERROR with usage example", "Shows /sdd:capture <file-path> syntax"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

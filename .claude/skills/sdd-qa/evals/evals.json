@@ -1,0 +1,44 @@
+{
+  "skill": "sdd-qa",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-generate-qa",
+      "type": "positive",
+      "prompt": "/sdd:qa",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-qa-plan.js", "Generates QA-PLAN.md", "Generates qa-plan.json", "Reports G1/G2/G3 status per feature"] }
+    },
+    {
+      "id": "E02-gate-check",
+      "type": "positive",
+      "prompt": "Check if quality gates are passing",
+      "expected": { "activates_skill": true, "assertions": ["Assesses G1/G2/G3 per feature", "Reports PASS/FAIL with details"] }
+    },
+    {
+      "id": "E03-acceptance-criteria",
+      "type": "positive",
+      "prompt": "Show me the definition of done for my features",
+      "expected": { "activates_skill": true, "assertions": ["Reports DoD per phase", "Shows acceptance criteria per feature"] }
+    },
+    {
+      "id": "E04-fp-run-tests",
+      "type": "false-positive",
+      "prompt": "Generate BDD test scenarios",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-04-testify for test generation, not QA plan" }
+    },
+    {
+      "id": "E05-fp-analyze",
+      "type": "false-positive",
+      "prompt": "Validate cross-artifact consistency",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-06-analyze for consistency, not QA plan" }
+    },
+    {
+      "id": "E06-edge-no-features",
+      "type": "edge-case",
+      "prompt": "/sdd:qa",
+      "setup": "No features in specs/",
+      "expected": { "activates_skill": true, "assertions": ["ERROR: no features found", "Suggests /sdd:01-specify"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

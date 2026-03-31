@@ -1,0 +1,44 @@
+{
+  "skill": "sdd-graph",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-build-graph",
+      "type": "positive",
+      "prompt": "/sdd:graph",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-knowledge-graph.js", "Parses constitution, specs, tests, tasks", "Writes knowledge-graph.json", "Reports node/edge counts"] }
+    },
+    {
+      "id": "E02-traceability",
+      "type": "positive",
+      "prompt": "Show me requirement traceability",
+      "expected": { "activates_skill": true, "assertions": ["Builds graph if needed", "Reports edge coverage", "Lists orphan nodes"] }
+    },
+    {
+      "id": "E03-orphans",
+      "type": "positive",
+      "prompt": "Find untested requirements",
+      "expected": { "activates_skill": true, "assertions": ["Detects FR nodes without verified_by edges", "Lists specific FR-NNN orphans"] }
+    },
+    {
+      "id": "E04-fp-insights",
+      "type": "false-positive",
+      "prompt": "Show health trends and recommendations",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-insights for health analysis, not graph building" }
+    },
+    {
+      "id": "E05-fp-spec",
+      "type": "false-positive",
+      "prompt": "Create a new requirement",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-01-specify to create requirements" }
+    },
+    {
+      "id": "E06-edge-no-constitution",
+      "type": "edge-case",
+      "prompt": "/sdd:graph",
+      "setup": "No CONSTITUTION.md exists",
+      "expected": { "activates_skill": true, "assertions": ["Builds graph without governance layer", "Warns about missing principles"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

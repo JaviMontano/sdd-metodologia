@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-status",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-pipeline-status",
+      "type": "positive",
+      "prompt": "/sdd:status",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-status.sh", "Shows pipeline table with phase dots", "Reports active feature", "Suggests next step"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "What phase am I on?",
+      "expected": { "activates_skill": true, "assertions": ["Shows current feature stage", "Reports next recommended command"] }
+    },
+    {
+      "id": "E03-fp-sentinel",
+      "type": "false-positive",
+      "prompt": "Run a full health check on my project",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-sentinel for health analysis, not pipeline overview" }
+    },
+    {
+      "id": "E04-fp-dashboard",
+      "type": "false-positive",
+      "prompt": "Generate my dashboard",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-dashboard for HTML generation" }
+    },
+    {
+      "id": "E05-edge-no-features",
+      "type": "edge-case",
+      "prompt": "/sdd:status",
+      "setup": "Empty project with no features",
+      "expected": { "activates_skill": true, "assertions": ["Shows empty pipeline table", "Suggests /sdd:01-specify"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}
