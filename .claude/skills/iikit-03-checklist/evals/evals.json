@@ -1,0 +1,47 @@
+[
+  {
+    "id": "checklist-positive-basic",
+    "type": "positive",
+    "input": "Generate a quality checklist for the user authentication feature",
+    "expected": "Extends existing requirements.md in checklists/ with items linked to FR-XXX/SC-XXX references, quality dimension tags, and >= 80% traceability to spec sections",
+    "tags": ["positive", "basic"]
+  },
+  {
+    "id": "checklist-positive-full-review",
+    "type": "positive",
+    "input": "Audit the specification for completeness and BDD readiness",
+    "expected": "Generates checklist covering all categories (Completeness, Clarity, Consistency, AC Quality, Scenario Coverage, Edge Cases, NFRs, Dependencies), resolves gaps interactively, reaches 100% completion",
+    "tags": ["positive", "full-review"]
+  },
+  {
+    "id": "checklist-false-positive-implementation",
+    "type": "false-positive",
+    "input": "Check if the login button works correctly and the API returns 200",
+    "expected": "Skill MUST NOT create implementation-testing items. Should redirect: checklists validate REQUIREMENTS quality, not implementation behavior. Suggests /iikit-04-testify for behavioral tests",
+    "tags": ["false-positive", "implementation-testing"]
+  },
+  {
+    "id": "checklist-false-positive-no-spec",
+    "type": "false-positive",
+    "input": "Generate a quality checklist",
+    "precondition": "No spec.md exists in any feature directory",
+    "expected": "Skill halts at prerequisites check. Reports missing spec.md and recommends /iikit-01-specify first",
+    "tags": ["false-positive", "missing-prerequisite"]
+  },
+  {
+    "id": "checklist-edge-minimal-spec",
+    "type": "edge-case",
+    "input": "Review this spec for quality",
+    "precondition": "spec.md contains only 1 FR (FR-001) with minimal acceptance criteria",
+    "expected": "Generates minimal but complete checklist for FR-001. Warns about low spec coverage. Suggests expanding spec with /iikit-01-specify before proceeding to tests",
+    "tags": ["edge-case", "minimal-spec"]
+  },
+  {
+    "id": "checklist-edge-all-pass",
+    "type": "edge-case",
+    "input": "Run the quality checklist",
+    "precondition": "spec.md is comprehensive with well-defined FRs, SCs, and measurable criteria",
+    "expected": "All checklist items pass immediately (100%). No interactive gap resolution needed. Reports clean pass and proceeds to suggest /iikit-04-testify as next step",
+    "tags": ["edge-case", "all-pass"]
+  }
+]

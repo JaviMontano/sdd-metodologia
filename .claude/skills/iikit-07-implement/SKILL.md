@@ -1,14 +1,18 @@
 ---
 name: iikit-07-implement
 description: >-
-  Execute the implementation plan by coding each task from tasks.md — writes source files, runs tests, verifies assertion integrity, and validates output against constitutional principles.
-  Use when ready to build the feature, start coding, develop from the task list, or resume a partially completed implementation.
+  Executes TDD-driven implementation following the task order from tasks.md, running tests after each task to maintain green state. This is GATE G3.
+  This skill should be used when the user asks to "implement the feature",
+  "start coding", "execute the tasks", "build the implementation",
+  or "deliver the code".
+  It is invoked whenever the user wants to start building code from specs,
+  even if they do not explicitly ask for "implement".
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Implement
+# Intent Integrity Kit Implement [EXPLICIT]
 
 Execute the implementation plan by processing all tasks in tasks.md.
 
@@ -208,3 +212,60 @@ Next: [/clear → ] <next_step or "All tasks done!">
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+---
+
+## Assumptions and Limits
+
+| # | Assumption / Limit | Rationale |
+|---|---|---|
+| 1 | All prerequisite artifacts (constitution, spec, plan, tasks, checklists) exist before invocation | Pre-implementation validation enforces completeness; bugfix mode relaxes this |
+| 2 | `.feature` files are immutable during implementation — only step definitions and production code are modified | Feature files are hash-locked by `/iikit-04-testify`; changes require re-running testify |
+| 3 | Parallel task dispatch requires a runtime with subagent support (Task tool) | Falls back to sequential execution if subagent dispatch is unavailable |
+| 4 | Each task commit is atomic — one task per commit with specific file staging | Ensures bisectability and clean git history; never uses `git add -A` |
+| 5 | Constitutional violations halt implementation immediately — no override available | Governance principles are non-negotiable; code must be rewritten to comply |
+
+## Edge Cases
+
+| # | Edge Case | Expected Behavior |
+|---|---|---|
+| 1 | Test fails after implementation (RED state when GREEN expected) | Fix production code, not tests or `.feature` files; re-run until GREEN; never mark `[x]` until passing |
+| 2 | Task depends on external API not yet available | Mark task as BLOCKED with reason; skip and continue with independent tasks; report at completion |
+| 3 | Implementation diverges from plan.md (e.g., different file paths, different patterns) | STOP and flag divergence; suggest updating plan.md or adjusting implementation to match |
+| 4 | All tasks already marked `[x]` (fully complete feature) | Report "All tasks complete" immediately; skip to post-implementation validation and next steps |
+| 5 | Partial implementation from previous session (some tasks `[x]`, others `[ ]`) | Resume from first unchecked task; respect existing dependency graph; do not re-implement completed tasks |
+
+## Good vs Bad Example
+
+**Good output** (TDD cycle, atomic commits, traceability):
+```
+Task T004 [US1]: Implement registration endpoint in src/routes/auth.py
+  Step 1: Write step definitions for TS-001, TS-002
+  Step 2: Verify steps — PASS
+  Step 3: RED — tests fail as expected (no production code)
+  Step 4: Write src/routes/auth.py
+  Step 5: GREEN — all tests pass
+  Step 6: Step quality — PASS
+  Commit: feat(001-user-auth): T004 implement registration endpoint
+  [x] T004 complete
+```
+
+**Bad output** (no TDD, bulk commit, no verification):
+```
+Implemented all tasks. Here is the code for auth.py, user.py, and config.py.
+Created one commit with all changes.
+Tests not run yet.
+```
+Problems: no RED/GREEN cycle, no per-task commits, no test execution, no step verification, bulk commit breaks bisectability.
+
+## Validation Gate
+
+Before marking this skill invocation as complete, verify ALL of the following:
+
+- [ ] Every task marked `[x]` passed the BDD verification chain (steps defined, RED, GREEN, step quality)
+- [ ] No `.feature` files were modified during implementation
+- [ ] Each completed task has its own atomic git commit with correct message format
+- [ ] Constitutional principles were validated before every file write
+- [ ] Dashboard was regenerated after each task commit
+- [ ] All test execution output was captured (not just "tests written")
+- [ ] Bug fix tasks (T-B prefix) triggered GitHub issue closure where applicable

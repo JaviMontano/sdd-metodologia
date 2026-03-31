@@ -1,0 +1,44 @@
+{
+  "skill": "sdd-workspace",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-create-workspace",
+      "type": "positive",
+      "prompt": "/sdd:workspace create auth-refactor",
+      "expected": { "activates_skill": true, "assertions": ["Creates dated directory", "Sets as active workspace", "Updates .specify/active-workspace", "Reports workspace path"] }
+    },
+    {
+      "id": "E02-list-workspaces",
+      "type": "positive",
+      "prompt": "List my workspace sessions",
+      "expected": { "activates_skill": true, "assertions": ["Lists all sessions with stats", "Shows active indicator", "Reports input/RAG/log counts"] }
+    },
+    {
+      "id": "E03-switch-workspace",
+      "type": "positive",
+      "prompt": "Switch to my api-gateway workspace",
+      "expected": { "activates_skill": true, "assertions": ["Finds workspace by name", "Updates active-workspace", "Reports new active session"] }
+    },
+    {
+      "id": "E04-fp-feature",
+      "type": "false-positive",
+      "prompt": "Create a new feature",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-feature to create a spec feature, not a workspace session" }
+    },
+    {
+      "id": "E05-fp-capture",
+      "type": "false-positive",
+      "prompt": "Save this file to memory",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-capture for RAG memory, not workspace management" }
+    },
+    {
+      "id": "E06-edge-no-workspaces",
+      "type": "edge-case",
+      "prompt": "/sdd:workspace list",
+      "setup": "No workspace/ directory exists",
+      "expected": { "activates_skill": true, "assertions": ["Reports no sessions", "Suggests create with example"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

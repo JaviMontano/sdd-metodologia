@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-memory",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-browse-memory",
+      "type": "positive",
+      "prompt": "/sdd:memory",
+      "expected": { "activates_skill": true, "assertions": ["Loads rag-index.json", "Lists all entries with metadata", "Shows workspace vs global counts"] }
+    },
+    {
+      "id": "E02-search-memory",
+      "type": "positive",
+      "prompt": "/sdd:memory api",
+      "expected": { "activates_skill": true, "assertions": ["Filters entries matching 'api'", "Shows matching entries with tags and dates"] }
+    },
+    {
+      "id": "E03-fp-capture",
+      "type": "false-positive",
+      "prompt": "Save this file to memory",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-capture to create entries, not browse" }
+    },
+    {
+      "id": "E04-fp-workspace",
+      "type": "false-positive",
+      "prompt": "Show my workspace sessions",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-workspace to list sessions" }
+    },
+    {
+      "id": "E05-edge-empty",
+      "type": "edge-case",
+      "prompt": "/sdd:memory",
+      "setup": "No captures exist",
+      "expected": { "activates_skill": true, "assertions": ["Reports no captures", "Suggests /sdd:capture"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

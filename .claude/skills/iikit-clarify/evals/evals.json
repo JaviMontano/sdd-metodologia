@@ -1,0 +1,109 @@
+{
+  "skill": "iikit-clarify",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-clarify-spec",
+      "type": "positive",
+      "description": "Clarify ambiguities in a feature spec",
+      "prompt": "/iikit-clarify spec",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Loads target artifact (spec.md)",
+          "Scans using ambiguity taxonomy",
+          "Presents questions one at a time with options",
+          "Writes answers to Clarifications section",
+          "References FR-NNN or SC-NNN in each answer"
+        ]
+      }
+    },
+    {
+      "id": "E02-clarify-auto-detect",
+      "type": "positive",
+      "description": "Auto-detect most recent artifact to clarify",
+      "prompt": "/iikit-clarify",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Runs check-prerequisites.sh --phase clarify --json",
+          "Detects most recent artifact in reverse phase order",
+          "Reports detected artifact type and path",
+          "Proceeds with ambiguity scan"
+        ]
+      }
+    },
+    {
+      "id": "E03-clarify-plan",
+      "type": "positive",
+      "description": "Clarify ambiguities in a technical plan",
+      "prompt": "Clarify the unclear parts of my technical plan",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Targets plan.md",
+          "Identifies architecture or design ambiguities",
+          "Presents options with recommendation",
+          "Appends to Clarifications section with session date"
+        ]
+      }
+    },
+    {
+      "id": "E04-false-positive-specify",
+      "type": "false-positive",
+      "description": "Should NOT activate for creating new specs",
+      "prompt": "Create a specification for user authentication",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants iikit-01-specify to create a spec, not clarify an existing one"
+      }
+    },
+    {
+      "id": "E05-false-positive-tests",
+      "type": "false-positive",
+      "description": "Should NOT activate for running tests",
+      "prompt": "Run the test suite for my feature",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants to execute tests, not clarify test artifacts"
+      }
+    },
+    {
+      "id": "E06-edge-no-artifacts",
+      "type": "edge-case",
+      "description": "No artifacts exist to clarify",
+      "prompt": "/iikit-clarify",
+      "setup": "Empty project with no specs/ or CONSTITUTION.md",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects no clarifiable artifacts",
+          "ERROR with 'No artifacts to clarify'",
+          "Suggests /iikit-01-specify or /iikit-00-constitution"
+        ]
+      }
+    },
+    {
+      "id": "E07-edge-already-clarified",
+      "type": "edge-case",
+      "description": "Artifact already has Clarifications section",
+      "prompt": "/iikit-clarify spec",
+      "setup": "spec.md already contains ## Clarifications with prior entries",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects existing Clarifications section",
+          "Appends new session without modifying existing entries",
+          "Creates new ### Session YYYY-MM-DD subheading"
+        ]
+      }
+    }
+  ],
+  "coverage": {
+    "modes_tested": ["explicit-target", "auto-detect", "natural-language"],
+    "false_positives": 2,
+    "edge_cases": 2,
+    "total": 7,
+    "minimum_required": 5
+  }
+}

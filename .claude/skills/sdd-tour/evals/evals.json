@@ -1,0 +1,43 @@
+{
+  "skill": "sdd-tour",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-tour",
+      "type": "positive",
+      "prompt": "/sdd:tour",
+      "expected": { "activates_skill": true, "assertions": ["Presents Step 1/8", "Explains SDD philosophy", "Shows pipeline phases", "Waits for user input between steps"] }
+    },
+    {
+      "id": "E02-onboard-me",
+      "type": "positive",
+      "prompt": "Walk me through how SDD works",
+      "expected": { "activates_skill": true, "assertions": ["Starts guided tour", "Presents each step with commands and try-it suggestions"] }
+    },
+    {
+      "id": "E03-jump-to-step",
+      "type": "positive",
+      "prompt": "/sdd:tour 5",
+      "expected": { "activates_skill": true, "assertions": ["Jumps to Step 5 (Checklist + Testify)", "Shows relevant commands for that step"] }
+    },
+    {
+      "id": "E04-fp-demo",
+      "type": "false-positive",
+      "prompt": "Create a demo project for me",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-demo to create project, not a walkthrough" }
+    },
+    {
+      "id": "E05-fp-menu",
+      "type": "false-positive",
+      "prompt": "List all available commands",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-menu for command list, not guided tour" }
+    },
+    {
+      "id": "E06-edge-exit-early",
+      "type": "edge-case",
+      "prompt": "/sdd:tour (user says 'stop' at step 3)",
+      "expected": { "activates_skill": true, "assertions": ["Ends tour gracefully", "Summarizes remaining steps"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

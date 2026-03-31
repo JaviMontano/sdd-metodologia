@@ -1,16 +1,20 @@
 ---
 name: iikit-core
 description: >-
-  Initialize an IIKit project, check feature progress, select the active feature, and display the workflow command reference.
-  Use when starting a new project, running init, checking status, switching between features, or looking up available commands and phases.
+  This skill should be used when the user asks to "initialize a new SDD project",
+  "check project status", "switch active feature", or "see available commands".
+  It bootstraps IIKit projects (git, hooks, PREMISE.md), reports pipeline progress,
+  manages multi-feature selection, and displays the workflow reference.
+  Use this skill whenever the user mentions project setup, feature switching,
+  or pipeline navigation, even if they don't explicitly ask for "iikit-core".
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
 # Intent Integrity Kit Core
 
-Core skill providing project initialization, status checking, and workflow help.
+Core skill providing project initialization, status checking, and workflow help. [EXPLICIT]
 
 ## User Input
 
@@ -166,4 +170,56 @@ Display the workflow reference from [help-reference.md](references/help-referenc
 
 ## Error Handling
 
-Unknown subcommand → show help. Not in a project → suggest `init`. Git unavailable → warn but continue.
+Unknown subcommand → show help. Not in a project → suggest `init`. Git unavailable → warn but continue. [EXPLICIT]
+
+## Assumptions and Limits
+
+| # | Assumption | Handling |
+|---|-----------|----------|
+| 1 | Git 2.0+ is available on the system | If missing, skip git operations and warn user. Option C (skip git) is always available. [EXPLICIT] |
+| 2 | Bash 3.2+ (macOS default) or PowerShell 5.1+ (Windows) | Scripts use no Bash 4+ features (no associative arrays, no mapfile). PowerShell equivalents provided. [EXPLICIT] |
+| 3 | GitHub CLI (`gh`) is optional but recommended | Falls back to `curl` for GitHub API operations when `gh` is not installed. [EXPLICIT] |
+| 4 | Only one feature can be active at a time | `.specify/active-feature` stores a single feature slug. Multi-feature parallel work requires manual switching. [INFERRED] |
+| 5 | PREMISE.md must have zero bracket placeholders before init is considered complete | Validation script rejects `[PLACEHOLDER]` patterns. [EXPLICIT] |
+
+## Edge Cases
+
+| Scenario | Detection | Handling |
+|----------|-----------|----------|
+| Already-initialized project | `test -f "CONSTITUTION.md"` returns true in Step 2 | Skip directory creation, show status summary, suggest `/iikit-core status` instead. [EXPLICIT] |
+| No features exist in `specs/` | `set-active-feature.sh` returns empty feature list | Show message: "No features found. Run `/iikit-01-specify` to create your first feature." [EXPLICIT] |
+| Ambiguous feature selector | Partial name matches multiple features (e.g., "auth" matches "user-auth" and "api-auth") | List all matches with indices and ask user to be more specific. Never auto-select. [EXPLICIT] |
+| PRD document is a URL but network is unavailable | `curl`/`wget` fails during Step 7 | Log warning, skip PRD seeding, suggest user retry with a local file copy. [INFERRED] |
+| Git user not configured | `git_user_configured` is false in init-project.sh output | Ask user explicitly for name and email. Never guess from hostname or system username. [EXPLICIT] |
+
+## Good vs Bad Example
+
+**Good**: User runs `/iikit-core init` in an empty directory
+```
+✓ Git initialized
+✓ Directory structure created (.specify/, specs/)
+✓ Pre-commit and post-commit hooks installed
+✓ PREMISE.md created with actual project description
+→ Next: /iikit-00-constitution
+```
+
+**Bad**: User runs `/iikit-core init` and skill leaves bracket placeholders
+```
+✗ PREMISE.md contains [PLACEHOLDER] — not validated
+✗ Hooks installed but no git repo exists
+✗ No next step suggested
+```
+
+**Why**: Init must produce a fully-resolved PREMISE.md with zero placeholders. Hooks require a git repo. Always suggest the next pipeline step. [EXPLICIT]
+
+## Validation Gate
+
+Before marking init as complete, verify: [EXPLICIT]
+
+- [ ] V1: `.specify/` directory exists
+- [ ] V2: `specs/` directory exists
+- [ ] V3: PREMISE.md exists and contains zero `[PLACEHOLDER]` patterns
+- [ ] V4: Git hooks installed (or git explicitly skipped with user acknowledgment)
+- [ ] V5: `check-prerequisites.sh --phase status --json` returns valid JSON
+- [ ] V6: Next step recommendation displayed to user
+- [ ] V7: If PRD provided, backlog seeding completed or explicitly skipped

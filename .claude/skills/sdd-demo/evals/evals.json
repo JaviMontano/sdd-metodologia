@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-demo",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-run-demo",
+      "type": "positive",
+      "prompt": "/sdd:demo",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-seed-demo.sh", "Generates dashboard", "Provides file:// URL", "Lists 3 features created"] }
+    },
+    {
+      "id": "E02-try-sdd",
+      "type": "positive",
+      "prompt": "Show me how SDD works with an example",
+      "expected": { "activates_skill": true, "assertions": ["Creates demo project", "Opens dashboard", "Suggests next exploration commands"] }
+    },
+    {
+      "id": "E03-fp-init",
+      "type": "false-positive",
+      "prompt": "Initialize a new real project",
+      "expected": { "activates_skill": false, "reason": "User wants /sdd:init for real project, not demo data" }
+    },
+    {
+      "id": "E04-fp-spec",
+      "type": "false-positive",
+      "prompt": "Create a feature specification",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-01-specify for real specs" }
+    },
+    {
+      "id": "E05-edge-existing-data",
+      "type": "edge-case",
+      "prompt": "/sdd:demo",
+      "setup": "Project already has real specs/",
+      "expected": { "activates_skill": true, "assertions": ["WARN: existing data will be overwritten", "Waits for confirmation before proceeding"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

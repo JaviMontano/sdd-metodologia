@@ -1,0 +1,43 @@
+{
+  "skill": "sdd-menu",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-menu",
+      "type": "positive",
+      "prompt": "/sdd:menu",
+      "expected": { "activates_skill": true, "assertions": ["Shows 4 categories", "Lists all commands with descriptions", "Includes aliases and gate markers", "Shows quick start section"] }
+    },
+    {
+      "id": "E02-what-commands",
+      "type": "positive",
+      "prompt": "What SDD commands are available?",
+      "expected": { "activates_skill": true, "assertions": ["Displays organized command palette", "Groups by Pipeline/Intelligence/Utility/Experience"] }
+    },
+    {
+      "id": "E03-filter-category",
+      "type": "positive",
+      "prompt": "/sdd:menu intelligence",
+      "expected": { "activates_skill": true, "assertions": ["Filters to Intelligence category only", "Shows sentinel, insights, graph, qa, dashboard"] }
+    },
+    {
+      "id": "E04-fp-tour",
+      "type": "false-positive",
+      "prompt": "Teach me how SDD works",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-tour for guided learning, not command list" }
+    },
+    {
+      "id": "E05-fp-status",
+      "type": "false-positive",
+      "prompt": "Show my pipeline progress",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-status for pipeline progress" }
+    },
+    {
+      "id": "E06-edge-unknown-category",
+      "type": "edge-case",
+      "prompt": "/sdd:menu deployment",
+      "expected": { "activates_skill": true, "assertions": ["Reports 'category not found'", "Shows full palette as fallback"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

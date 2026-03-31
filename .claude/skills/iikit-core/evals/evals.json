@@ -1,0 +1,133 @@
+{
+  "skill": "iikit-core",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-init-new-project",
+      "type": "positive",
+      "description": "Initialize a brand-new SDD project",
+      "prompt": "/iikit-core init My task management app for remote teams",
+      "expected": {
+        "activates_skill": true,
+        "subcommand": "init",
+        "assertions": [
+          "Runs git-setup.sh --json to detect environment",
+          "Creates .specify/ and specs/ directories",
+          "Installs pre-commit and post-commit hooks",
+          "Creates PREMISE.md with zero [PLACEHOLDER] patterns",
+          "Suggests /iikit-00-constitution as next step"
+        ]
+      }
+    },
+    {
+      "id": "E02-status-check",
+      "type": "positive",
+      "description": "Check project status and pipeline progress",
+      "prompt": "/iikit-core status",
+      "expected": {
+        "activates_skill": true,
+        "subcommand": "status",
+        "assertions": [
+          "Runs check-prerequisites.sh --phase status --json",
+          "Displays feature_stage, artifact status, checklist progress",
+          "Shows next_step recommendation",
+          "Suggests /clear if clear_before is true"
+        ]
+      }
+    },
+    {
+      "id": "E03-feature-switch",
+      "type": "positive",
+      "description": "Switch active feature in multi-feature project",
+      "prompt": "/iikit-core use user-auth",
+      "expected": {
+        "activates_skill": true,
+        "subcommand": "use",
+        "assertions": [
+          "Runs set-active-feature.sh --json user-auth",
+          "Reports active feature and stage",
+          "Suggests appropriate next command based on stage"
+        ]
+      }
+    },
+    {
+      "id": "E04-help-default",
+      "type": "positive",
+      "description": "Display help when no subcommand given",
+      "prompt": "/iikit-core",
+      "expected": {
+        "activates_skill": true,
+        "subcommand": "help",
+        "assertions": [
+          "Displays help-reference.md content verbatim",
+          "Lists all available pipeline phases and commands"
+        ]
+      }
+    },
+    {
+      "id": "E05-init-with-prd",
+      "type": "positive",
+      "description": "Initialize with PRD document for backlog seeding",
+      "prompt": "/iikit-core init ./docs/product-requirements.md",
+      "expected": {
+        "activates_skill": true,
+        "subcommand": "init",
+        "assertions": [
+          "Detects prd_source argument",
+          "Completes standard init flow first",
+          "Seeds backlog from PRD if GitHub remote exists",
+          "Creates GitHub issues for extracted features"
+        ]
+      }
+    },
+    {
+      "id": "E06-false-positive-specify",
+      "type": "false-positive",
+      "description": "Should NOT activate for specify requests",
+      "prompt": "Create a spec for my user authentication feature",
+      "expected": {
+        "activates_skill": false,
+        "reason": "This is a specification request, should route to iikit-01-specify"
+      }
+    },
+    {
+      "id": "E07-edge-case-already-initialized",
+      "type": "edge-case",
+      "description": "Running init on already-initialized project",
+      "prompt": "/iikit-core init",
+      "setup": "Project already has CONSTITUTION.md and .specify/",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects CONSTITUTION.md exists in Step 2",
+          "Does NOT recreate directory structure",
+          "Shows constitution status and feature count",
+          "Suggests /iikit-core status instead"
+        ]
+      }
+    },
+    {
+      "id": "E08-edge-case-no-git",
+      "type": "edge-case",
+      "description": "Init when git is not available",
+      "prompt": "/iikit-core init My project",
+      "setup": "System has no git installed",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "git-setup.sh reports git_available=false",
+          "Only Option C (skip git) is presented",
+          "Warns about no assertion integrity hooks",
+          "Proceeds with directory creation and PREMISE.md"
+        ]
+      }
+    }
+  ],
+  "coverage": {
+    "subcommands_tested": ["init", "status", "use", "help"],
+    "false_positives": 1,
+    "edge_cases": 2,
+    "total": 8,
+    "minimum_required": 5
+  }
+}

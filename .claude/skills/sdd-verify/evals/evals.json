@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-verify",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-verify",
+      "type": "positive",
+      "prompt": "/sdd:verify",
+      "expected": { "activates_skill": true, "assertions": ["Runs sdd-verify.sh", "Executes all 8 checks", "Reports PASS/WARN/FAIL per check", "Shows summary counts"] }
+    },
+    {
+      "id": "E02-integrity-check",
+      "type": "positive",
+      "prompt": "Check my project integrity",
+      "expected": { "activates_skill": true, "assertions": ["Runs 8-check suite", "Reports remediation for failures"] }
+    },
+    {
+      "id": "E03-fp-sentinel",
+      "type": "false-positive",
+      "prompt": "Check my project health score",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-sentinel for health scoring, not structural verification" }
+    },
+    {
+      "id": "E04-fp-analyze",
+      "type": "false-positive",
+      "prompt": "Validate cross-artifact consistency",
+      "expected": { "activates_skill": false, "reason": "User wants iikit-06-analyze for artifact consistency" }
+    },
+    {
+      "id": "E05-edge-new-project",
+      "type": "edge-case",
+      "prompt": "/sdd:verify",
+      "setup": "Brand new project, most checks fail",
+      "expected": { "activates_skill": true, "assertions": ["Runs all 8 checks without short-circuit", "Reports expected failures for new project"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

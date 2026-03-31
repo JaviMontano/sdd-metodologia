@@ -1,0 +1,38 @@
+{
+  "skill": "sdd-sync",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-sync",
+      "type": "positive",
+      "prompt": "/sdd:sync",
+      "expected": { "activates_skill": true, "assertions": ["Runs sync-upstream.sh", "Runs brand-overlay.sh", "Runs verify-brand.sh", "Reports changes and verification"] }
+    },
+    {
+      "id": "E02-update-framework",
+      "type": "positive",
+      "prompt": "Update SDD from upstream",
+      "expected": { "activates_skill": true, "assertions": ["Fetches from IIC/kit", "Reapplies brand", "Verifies brand integrity"] }
+    },
+    {
+      "id": "E03-fp-verify",
+      "type": "false-positive",
+      "prompt": "Verify my project structure",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-verify, not upstream sync" }
+    },
+    {
+      "id": "E04-fp-dashboard",
+      "type": "false-positive",
+      "prompt": "Refresh my dashboard",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-dashboard for dashboard refresh" }
+    },
+    {
+      "id": "E05-edge-no-upstream",
+      "type": "edge-case",
+      "prompt": "/sdd:sync",
+      "setup": "No upstream remote configured",
+      "expected": { "activates_skill": true, "assertions": ["ERROR: no upstream remote", "Shows git remote add command"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

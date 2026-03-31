@@ -1,0 +1,109 @@
+{
+  "skill": "iikit-bugfix",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-bugfix-text",
+      "type": "positive",
+      "description": "Report a bug from text description",
+      "prompt": "/iikit-bugfix Login fails when email contains plus sign",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Parses text as bug description",
+          "Presents feature selection table",
+          "Prompts for severity and reproduction steps",
+          "Generates BUG-NNN ID",
+          "Creates/appends bugs.md with structured entry",
+          "Generates fix tasks in tasks.md with T-B prefix"
+        ]
+      }
+    },
+    {
+      "id": "E02-bugfix-github",
+      "type": "positive",
+      "description": "Import bug from GitHub issue number",
+      "prompt": "/iikit-bugfix #42",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Fetches issue via gh issue view",
+          "Maps title to description, body to repro steps",
+          "Maps labels to severity",
+          "Stores issue number in bugs.md",
+          "Does NOT create outbound GitHub issue"
+        ]
+      }
+    },
+    {
+      "id": "E03-bugfix-critical",
+      "type": "positive",
+      "description": "Critical P0 bug with expedited flow",
+      "prompt": "Report a critical production bug: payment processing is down",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects critical severity language",
+          "Generates minimal fix task set",
+          "Suggests hotfix branch"
+        ]
+      }
+    },
+    {
+      "id": "E04-false-positive-feature",
+      "type": "false-positive",
+      "description": "Should NOT activate for feature requests",
+      "prompt": "Add a new payment method to the checkout flow",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants a new feature, not a bug fix — should route to iikit-01-specify"
+      }
+    },
+    {
+      "id": "E05-false-positive-test",
+      "type": "false-positive",
+      "description": "Should NOT activate for test generation",
+      "prompt": "Generate test cases for the login feature",
+      "expected": {
+        "activates_skill": false,
+        "reason": "User wants iikit-04-testify for test generation, not bugfix"
+      }
+    },
+    {
+      "id": "E06-edge-no-features",
+      "type": "edge-case",
+      "description": "No features exist to report bug against",
+      "prompt": "/iikit-bugfix Something is broken",
+      "setup": "Empty project with no specs/ features",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects no features in specs/",
+          "ERROR with 'No features found'",
+          "Suggests /iikit-01-specify first"
+        ]
+      }
+    },
+    {
+      "id": "E07-edge-empty-input",
+      "type": "edge-case",
+      "description": "No bug description provided",
+      "prompt": "/iikit-bugfix",
+      "expected": {
+        "activates_skill": true,
+        "assertions": [
+          "Detects empty input",
+          "ERROR with usage example",
+          "Shows both text and #number usage patterns"
+        ]
+      }
+    }
+  ],
+  "coverage": {
+    "modes_tested": ["text-input", "github-inbound", "critical-path"],
+    "false_positives": 2,
+    "edge_cases": 2,
+    "total": 7,
+    "minimum_required": 5
+  }
+}

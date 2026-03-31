@@ -1,14 +1,17 @@
 ---
 name: iikit-bugfix
 description: >-
-  Report a bug against an existing feature — creates a structured bugs.md record, generates fix tasks in tasks.md, and optionally imports from or creates GitHub issues.
-  Use when fixing a bug, reporting a defect, importing a GitHub issue into the workflow, or triaging an error without running the full specification process.
+  This skill should be used when the user asks to "fix a bug", "report a bug",
+  "debug an issue", "create a bugfix", or "handle a defect". It creates a structured
+  bugs.md record, generates fix tasks in tasks.md, and optionally imports from or
+  creates GitHub issues. Use this skill whenever the user mentions bugs, defects,
+  errors, or quick fixes that don't require a full SDD feature specification cycle.
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Bugfix
+# Intent Integrity Kit Bugfix [EXPLICIT]
 
 Report a bug against an existing feature, create a structured `bugs.md` record, and generate fix tasks in `tasks.md`.
 
@@ -279,3 +282,63 @@ Next step:
 | TDD required, no test artifacts | ERROR: "Run `/iikit-04-testify` first" |
 | Existing bugs.md | Append without modifying existing entries |
 | Existing tasks.md | Append without modifying existing entries |
+
+## Assumptions and Limits
+
+| # | Assumption | Handling |
+|---|-----------|----------|
+| 1 | Bug is in an existing feature's codebase | If no feature exists, suggest `/iikit-01-specify` first. [EXPLICIT] |
+| 2 | Doesn't require full specification cycle | Bugfix is a lightweight path: report → tasks → fix. [EXPLICIT] |
+| 3 | May generate tasks without full pipeline validation | Fix tasks skip G1/G2 gates; still validated at G3 during implementation. [EXPLICIT] |
+| 4 | Git available for branch creation | If git unavailable, skip branch operations with warning. [EXPLICIT] |
+| 5 | Bug report follows structured format (severity, repro steps, expected/actual) | Template enforces structure; missing fields are prompted. [EXPLICIT] |
+
+## Edge Cases
+
+| Scenario | Detection | Handling |
+|----------|-----------|----------|
+| Bug is actually a feature request | User describes new functionality, not a defect | Detect enhancement language, suggest `/iikit-01-specify` instead. [EXPLICIT] |
+| Bug affects multiple features | User references components in different features | Create bug record in the most affected feature, cross-reference others. [INFERRED] |
+| No reproduction steps provided | User gives only "it's broken" | Prompt for: steps to reproduce, expected behavior, actual behavior, environment. [EXPLICIT] |
+| Bug in constitution/governance artifacts | Defect in CONSTITUTION.md or governance rules | Route to `/iikit-00-constitution` for governance corrections. [EXPLICIT] |
+| Critical production bug requiring immediate fix | User marks as critical/P0 | Skip non-essential steps, generate minimal fix task, suggest hotfix branch. [EXPLICIT] |
+
+## Good vs Bad Example
+
+**Good**: User runs `/iikit-bugfix` and gets structured report
+```
+Bug Report: BUG-003 — Login fails with special characters in password
+  Severity: High | Feature: 001-user-auth
+  Repro: 1) Enter password with '&' 2) Click login 3) 500 error
+  Expected: Login succeeds | Actual: Server error 500
+  Root cause: Unescaped SQL parameter in auth query
+
+Fix Tasks:
+  T-FIX-001: Parameterize SQL query in auth.service.ts
+  T-FIX-002: Add input sanitization test for special characters
+  T-FIX-003: Regression test for BUG-003
+
+→ bugs.md updated | tasks.md updated | Branch: fix/bug-003
+```
+
+**Bad**: Bug report without structure
+```
+✗ "Fixed the login bug" — no reproduction steps
+✗ No root cause analysis
+✗ No regression test task generated
+✗ No bugs.md record created
+```
+
+**Why**: Bugfix must create a structured record with repro steps, generate fix tasks with regression tests, and update bugs.md for traceability. [EXPLICIT]
+
+## Validation Gate
+
+Before marking bugfix as complete, verify: [EXPLICIT]
+
+- [ ] V1: Bug report created in bugs.md with structured fields
+- [ ] V2: Reproduction steps documented
+- [ ] V3: Root cause identified (or marked as [OPEN] for investigation)
+- [ ] V4: Fix tasks generated in tasks.md
+- [ ] V5: Regression test task included
+- [ ] V6: Affected artifacts identified (which FRs, SCs impacted)
+- [ ] V7: No side effects introduced to existing functionality

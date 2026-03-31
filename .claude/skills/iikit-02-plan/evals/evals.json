@@ -1,0 +1,47 @@
+[
+  {
+    "id": "plan-positive-basic",
+    "type": "positive",
+    "input": "Create a technical plan for the user authentication feature",
+    "expected": "Generates plan.md with architecture section, data-model.md with entity definitions, research.md with technology rationale, and at least one API contract in contracts/",
+    "tags": ["positive", "basic"]
+  },
+  {
+    "id": "plan-positive-full-stack",
+    "type": "positive",
+    "input": "Design the architecture for an e-commerce checkout flow with payment integration",
+    "expected": "Creates plan.md with architecture diagram (ASCII), data-model.md with entities (Order, Payment, etc.), API contracts for checkout endpoints, research.md with payment provider evaluation, node classifications in context.json",
+    "tags": ["positive", "full-stack"]
+  },
+  {
+    "id": "plan-false-positive-governance",
+    "type": "false-positive",
+    "input": "Plan should include our coding standards: all functions must have JSDoc, PR reviews required",
+    "expected": "Skill MUST NOT include governance content in plan. Should flag phase separation violation and reference CONSTITUTION.md for coding standards and review policies",
+    "tags": ["false-positive", "phase-separation"]
+  },
+  {
+    "id": "plan-false-positive-no-spec",
+    "type": "false-positive",
+    "input": "Create a technical plan for a todo app",
+    "precondition": "No spec.md exists in any feature directory",
+    "expected": "Skill halts at prerequisites check with ERROR: spec.md not found. Recommends running /iikit-01-specify first",
+    "tags": ["false-positive", "missing-prerequisite"]
+  },
+  {
+    "id": "plan-edge-ambiguous-architecture",
+    "type": "edge-case",
+    "input": "Plan the backend architecture",
+    "precondition": "spec.md mentions both REST endpoints and GraphQL queries without clear preference",
+    "expected": "Skill detects ambiguity, asks clarifying question about REST vs GraphQL preference before proceeding, documents decision in research.md",
+    "tags": ["edge-case", "ambiguity"]
+  },
+  {
+    "id": "plan-edge-constitution-conflict",
+    "type": "edge-case",
+    "input": "Use MongoDB for the data layer",
+    "precondition": "CONSTITUTION.md principle P-III states 'relational databases only for data integrity'",
+    "expected": "Post-design constitution check catches violation. Skill STOPS, reports conflict with P-III, and suggests PostgreSQL or MySQL as compliant alternatives",
+    "tags": ["edge-case", "constitution-conflict"]
+  }
+]

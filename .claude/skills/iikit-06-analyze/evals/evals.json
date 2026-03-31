@@ -1,0 +1,44 @@
+[
+  {
+    "id": "analyze-pos-01",
+    "type": "positive",
+    "input": "Validate cross-artifact consistency for the user-auth feature",
+    "expected": "Produces analysis.md with findings table (ID, Category, Severity, Location, Summary, Recommendation), constitution alignment, coverage summary, and health score",
+    "assertion": "Output contains health score X/100, constitution alignment per principle, and coverage summary table"
+  },
+  {
+    "id": "analyze-pos-02",
+    "type": "positive",
+    "input": "Run the analysis gate and check spec-plan-test alignment",
+    "expected": "Executes all seven detection passes (A-H), persists score to .specify/score-history.json, reports trend indicator",
+    "assertion": "Output includes detection passes A through H, score-history.json is updated, trend shown as improving/declining/stable"
+  },
+  {
+    "id": "analyze-fp-01",
+    "type": "false-positive",
+    "input": "Analyze this Python code for performance issues",
+    "expected": "Skill should NOT activate — this is code analysis, not cross-artifact consistency validation",
+    "assertion": "Skill does not run check-prerequisites.sh or produce analysis.md"
+  },
+  {
+    "id": "analyze-fp-02",
+    "type": "false-positive",
+    "input": "Can you analyze the market trends for SaaS products?",
+    "expected": "Skill should NOT activate — this is market analysis, not pipeline artifact validation",
+    "assertion": "Skill does not invoke any IIKit scripts or write to specs/ directory"
+  },
+  {
+    "id": "analyze-edge-01",
+    "type": "edge-case",
+    "input": "Run analysis on a feature where all checks pass with zero findings",
+    "expected": "Reports zero issues gracefully with full coverage statistics, health score 100/100, trend stable or improving",
+    "assertion": "Output shows 0 findings, score 100/100, and complete coverage summary without false warnings"
+  },
+  {
+    "id": "analyze-edge-02",
+    "type": "edge-case",
+    "input": "Validate consistency when test specs exist but some FRs have no matching @FR-NNN tags in .feature files",
+    "expected": "Flags untested requirements as HIGH severity under detection pass H1, lists each orphan FR-NNN explicitly",
+    "assertion": "Output contains HIGH severity findings for each FR without a matching @FR-NNN tag in .feature files"
+  }
+]

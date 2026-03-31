@@ -1,14 +1,18 @@
 ---
 name: iikit-05-tasks
 description: >-
-  Generate dependency-ordered task breakdown from plan and specification.
-  Use when breaking features into implementable tasks, planning sprints, or creating work items with parallel markers.
+  Transforms specs and plans into dependency-ordered T-NNN tasks with effort estimates and parallel markers.
+  This skill should be used when the user asks to "break down work into tasks",
+  "create a task list", "generate implementation tasks", "plan the work breakdown",
+  or "produce dependency-ordered tasks".
+  It is invoked whenever the user mentions task planning or work breakdown,
+  even if they do not explicitly ask for "tasks".
 license: MIT
 metadata:
-  version: "1.6.4"
+  version: "1.7.0"
 ---
 
-# Intent Integrity Kit Tasks
+# Intent Integrity Kit Tasks [EXPLICIT]
 
 Generate an actionable, dependency-ordered tasks.md for the feature.
 
@@ -160,3 +164,62 @@ Next: [/clear → ] <next_step> (model: <tier>)
 
 - Dashboard: file://$(pwd)/.specify/dashboard.html (resolve the path)
 ```
+
+---
+
+## Assumptions and Limits
+
+| # | Assumption / Limit | Rationale |
+|---|---|---|
+| 1 | `plan.md` and `spec.md` exist and are well-formed before invocation | Prerequisites script enforces this; skill does not create specs |
+| 2 | Task IDs are globally unique within a single feature's `tasks.md` | Sequential T001..T999 allocation; cross-feature uniqueness is not guaranteed |
+| 3 | Parallel markers `[P]` are advisory — runtime may fall back to sequential | Not all agent runtimes support subagent dispatch |
+| 4 | Effort estimates are rough order-of-magnitude, not contractual | Based on task complexity heuristics, not historical velocity data |
+| 5 | Maximum 200 tasks per feature before readability degrades | Beyond this threshold, consider splitting the feature |
+
+## Edge Cases
+
+| # | Edge Case | Expected Behavior |
+|---|---|---|
+| 1 | Circular task dependencies detected in dependency graph | ERROR with cycle details and resolution options; tasks.md is NOT written |
+| 2 | Single-task feature (trivial scope) | Generate a valid tasks.md with one task in Phase 1; skip dependency graph validation |
+| 3 | Task references a test spec (TS-NNN) that does not yet exist | WARNING logged; task is still generated with the reference for forward traceability |
+| 4 | `plan.md` has no clear implementation steps or phases | WARNING on plan readiness; generate best-effort tasks from spec.md user stories only |
+| 5 | `tasks.md` already exists for the feature (re-run scenario) | Semantic diff: preserve `[x]` completion status, map old IDs by similarity, ask confirmation before overwrite |
+
+## Good vs Bad Example
+
+**Good output** (correct format, traceability, phases):
+```markdown
+## Phase 1: Setup
+- [ ] T001 Create project structure per implementation plan
+
+## Phase 2: Foundational
+- [ ] T002 [P] Define shared User entity in src/models/user.py
+- [ ] T003 [P] Define shared Config entity in src/config.py
+
+## Phase 3: US1 — User Registration
+- [ ] T004 [US1] Implement registration endpoint in src/routes/auth.py [TS-001, TS-002]
+- [ ] T005 [US1] Add input validation middleware [TS-003]
+```
+
+**Bad output** (missing IDs, no phases, prose ranges):
+```markdown
+- [ ] Create project structure
+- [ ] Implement user registration
+- [ ] Add tests TS-001 through TS-005
+- [ ] Deploy
+```
+Problems: no task IDs, no phase grouping, no `[USn]` labels, prose range instead of explicit list, no file paths.
+
+## Validation Gate
+
+Before marking this skill invocation as complete, verify ALL of the following:
+
+- [ ] Every task line matches format `- [ ] [TaskID] [P?] [Story?] Description with file path`
+- [ ] Task IDs are sequential (T001, T002, ...) with no gaps or duplicates
+- [ ] Phase structure is present (Setup, Foundational, User Stories, Polish)
+- [ ] Dependency graph validation passed (no circular dependencies)
+- [ ] All test spec references use explicit comma-separated IDs (no prose ranges)
+- [ ] Semantic diff was performed if `tasks.md` already existed
+- [ ] `tasks.md` was written to the correct `FEATURE_DIR` path

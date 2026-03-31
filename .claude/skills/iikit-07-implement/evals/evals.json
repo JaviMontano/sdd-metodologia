@@ -1,0 +1,44 @@
+[
+  {
+    "id": "implement-pos-01",
+    "type": "positive",
+    "input": "Implement the user authentication feature following the task list",
+    "expected": "Executes tasks in order from tasks.md, runs TDD cycle (RED then GREEN) for each task, creates atomic commits per task, marks [x] after verification",
+    "assertion": "Output shows RED/GREEN cycle per task, atomic git commits with feat(<feature-id>): format, and [x] marking after BDD gates pass"
+  },
+  {
+    "id": "implement-pos-02",
+    "type": "positive",
+    "input": "Start coding the payment feature — execute all tasks",
+    "expected": "Loads tasks.md and plan.md, validates prerequisites, writes step definitions before production code, verifies step coverage and quality",
+    "assertion": "Output includes verify-steps.sh PASS, verify-step-quality.sh PASS, and test execution output for each task"
+  },
+  {
+    "id": "implement-fp-01",
+    "type": "false-positive",
+    "input": "Implement a sorting algorithm in Python",
+    "expected": "Skill should NOT activate — this is a general coding request, not task-driven feature implementation from tasks.md",
+    "assertion": "Skill does not run check-prerequisites.sh or read tasks.md"
+  },
+  {
+    "id": "implement-fp-02",
+    "type": "false-positive",
+    "input": "Can you implement some UI improvements to the dashboard?",
+    "expected": "Skill should NOT activate — ad-hoc UI changes are not spec-driven task execution from the pipeline",
+    "assertion": "Skill does not invoke IIKit scripts or attempt to parse tasks.md"
+  },
+  {
+    "id": "implement-edge-01",
+    "type": "edge-case",
+    "input": "Resume implementation — some tasks are already marked [x] from a previous session",
+    "expected": "Skips completed tasks, resumes from first unchecked task, respects dependency graph, does not re-implement completed work",
+    "assertion": "Output skips [x] tasks, starts execution at first [ ] task, and dependency validation accounts for completed predecessors"
+  },
+  {
+    "id": "implement-edge-02",
+    "type": "edge-case",
+    "input": "Implement the feature but a BDD test fails after writing production code (GREEN expected but RED observed)",
+    "expected": "Does NOT modify .feature files, fixes production code instead, re-runs tests until GREEN, does not mark task [x] until all three gates pass",
+    "assertion": "Output shows fix-and-retry cycle on production code, .feature files remain unmodified, task stays [ ] until GREEN confirmed"
+  }
+]

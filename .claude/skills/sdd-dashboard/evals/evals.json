@@ -1,0 +1,51 @@
+{
+  "skill": "sdd-dashboard",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-generate-dashboard",
+      "type": "positive",
+      "prompt": "/sdd:dashboard",
+      "expected": { "activates_skill": true, "assertions": ["Runs generate-command-center-data.js", "Runs generate-dashboard.js", "Reports both file paths", "Provides file:// URL"] }
+    },
+    {
+      "id": "E02-refresh-dashboard",
+      "type": "positive",
+      "prompt": "Refresh my project dashboard",
+      "expected": { "activates_skill": true, "assertions": ["Regenerates data.js", "Regenerates dashboard.html", "Reports updated view count"] }
+    },
+    {
+      "id": "E03-open-dashboard",
+      "type": "positive",
+      "prompt": "Open the ALM command center",
+      "expected": { "activates_skill": true, "assertions": ["Generates if needed", "Provides resolved file:// path to index.html"] }
+    },
+    {
+      "id": "E04-fp-status",
+      "type": "false-positive",
+      "prompt": "Show me my pipeline status",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-status for text pipeline view, not HTML dashboard" }
+    },
+    {
+      "id": "E05-fp-insights",
+      "type": "false-positive",
+      "prompt": "Analyze my project health trends",
+      "expected": { "activates_skill": false, "reason": "User wants sdd-insights for analysis, not dashboard generation" }
+    },
+    {
+      "id": "E06-edge-no-node",
+      "type": "edge-case",
+      "prompt": "/sdd:dashboard",
+      "setup": "Node.js not installed",
+      "expected": { "activates_skill": true, "assertions": ["Detects missing Node", "ERROR with install suggestion"] }
+    },
+    {
+      "id": "E07-edge-empty-project",
+      "type": "edge-case",
+      "prompt": "/sdd:dashboard",
+      "setup": "No features or specs exist",
+      "expected": { "activates_skill": true, "assertions": ["Generates dashboard with empty state", "Shows init guidance in views"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 2, "total": 7 }
+}
