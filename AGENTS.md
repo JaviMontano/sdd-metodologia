@@ -2,7 +2,7 @@
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 skills · 9 pipeline phases · 39 commands · 23 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
+> 52 skills (12 IIKit + 18 SDD + 22 BMAD) · 9 pipeline phases · 39+ commands · 23 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -240,6 +240,66 @@ SDD is not just a specification framework — it's an **operational platform**. 
 3. **Execute tasks**: Via tool use and context-specific skill activation
 4. **Self-monitor**: Ambient heartbeat detects drift and recommends actions
 5. **Learn**: RAG memory captures session inputs for cross-session knowledge
+
+---
+
+## BMAD Commands — Breakthrough Method for Agile AI-Driven Development
+
+BMAD skills complement the IIKit pipeline with agent personas, agile ceremonies, creative ideation, and enterprise testing. Based on the open-source BMAD framework by Yuriy Butkevych.
+
+### BMAD Agents (5 skills)
+
+| Command | Agent | Description |
+|---------|-------|-------------|
+| `/bmad-analyst` | Mary | Research & product brief — market landscape, feasibility, user needs |
+| `/bmad-pm` | John | PRD & epic orchestration — business-facing requirements |
+| `/bmad-ux-designer` | Sally | User flows & UI specs — UX design phase (IIKit gap) |
+| `/bmad-architect` | Winston | System design & ADR — architecture with quality attributes |
+| `/bmad-scrum-master` | Bob | Sprint ceremonies & velocity — standup, planning, review, retro |
+
+### BMAD Workflows (8 skills)
+
+| Command | Description |
+|---------|-------------|
+| `/bmad-brainstorming` | 60+ creative ideation techniques — pre-pipeline divergent thinking |
+| `/bmad-create-prd` | PRD with personas, metrics, MoSCoW, DoD — business-facing document |
+| `/bmad-sprint-planning` | Sprint planning ceremony — capacity, stories, commitment ratio |
+| `/bmad-dev-story` | Developer-ready story — AC in Given-When-Then, subtasks, test scenarios |
+| `/bmad-code-review` | Structured code review — 5-category checklist post-implementation |
+| `/bmad-retrospective` | Sprint retrospective — structured reflection with action items |
+| `/bmad-prfaq` | Working Backwards / PRFAQ — Amazon-style product validation |
+| `/bmad-quick-dev` | Rapid implementation bypass — controlled fast-track (< 50 LOC) |
+
+### BMAD Tools (6 skills)
+
+| Command | Description |
+|---------|-------------|
+| `/bmad-help` | Intelligent project-state-aware guidance — contextual help |
+| `/bmad-party-mode` | Multi-agent collaboration — 3-5 personas debate a decision |
+| `/bmad-shard-doc` | Document sharding — split large docs for context optimization |
+| `/bmad-distillator` | Lossless compression — token-efficient artifact distillation |
+| `/bmad-advanced-elicitation` | 50+ refinement methods — deep iterative requirement gathering |
+| `/bmad-review-adversarial` | Adversarial review — cynical analysis + edge-case hunting |
+
+### BMAD TEA — Test Enterprise Architecture (3 skills)
+
+| Command | Description |
+|---------|-------------|
+| `/bmad-tea-test-design` | Enterprise test strategy — ATDD, test pyramid, environment plan |
+| `/bmad-tea-nfr-assess` | NFR assessment — performance, security, scalability, accessibility |
+| `/bmad-tea-trace` | Traceability matrix — requirement-to-test coverage gap analysis |
+
+### Pipeline Complement Model
+
+```
+IIKit:     Constitution → Specify → Plan → Check → Test → Tasks → Analyze → Implement → Ship
+                |            |        |                  |         |                |         |
+BMAD:      analyst       pm      architect           tea-*    scrum-master      dev-story  retro
+           brainstorming create-prd ux-designer              sprint-plan       quick-dev  code-review
+                          prfaq
+
+Cross-cut: help | party-mode | shard-doc | distillator | elicitation | review-adversarial
+```
 
 ---
 

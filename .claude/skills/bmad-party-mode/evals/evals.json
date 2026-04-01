@@ -1,0 +1,37 @@
+{
+  "skill": "bmad-party-mode",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-party-mode",
+      "type": "positive",
+      "prompt": "/bmad-party-mode Should we use microservices or a monolith?",
+      "expected": { "activates_skill": true, "assertions": ["Selects relevant agents", "Runs structured debate rounds", "Provides synthesized recommendation"] }
+    },
+    {
+      "id": "E02-multi-perspective",
+      "type": "positive",
+      "prompt": "I need multiple expert perspectives on our database choice",
+      "expected": { "activates_skill": true, "assertions": ["Includes Architect and Developer agents", "Each agent argues from their expertise", "Consensus or dissent documented"] }
+    },
+    {
+      "id": "E03-fp-code-review",
+      "type": "false-positive",
+      "prompt": "Review this code for bugs",
+      "expected": { "activates_skill": false, "reason": "User wants code review, not multi-agent debate — use bmad-review-adversarial" }
+    },
+    {
+      "id": "E04-fp-brainstorm",
+      "type": "false-positive",
+      "prompt": "Brainstorm ideas for a new feature",
+      "expected": { "activates_skill": false, "reason": "User wants ideation, not debate — use bmad-brainstorming" }
+    },
+    {
+      "id": "E05-edge-trivial",
+      "type": "edge-case",
+      "prompt": "/bmad-party-mode What should we name this variable?",
+      "expected": { "activates_skill": true, "assertions": ["Suggests using a simpler tool for trivial decisions", "Offers to proceed if user insists"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

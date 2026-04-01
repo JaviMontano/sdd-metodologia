@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-code-review",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-review-feature",
+      "type": "positive",
+      "prompt": "/bmad-code-review Review the auth module I just implemented",
+      "expected": { "activates_skill": true, "assertions": ["Reads the code files", "Applies 5-category checklist", "Provides file:line references", "Gives clear verdict", "Suggests next step"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Can you review my recent code changes before I merge?",
+      "expected": { "activates_skill": true, "assertions": ["Identifies review scope from git diff", "Applies structured review checklist"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Write the authentication middleware",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not review — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-architecture",
+      "type": "false-positive",
+      "prompt": "Review the system architecture design",
+      "expected": { "activates_skill": false, "reason": "User wants architecture review, not code review — use bmad-architect or bmad-review-adversarial" }
+    },
+    {
+      "id": "E05-edge-no-changes",
+      "type": "edge-case",
+      "prompt": "/bmad-code-review Review recent changes",
+      "setup": "No code changes exist in working directory",
+      "expected": { "activates_skill": true, "assertions": ["Detects no changes", "Asks user to specify what to review"] }
+    },
+    {
+      "id": "E06-edge-massive-scope",
+      "type": "edge-case",
+      "prompt": "/bmad-code-review Review everything",
+      "setup": "50+ files in the project",
+      "expected": { "activates_skill": true, "assertions": ["Suggests focusing on changed or high-risk files", "Does not attempt to review all 50+ files"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

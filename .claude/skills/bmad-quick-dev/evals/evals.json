@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-quick-dev",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-quick-change",
+      "type": "positive",
+      "prompt": "/bmad-quick-dev Add a loading spinner to the submit button",
+      "expected": { "activates_skill": true, "assertions": ["Assesses eligibility (< 50 LOC)", "Writes mini-spec", "Implements directly", "Runs verification checklist"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Just quickly build this small config change for me",
+      "expected": { "activates_skill": true, "assertions": ["Detects quick dev intent", "Assesses eligibility before implementing"] }
+    },
+    {
+      "id": "E03-fp-large-feature",
+      "type": "false-positive",
+      "prompt": "Quick dev the entire authentication system",
+      "expected": { "activates_skill": false, "reason": "Auth system exceeds quick dev thresholds — use /sdd:spec → /sdd:impl" }
+    },
+    {
+      "id": "E04-fp-architecture",
+      "type": "false-positive",
+      "prompt": "Design the microservices architecture",
+      "expected": { "activates_skill": false, "reason": "Architecture design is not quick dev — use bmad-architect" }
+    },
+    {
+      "id": "E05-edge-security",
+      "type": "edge-case",
+      "prompt": "/bmad-quick-dev Add rate limiting to the login endpoint",
+      "setup": "Security-sensitive change",
+      "expected": { "activates_skill": true, "assertions": ["Redirects to full pipeline", "Explains security changes need full review"] }
+    },
+    {
+      "id": "E06-edge-grows",
+      "type": "edge-case",
+      "prompt": "/bmad-quick-dev Add a tooltip to the help icon",
+      "setup": "Change starts small but requires touching 5+ files",
+      "expected": { "activates_skill": true, "assertions": ["Stops at threshold", "Redirects to /sdd:spec for proper scoping"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

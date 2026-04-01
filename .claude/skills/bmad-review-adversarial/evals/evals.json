@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-review-adversarial",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-adversarial-code",
+      "type": "positive",
+      "prompt": "/bmad-review-adversarial src/auth/login.ts",
+      "expected": { "activates_skill": true, "assertions": ["Loads and analyzes the file", "Finds missing elements and wrong assumptions", "Hunts edge cases", "Classifies by severity"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Do a cynical review of our API spec",
+      "expected": { "activates_skill": true, "assertions": ["Adversarial review of spec", "Edge-case analysis", "Structured finding report"] }
+    },
+    {
+      "id": "E03-edge-cases-only",
+      "type": "positive",
+      "prompt": "Hunt for edge cases in this function --mode edge-cases",
+      "expected": { "activates_skill": true, "assertions": ["Focuses on boundary conditions", "Reports unhandled paths", "Skips adversarial review"] }
+    },
+    {
+      "id": "E04-fp-elicitation",
+      "type": "false-positive",
+      "prompt": "Help me refine this PRD section",
+      "expected": { "activates_skill": false, "reason": "User wants refinement, not adversarial review — use bmad-advanced-elicitation" }
+    },
+    {
+      "id": "E05-fp-implement",
+      "type": "false-positive",
+      "prompt": "Fix the bugs in this file",
+      "expected": { "activates_skill": false, "reason": "User wants bug fixes, not review" }
+    },
+    {
+      "id": "E06-edge-clean",
+      "type": "edge-case",
+      "prompt": "/bmad-review-adversarial src/utils/format.ts",
+      "setup": "Well-tested, simple utility with full coverage",
+      "expected": { "activates_skill": true, "assertions": ["Reports clean with confidence level", "Notes limited scope for findings"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

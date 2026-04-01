@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-brainstorming",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-ideation-session",
+      "type": "positive",
+      "prompt": "/bmad-brainstorming What could we build for developer productivity?",
+      "expected": { "activates_skill": true, "assertions": ["Frames problem space", "Selects ideation technique", "Generates 5+ ideas", "Clusters and scores ideas", "Suggests next pipeline step"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Help me brainstorm features for our mobile app",
+      "expected": { "activates_skill": true, "assertions": ["Identifies brainstorming intent", "Uses structured technique", "Produces evaluation matrix"] }
+    },
+    {
+      "id": "E03-compare",
+      "type": "positive",
+      "prompt": "I have three ideas — help me explore and compare them",
+      "expected": { "activates_skill": true, "assertions": ["Expands each idea", "Creates comparison matrix", "Recommends top candidate"] }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the search feature",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation, not ideation — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-fp-spec",
+      "type": "false-positive",
+      "prompt": "Write the specification for user notifications",
+      "expected": { "activates_skill": false, "reason": "User wants specification, not brainstorming — use sdd:spec or bmad-create-prd" }
+    },
+    {
+      "id": "E06-edge-knows-what",
+      "type": "edge-case",
+      "prompt": "/bmad-brainstorming Build a task manager",
+      "setup": "User already knows exactly what to build",
+      "expected": { "activates_skill": true, "assertions": ["Suggests skipping brainstorming", "Recommends /sdd:spec or /bmad-analyst instead"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

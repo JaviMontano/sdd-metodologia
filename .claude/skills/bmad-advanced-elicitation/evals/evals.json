@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-advanced-elicitation",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-refine-prd",
+      "type": "positive",
+      "prompt": "/bmad-advanced-elicitation Refine the authentication section of our PRD",
+      "expected": { "activates_skill": true, "assertions": ["Presents 5 technique options", "Applies selected technique", "Shows enhanced content"] }
+    },
+    {
+      "id": "E02-stress-test",
+      "type": "positive",
+      "prompt": "Stress-test this architecture decision using pre-mortem analysis",
+      "expected": { "activates_skill": true, "assertions": ["Applies pre-mortem technique directly", "Identifies failure scenarios", "Provides actionable improvements"] }
+    },
+    {
+      "id": "E03-red-team",
+      "type": "positive",
+      "prompt": "Red team our API design",
+      "expected": { "activates_skill": true, "assertions": ["Applies Red Team vs Blue Team", "Attacks then defends the design", "Produces battle-tested version"] }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the user authentication feature",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not elicitation" }
+    },
+    {
+      "id": "E05-fp-review-code",
+      "type": "false-positive",
+      "prompt": "Review this pull request",
+      "expected": { "activates_skill": false, "reason": "User wants code review, not elicitation — use bmad-review-adversarial" }
+    },
+    {
+      "id": "E06-edge-already-refined",
+      "type": "edge-case",
+      "prompt": "/bmad-advanced-elicitation",
+      "setup": "Content is already highly refined and detailed",
+      "expected": { "activates_skill": true, "assertions": ["Acknowledges quality", "Suggests only adversarial/stress-test methods"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

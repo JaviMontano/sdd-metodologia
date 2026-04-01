@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-tea-nfr-assess",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-full-assessment",
+      "type": "positive",
+      "prompt": "/bmad-tea-nfr-assess Assess NFRs for our e-commerce platform",
+      "expected": { "activates_skill": true, "assertions": ["Covers performance, security, scalability, availability, accessibility", "Provides metrics and targets", "Includes priority matrix", "Has timeboxed recommendations"] }
+    },
+    {
+      "id": "E02-specific-nfr",
+      "type": "positive",
+      "prompt": "Assess our performance requirements and testing approach",
+      "expected": { "activates_skill": true, "assertions": ["Deep-dives on performance category", "Includes specific metrics and tools", "Recommends load test scenarios"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Optimize the database queries for better performance",
+      "expected": { "activates_skill": false, "reason": "User wants implementation optimization, not NFR assessment — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-test-design",
+      "type": "false-positive",
+      "prompt": "Design the full test strategy for our project",
+      "expected": { "activates_skill": false, "reason": "User wants full test strategy, not just NFR — use bmad-tea-test-design" }
+    },
+    {
+      "id": "E05-edge-no-sla",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-nfr-assess Assess NFRs",
+      "setup": "No SLA targets defined",
+      "expected": { "activates_skill": true, "assertions": ["Suggests industry-standard targets", "Flags need to formalize SLAs"] }
+    },
+    {
+      "id": "E06-edge-production-issues",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-nfr-assess Our API is slow under load",
+      "setup": "Active production performance problem",
+      "expected": { "activates_skill": true, "assertions": ["Prioritizes performance assessment", "Recommends immediate diagnostic steps"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

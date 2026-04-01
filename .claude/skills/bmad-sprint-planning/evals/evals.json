@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-sprint-planning",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-plan-sprint",
+      "type": "positive",
+      "prompt": "/bmad-sprint-planning Plan Sprint 2 for our 3-person team",
+      "expected": { "activates_skill": true, "assertions": ["Defines sprint goal", "Calculates team capacity", "Selects stories within velocity", "States commitment ratio", "Identifies risks"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Help me plan what to work on in the next sprint",
+      "expected": { "activates_skill": true, "assertions": ["Asks about team size and velocity", "Structures sprint planning ceremony"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the user story for login",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not sprint planning — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-retro",
+      "type": "false-positive",
+      "prompt": "What went well in our last sprint?",
+      "expected": { "activates_skill": false, "reason": "User wants retrospective, not planning — use bmad-retrospective" }
+    },
+    {
+      "id": "E05-edge-first-sprint",
+      "type": "edge-case",
+      "prompt": "/bmad-sprint-planning Plan Sprint 1",
+      "setup": "First sprint ever, no velocity data",
+      "expected": { "activates_skill": true, "assertions": ["Uses conservative capacity estimate", "Skips velocity reference", "Sets conservative commitment"] }
+    },
+    {
+      "id": "E06-edge-solo",
+      "type": "edge-case",
+      "prompt": "/bmad-sprint-planning Plan my sprint",
+      "setup": "Solo developer, no team",
+      "expected": { "activates_skill": true, "assertions": ["Simplifies to personal sprint", "Single capacity row"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

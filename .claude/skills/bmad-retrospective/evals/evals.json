@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-retrospective",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-run-retro",
+      "type": "positive",
+      "prompt": "/bmad-retrospective Run a retrospective for Sprint 2",
+      "expected": { "activates_skill": true, "assertions": ["Selects retro format", "Structures what went well / what to improve", "Produces 3-5 action items with owners", "Bridges to next sprint"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Let's reflect on what went well and what to improve in our last iteration",
+      "expected": { "activates_skill": true, "assertions": ["Identifies retrospective intent", "Uses structured format", "Generates actionable improvements"] }
+    },
+    {
+      "id": "E03-fp-planning",
+      "type": "false-positive",
+      "prompt": "Plan the next sprint",
+      "expected": { "activates_skill": false, "reason": "User wants sprint planning, not retrospective — use bmad-sprint-planning" }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Fix the bug in the login flow",
+      "expected": { "activates_skill": false, "reason": "User wants bug fix, not retrospective — use iikit-bugfix" }
+    },
+    {
+      "id": "E05-edge-first-retro",
+      "type": "edge-case",
+      "prompt": "/bmad-retrospective Sprint 1 retro",
+      "setup": "First sprint ever, no prior retrospective",
+      "expected": { "activates_skill": true, "assertions": ["Skips carryover section", "Focuses on initial observations"] }
+    },
+    {
+      "id": "E06-edge-solo",
+      "type": "edge-case",
+      "prompt": "/bmad-retrospective Reflect on my last week of work",
+      "setup": "Solo developer, no team",
+      "expected": { "activates_skill": true, "assertions": ["Adapts to personal reflection format", "Self-assigned action items"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}
