@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-create-prd",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-create-prd",
+      "type": "positive",
+      "prompt": "/bmad-create-prd Create a PRD for a team dashboard feature",
+      "expected": { "activates_skill": true, "assertions": ["Defines personas", "Produces PRD with epics and MoSCoW priorities", "Includes success metrics", "Has Definition of Done"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Write a product requirements document for our new onboarding flow",
+      "expected": { "activates_skill": true, "assertions": ["Gathers context", "Creates personas", "Produces structured PRD with acceptance criteria"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Build the dashboard feature",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not PRD — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-architecture",
+      "type": "false-positive",
+      "prompt": "Design the system architecture for the dashboard",
+      "expected": { "activates_skill": false, "reason": "User wants architecture, not product requirements — use bmad-architect" }
+    },
+    {
+      "id": "E05-edge-existing-spec",
+      "type": "edge-case",
+      "prompt": "/bmad-create-prd",
+      "setup": "Project already has a complete spec.md",
+      "expected": { "activates_skill": true, "assertions": ["Detects existing spec", "Generates PRD as business-facing complement"] }
+    },
+    {
+      "id": "E06-edge-minimal-input",
+      "type": "edge-case",
+      "prompt": "/bmad-create-prd notifications",
+      "setup": "Only a single word as input",
+      "expected": { "activates_skill": true, "assertions": ["Asks clarifying questions before generating", "Does not produce incomplete PRD"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

@@ -1,0 +1,38 @@
+{
+  "skill": "bmad-shard-doc",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-shard-file",
+      "type": "positive",
+      "prompt": "/bmad-shard-doc docs/architecture.md docs/arch-sections/",
+      "expected": { "activates_skill": true, "assertions": ["Splits on ## headers", "Creates numbered section files", "Generates index.md"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Split this large document into sections for better LLM consumption",
+      "expected": { "activates_skill": true, "assertions": ["Identifies source file", "Preserves code blocks", "Reports compression stats"] }
+    },
+    {
+      "id": "E03-fp-summarize",
+      "type": "false-positive",
+      "prompt": "Summarize this document",
+      "expected": { "activates_skill": false, "reason": "User wants a summary, not sharding — use bmad-distillator" }
+    },
+    {
+      "id": "E04-fp-merge",
+      "type": "false-positive",
+      "prompt": "Merge these files into one document",
+      "expected": { "activates_skill": false, "reason": "User wants to combine files, opposite of sharding" }
+    },
+    {
+      "id": "E05-edge-small-file",
+      "type": "edge-case",
+      "prompt": "/bmad-shard-doc small-file.md",
+      "setup": "File has only 50 lines and 2 headers",
+      "expected": { "activates_skill": true, "assertions": ["Warns file is too small to shard", "Proceeds if user confirms"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

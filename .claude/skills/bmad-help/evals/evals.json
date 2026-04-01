@@ -1,0 +1,51 @@
+{
+  "skill": "bmad-help",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-what-next",
+      "type": "positive",
+      "prompt": "What should I do next in my BMAD project?",
+      "expected": { "activates_skill": true, "assertions": ["Scans for BMAD artifacts", "Identifies current phase", "Recommends next step with exact command"] }
+    },
+    {
+      "id": "E02-slash-command",
+      "type": "positive",
+      "prompt": "/bmad-help",
+      "expected": { "activates_skill": true, "assertions": ["Scans project state", "Lists completed artifacts", "Provides prioritized recommendations"] }
+    },
+    {
+      "id": "E03-bmad-question",
+      "type": "positive",
+      "prompt": "How does BMAD party mode work?",
+      "expected": { "activates_skill": true, "assertions": ["Answers the question about party mode", "Then provides project status"] }
+    },
+    {
+      "id": "E04-fp-sdd-status",
+      "type": "false-positive",
+      "prompt": "Show my SDD pipeline status",
+      "expected": { "activates_skill": false, "reason": "User wants SDD status, not BMAD help — use sdd-status" }
+    },
+    {
+      "id": "E05-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the login feature",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not guidance" }
+    },
+    {
+      "id": "E06-edge-empty-project",
+      "type": "edge-case",
+      "prompt": "/bmad-help",
+      "setup": "Empty project, no _bmad-output/ or .specify/ directories",
+      "expected": { "activates_skill": true, "assertions": ["Detects no artifacts", "Suggests starting with /bmad-brainstorming or /bmad-create-prd"] }
+    },
+    {
+      "id": "E07-edge-hybrid",
+      "type": "edge-case",
+      "prompt": "What should I do next?",
+      "setup": "Project has both .specify/ (SDD) and _bmad-output/ (BMAD) artifacts",
+      "expected": { "activates_skill": true, "assertions": ["Detects hybrid project", "Recommends cross-cutting BMAD tools"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 2, "total": 7 }
+}

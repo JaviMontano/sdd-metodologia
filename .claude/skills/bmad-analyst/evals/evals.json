@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-analyst",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-research-idea",
+      "type": "positive",
+      "prompt": "/bmad-analyst Explore building a habit tracker for remote teams",
+      "expected": { "activates_skill": true, "assertions": ["Conducts market research", "Assesses feasibility", "Produces product brief", "Recommends next pipeline step"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Research the viability of adding real-time collaboration to our app",
+      "expected": { "activates_skill": true, "assertions": ["Identifies competitors", "Evaluates technical feasibility", "Produces structured brief"] }
+    },
+    {
+      "id": "E03-compare-ideas",
+      "type": "positive",
+      "prompt": "Compare these three feature ideas and recommend which to build first",
+      "expected": { "activates_skill": true, "assertions": ["Creates comparison matrix", "Rates feasibility per idea", "Recommends prioritization"] }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the user authentication feature",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not research — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-fp-write-prd",
+      "type": "false-positive",
+      "prompt": "Write a detailed PRD with acceptance criteria",
+      "expected": { "activates_skill": false, "reason": "User wants a full PRD, not a product brief — use bmad-pm or bmad-create-prd" }
+    },
+    {
+      "id": "E06-edge-existing-spec",
+      "type": "edge-case",
+      "prompt": "/bmad-analyst",
+      "setup": "Project already has a detailed spec.md in .specify/",
+      "expected": { "activates_skill": true, "assertions": ["Acknowledges existing spec", "Offers gap analysis instead of new brief"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

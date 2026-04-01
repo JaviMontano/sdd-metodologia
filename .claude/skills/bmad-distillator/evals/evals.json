@@ -1,0 +1,38 @@
+{
+  "skill": "bmad-distillator",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-distill-file",
+      "type": "positive",
+      "prompt": "/bmad-distillator docs/prd.md",
+      "expected": { "activates_skill": true, "assertions": ["Reads full document", "Compresses to bullet points", "Reports compression ratio", "Preserves tables and code verbatim"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Compress this architecture document for LLM consumption",
+      "expected": { "activates_skill": true, "assertions": ["Applies 3-pass compression", "Verifies no info lost", "Outputs dense distillate"] }
+    },
+    {
+      "id": "E03-fp-split",
+      "type": "false-positive",
+      "prompt": "Split this document into sections",
+      "expected": { "activates_skill": false, "reason": "User wants sharding, not compression — use bmad-shard-doc" }
+    },
+    {
+      "id": "E04-fp-summary",
+      "type": "false-positive",
+      "prompt": "Give me a brief executive summary",
+      "expected": { "activates_skill": false, "reason": "User wants a lossy summary, not lossless compression" }
+    },
+    {
+      "id": "E05-edge-dense",
+      "type": "edge-case",
+      "prompt": "/bmad-distillator src/config.json",
+      "setup": "File is already dense structured data",
+      "expected": { "activates_skill": true, "assertions": ["Reports low compression ratio", "Preserves structured data verbatim"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 1, "total": 5 }
+}

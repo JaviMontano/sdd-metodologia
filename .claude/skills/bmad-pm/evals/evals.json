@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-pm",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-create-prd",
+      "type": "positive",
+      "prompt": "/bmad-pm Create a PRD for user notifications",
+      "expected": { "activates_skill": true, "assertions": ["Asks business context questions", "Defines personas", "Produces PRD with epics and requirements", "Includes acceptance criteria"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Help me define the product requirements for our new dashboard feature",
+      "expected": { "activates_skill": true, "assertions": ["Gathers requirements iteratively", "Uses MoSCoW prioritization", "Bridges to dev pipeline"] }
+    },
+    {
+      "id": "E03-prioritize",
+      "type": "positive",
+      "prompt": "Prioritize these backlog items using value vs effort",
+      "expected": { "activates_skill": true, "assertions": ["Creates value/effort matrix", "Ranks items", "Recommends sprint candidates"] }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the notification system",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation, not requirements — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-fp-architecture",
+      "type": "false-positive",
+      "prompt": "Design the system architecture for notifications",
+      "expected": { "activates_skill": false, "reason": "User wants architecture, not product requirements — use bmad-architect" }
+    },
+    {
+      "id": "E06-edge-existing-spec",
+      "type": "edge-case",
+      "prompt": "/bmad-pm",
+      "setup": "Project already has a complete IIKit spec.md",
+      "expected": { "activates_skill": true, "assertions": ["Detects existing spec", "Compares with PRD lens", "Flags missing business context"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

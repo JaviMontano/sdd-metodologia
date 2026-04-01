@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-dev-story",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-write-story",
+      "type": "positive",
+      "prompt": "/bmad-dev-story Write a dev story for user password reset",
+      "expected": { "activates_skill": true, "assertions": ["Follows As-a/I-want/So-that format", "Has 3+ acceptance criteria in Given-When-Then", "Includes technical notes and subtasks", "Has test scenarios", "Has Definition of Done"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Break down the search feature into an implementable story",
+      "expected": { "activates_skill": true, "assertions": ["Creates structured dev story", "Includes acceptance criteria and subtasks"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the password reset feature",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation, not story writing — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-prd",
+      "type": "false-positive",
+      "prompt": "Write a PRD for the authentication system",
+      "expected": { "activates_skill": false, "reason": "User wants product requirements, not a dev story — use bmad-create-prd" }
+    },
+    {
+      "id": "E05-edge-too-large",
+      "type": "edge-case",
+      "prompt": "/bmad-dev-story Write a story for the entire authentication system",
+      "setup": "Requirement is too large for a single story",
+      "expected": { "activates_skill": true, "assertions": ["Suggests splitting into multiple stories", "Notes dependencies between stories"] }
+    },
+    {
+      "id": "E06-edge-bug-fix",
+      "type": "edge-case",
+      "prompt": "/bmad-dev-story Write a story for fixing the login timeout bug",
+      "setup": "This is a bug fix, not a new feature",
+      "expected": { "activates_skill": true, "assertions": ["Adapts format with Current vs Expected Behavior", "Includes reproduction steps"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

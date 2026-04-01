@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-tea-test-design",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-test-strategy",
+      "type": "positive",
+      "prompt": "/bmad-tea-test-design Design a test strategy for our Node.js microservices",
+      "expected": { "activates_skill": true, "assertions": ["Produces test pyramid with layer allocation", "Defines ATDD workflow", "Includes environment strategy", "Recommends automation tools"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "How should we structure our testing approach for this project?",
+      "expected": { "activates_skill": true, "assertions": ["Identifies test strategy intent", "Asks about architecture and stack", "Produces structured strategy"] }
+    },
+    {
+      "id": "E03-fp-write-tests",
+      "type": "false-positive",
+      "prompt": "Write the unit tests for the auth module",
+      "expected": { "activates_skill": false, "reason": "User wants test implementation, not strategy — use sdd:test or iikit-04-testify" }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the login feature",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-edge-no-tests",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-test-design We have zero tests, where do we start?",
+      "setup": "Legacy project with no test infrastructure",
+      "expected": { "activates_skill": true, "assertions": ["Recommends characterization tests first", "Builds up gradually from unit foundations"] }
+    },
+    {
+      "id": "E06-edge-regulated",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-test-design Test strategy for a healthcare SaaS (HIPAA)",
+      "setup": "Regulated industry with compliance requirements",
+      "expected": { "activates_skill": true, "assertions": ["Includes compliance testing requirements", "Adds audit trail validation"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

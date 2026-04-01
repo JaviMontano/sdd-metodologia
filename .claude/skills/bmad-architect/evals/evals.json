@@ -1,0 +1,44 @@
+{
+  "skill": "bmad-architect",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-system-design",
+      "type": "positive",
+      "prompt": "/bmad-architect Design architecture for a real-time chat application",
+      "expected": { "activates_skill": true, "assertions": ["Produces system design with components", "Evaluates tech stack options", "Generates ADR", "Analyzes quality attributes"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "What architecture should we use for our new microservice?",
+      "expected": { "activates_skill": true, "assertions": ["Asks about quality attributes and constraints", "Proposes architecture style with rationale", "Documents trade-offs"] }
+    },
+    {
+      "id": "E03-adr",
+      "type": "positive",
+      "prompt": "Create an ADR for choosing PostgreSQL over MongoDB",
+      "expected": { "activates_skill": true, "assertions": ["Follows ADR template (Context-Decision-Consequences)", "Documents alternatives considered", "Lists positive and negative consequences"] }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the WebSocket server",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation, not architecture — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-fp-ux-design",
+      "type": "false-positive",
+      "prompt": "Design the user interface for the chat feature",
+      "expected": { "activates_skill": false, "reason": "User wants UX design, not system architecture — use bmad-ux-designer" }
+    },
+    {
+      "id": "E06-edge-tiny-project",
+      "type": "edge-case",
+      "prompt": "/bmad-architect Design architecture for a CLI script",
+      "setup": "Project is a simple 200-line CLI tool",
+      "expected": { "activates_skill": true, "assertions": ["Suggests simpler approach", "Avoids over-engineering with enterprise patterns"] }
+    }
+  ],
+  "coverage": { "positive": 3, "false_positives": 2, "edge_cases": 1, "total": 6 }
+}

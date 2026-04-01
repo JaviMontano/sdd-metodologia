@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-prfaq",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-write-prfaq",
+      "type": "positive",
+      "prompt": "/bmad-prfaq Write a PRFAQ for a CLI tool that auto-generates API docs from code",
+      "expected": { "activates_skill": true, "assertions": ["Writes press release in future-launch format", "FAQ covers customer/stakeholder/technical questions", "Confidence assessment with evidence", "Clear verdict with next step"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Help me validate this product idea using the Working Backwards method",
+      "expected": { "activates_skill": true, "assertions": ["Identifies PRFAQ intent", "Writes structured press release + FAQ", "Assesses confidence"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Build the API documentation generator",
+      "expected": { "activates_skill": false, "reason": "User wants implementation, not product validation — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-prd",
+      "type": "false-positive",
+      "prompt": "Write the product requirements document",
+      "expected": { "activates_skill": false, "reason": "User wants a PRD, not a PRFAQ — use bmad-create-prd" }
+    },
+    {
+      "id": "E05-edge-internal-tool",
+      "type": "edge-case",
+      "prompt": "/bmad-prfaq PRFAQ for an internal deployment dashboard",
+      "setup": "Product is internal tooling with no external audience",
+      "expected": { "activates_skill": true, "assertions": ["Adapts press release to internal announcement", "FAQ focuses on adoption and ROI"] }
+    },
+    {
+      "id": "E06-edge-early-stage",
+      "type": "edge-case",
+      "prompt": "/bmad-prfaq I have a hunch about AI-powered code review",
+      "setup": "Very early stage, just an idea",
+      "expected": { "activates_skill": true, "assertions": ["Writes aspirational press release", "FAQ heavily weighted toward validation questions"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

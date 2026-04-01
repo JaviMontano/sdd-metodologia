@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-ux-designer",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-user-flows",
+      "type": "positive",
+      "prompt": "/bmad-ux-designer Design user flows for the onboarding experience",
+      "expected": { "activates_skill": true, "assertions": ["Maps user journey steps", "Includes happy path and error states", "Documents screen specifications", "Notes accessibility requirements"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Design the UX for our new settings page",
+      "expected": { "activates_skill": true, "assertions": ["Identifies target users", "Creates UI specifications with components", "Documents interaction patterns"] }
+    },
+    {
+      "id": "E03-fp-implement",
+      "type": "false-positive",
+      "prompt": "Build the login page with React",
+      "expected": { "activates_skill": false, "reason": "User wants code implementation, not UX design — use iikit-07-implement" }
+    },
+    {
+      "id": "E04-fp-architecture",
+      "type": "false-positive",
+      "prompt": "Design the API endpoints for user management",
+      "expected": { "activates_skill": false, "reason": "User wants backend architecture, not UX — use bmad-architect" }
+    },
+    {
+      "id": "E05-edge-backend-only",
+      "type": "edge-case",
+      "prompt": "/bmad-ux-designer Design the data pipeline",
+      "setup": "Feature is purely backend with no user interface",
+      "expected": { "activates_skill": true, "assertions": ["Declines gracefully", "Suggests bmad-architect instead"] }
+    },
+    {
+      "id": "E06-edge-redesign",
+      "type": "edge-case",
+      "prompt": "/bmad-ux-designer Redesign the dashboard",
+      "setup": "Existing dashboard already in production",
+      "expected": { "activates_skill": true, "assertions": ["Asks about current pain points", "Proposes incremental improvements"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}

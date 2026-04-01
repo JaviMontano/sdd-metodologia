@@ -1,0 +1,45 @@
+{
+  "skill": "bmad-tea-trace",
+  "version": "1.7.0",
+  "evals": [
+    {
+      "id": "E01-build-matrix",
+      "type": "positive",
+      "prompt": "/bmad-tea-trace Build a traceability matrix for our project",
+      "expected": { "activates_skill": true, "assertions": ["Reads spec.md and test files", "Builds requirement-to-test matrix", "Calculates coverage percentage", "Identifies gaps with risk levels"] }
+    },
+    {
+      "id": "E02-natural-language",
+      "type": "positive",
+      "prompt": "Which requirements don't have tests yet?",
+      "expected": { "activates_skill": true, "assertions": ["Identifies traceability intent", "Reads artifacts", "Reports uncovered requirements"] }
+    },
+    {
+      "id": "E03-fp-write-tests",
+      "type": "false-positive",
+      "prompt": "Write test scenarios for the login feature",
+      "expected": { "activates_skill": false, "reason": "User wants test generation, not traceability — use sdd:test" }
+    },
+    {
+      "id": "E04-fp-implement",
+      "type": "false-positive",
+      "prompt": "Implement the missing features",
+      "expected": { "activates_skill": false, "reason": "User wants implementation — use iikit-07-implement" }
+    },
+    {
+      "id": "E05-edge-no-spec",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-trace Trace requirements",
+      "setup": "No spec.md exists in the project",
+      "expected": { "activates_skill": true, "assertions": ["Reports missing spec", "Redirects to /sdd:spec"] }
+    },
+    {
+      "id": "E06-edge-no-tests",
+      "type": "edge-case",
+      "prompt": "/bmad-tea-trace Coverage analysis",
+      "setup": "Spec exists but zero test files",
+      "expected": { "activates_skill": true, "assertions": ["Reports 0% coverage", "Lists all requirements as gaps", "Recommends /sdd:test"] }
+    }
+  ],
+  "coverage": { "positive": 2, "false_positives": 2, "edge_cases": 2, "total": 6 }
+}
