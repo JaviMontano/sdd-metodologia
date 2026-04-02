@@ -1,19 +1,6 @@
 ---
 name: notebooklm-for-learning
-description: >
-  Orchestrate NotebookLM as a structured learning engine. Given any topic,
-  generates a 7-dimension knowledge ecosystem (Body of Knowledge, State of the Art,
-  Capability Model, Profession Assessment, Maturity Model, Working Prompts,
-  GenAI Applications) across 3 progression levels (Zero→Competent, Competent→Versed,
-  Versed→Expert). Creates notebooks, runs deep research, imports sources, configures
-  AI tutors, and generates multi-modal study artifacts (podcasts, flashcards, quizzes,
-  mind maps). Use when: user says "learn about", "study", "become expert in",
-  "knowledge ecosystem for", "create learning path", "NLM learn", or invokes /nlm:learn.
-license: MIT
-metadata:
-  version: "1.0.0"
-  framework: "7x3 Learning Model"
-  engine: "NotebookLM MCP"
+description: Build a 7-dimension knowledge ecosystem with 3 progression levels using NotebookLM. Use when learning, studying, or creating learning paths.
 allowed-tools:
   - Read
   - Write
@@ -42,13 +29,6 @@ allowed-tools:
   - mcp__notebooklm__download_artifact
   - mcp__notebooklm__note
   - mcp__notebooklm__tag
-context:
-  - type: file
-    path: references/learning-model.md
-  - type: file
-    path: references/dimension-prompts.md
-  - type: file
-    path: references/api-alignment.md
 ---
 
 # NotebookLM for Learning — Structured Knowledge Ecosystem Builder

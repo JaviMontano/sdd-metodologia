@@ -1,15 +1,6 @@
 ---
 name: nlm-podcast
-description: >
-  Podcast producer for NotebookLM. Generates high-precision audio artifacts
-  (explanation, debate, brief, critique) using optimized focus prompt templates,
-  Capa 0 system prompts, and source filtering. Ensures studio_create output
-  never exceeds 5000 chars by composing template + dynamic context at runtime.
-license: MIT
-metadata:
-  version: "1.0.0"
-  engine: "NotebookLM MCP"
-  max_focus_prompt: 5000
+description: Generate optimized NotebookLM podcasts (explain, debate, brief, critique) with Capa 0 system prompts and focus templates ≤5000 chars.
 allowed-tools:
   - Read
   - Write
@@ -25,11 +16,6 @@ allowed-tools:
   - mcp__notebooklm__studio_create
   - mcp__notebooklm__studio_status
   - mcp__notebooklm__download_artifact
-context:
-  - type: file
-    path: references/format-matrix.md
-  - type: file
-    path: references/focus-library.md
 ---
 
 # NLM Podcast — Audio Vitaminado para NotebookLM

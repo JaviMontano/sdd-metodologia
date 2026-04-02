@@ -1,15 +1,6 @@
 ---
 name: nlm-infographic
-description: >
-  Visual designer for NotebookLM. Generates high-precision infographics
-  (portrait, landscape, square) with 11 visual styles, 3 detail levels,
-  and optimized focus prompts ≤5000 chars. Auto-detects optimal orientation
-  and style based on content type.
-license: MIT
-metadata:
-  version: "1.0.0"
-  engine: "NotebookLM MCP"
-  max_focus_prompt: 5000
+description: Generate optimized NotebookLM infographics (portrait, landscape, square) with 11 styles, 3 detail levels, and auto-detection of orientation.
 allowed-tools:
   - Read
   - Write
@@ -25,11 +16,6 @@ allowed-tools:
   - mcp__notebooklm__studio_create
   - mcp__notebooklm__studio_status
   - mcp__notebooklm__download_artifact
-context:
-  - type: file
-    path: references/format-matrix.md
-  - type: file
-    path: references/focus-library.md
 ---
 
 # NLM Infographic — Visual Vitaminado para NotebookLM

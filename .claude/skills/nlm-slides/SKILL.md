@@ -1,14 +1,6 @@
 ---
 name: nlm-slides
-description: >
-  Presentation architect for NotebookLM. Generates high-precision slide decks
-  (detailed and presenter format) with studio_revise for post-generation
-  fine-tuning. Focus prompts ≤5000 chars with dynamic placeholder composition.
-license: MIT
-metadata:
-  version: "1.0.0"
-  engine: "NotebookLM MCP"
-  max_focus_prompt: 5000
+description: Generate optimized NotebookLM slide decks (detailed + presenter) with studio_revise post-generation and PPTX export.
 allowed-tools:
   - Read
   - Write
