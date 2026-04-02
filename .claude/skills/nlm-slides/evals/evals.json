@@ -1,0 +1,172 @@
+{
+  "skill": "nlm-slides",
+  "version": "1.0.0",
+  "description": "Evaluation cases for NLM Slides skill including revision flow",
+  "test_cases": [
+    {
+      "id": "EVAL-S-001",
+      "name": "Workshop slides - auto detect",
+      "input": "Genera diapositivas para un taller de introduccion a Docker",
+      "expected": {
+        "format_matrix_match": "SM-01",
+        "slide_format": "detailed_deck",
+        "slide_length": "default",
+        "focus_template": "FP-S-001",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects context=workshop from 'taller'",
+        "Selects detailed_deck with speaker notes emphasis",
+        "Focus includes exercise and checkpoint slides",
+        "Pre-generation checklist passes all 6 items"
+      ]
+    },
+    {
+      "id": "EVAL-S-002",
+      "name": "Keynote slides - presenter format",
+      "input": "I need clean slides for my conference talk about AI in healthcare",
+      "expected": {
+        "format_matrix_match": "SM-02",
+        "slide_format": "presenter_slides",
+        "slide_length": "default",
+        "focus_template": "FP-S-002",
+        "language": "en"
+      },
+      "assertions": [
+        "Detects context=keynote from 'conference talk'",
+        "Selects presenter_slides for clean visual style",
+        "Focus emphasizes visual-first, minimal text",
+        "Language detected as English"
+      ]
+    },
+    {
+      "id": "EVAL-S-003",
+      "name": "Executive deck - short format",
+      "input": "Prepara una presentacion corta para la junta directiva sobre migrar a la nube",
+      "expected": {
+        "format_matrix_match": "SM-04",
+        "slide_format": "presenter_slides",
+        "slide_length": "short",
+        "focus_template": "FP-S-004",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects context=executive from 'junta directiva'",
+        "Selects short length for time-constrained audience",
+        "Focus uses Minto structure (conclusion first)",
+        "Estimated 6-10 slides"
+      ]
+    },
+    {
+      "id": "EVAL-S-004",
+      "name": "Training deck with existing notebook",
+      "input": "/nlm:slides notebook_id=xyz789 tipo=capacitacion",
+      "expected": {
+        "format_matrix_match": "SM-03",
+        "slide_format": "detailed_deck",
+        "slide_length": "default",
+        "focus_template": "FP-S-003",
+        "creates_notebook": false
+      },
+      "assertions": [
+        "Uses existing notebook_id",
+        "Does NOT create new notebook",
+        "Detects training context from 'capacitacion'",
+        "Focus includes learning objectives and comprehension checks"
+      ]
+    },
+    {
+      "id": "EVAL-S-005",
+      "name": "Technical deck - architecture review",
+      "input": "Necesito slides para la review de arquitectura del sistema de pagos",
+      "expected": {
+        "format_matrix_match": "SM-05",
+        "slide_format": "detailed_deck",
+        "slide_length": "default",
+        "focus_template": "FP-S-005",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects context=technical from 'review de arquitectura'",
+        "Focus includes diagrams, trade-offs, implementation plan",
+        "Speaker notes include implementation details"
+      ]
+    },
+    {
+      "id": "EVAL-S-006",
+      "name": "Revision flow - post-generation improvement",
+      "input": "/nlm:slides:revise notebook_id=abc123 artifact_id=deck456",
+      "expected": {
+        "calls_studio_revise": true,
+        "preserves_original": true,
+        "creates_new_artifact": true
+      },
+      "assertions": [
+        "Retrieves current deck metadata from studio_status",
+        "Analyzes slide structure",
+        "Proposes specific per-slide improvements",
+        "Waits for user approval before executing studio_revise",
+        "Informs user that original is preserved",
+        "Polls for new artifact completion"
+      ]
+    },
+    {
+      "id": "EVAL-S-007",
+      "name": "Export as PPTX",
+      "input": "/nlm:slides:export notebook_id=abc123 formato=pptx",
+      "expected": {
+        "calls_download_artifact": true,
+        "slide_deck_format": "pptx"
+      },
+      "assertions": [
+        "Uses download_artifact with slide_deck_format='pptx'",
+        "Provides file path to user",
+        "Offers alternative PDF format if PPTX fails"
+      ]
+    },
+    {
+      "id": "EVAL-S-008",
+      "name": "Forced detailed format override",
+      "input": "/nlm:slides:detailed sobre microservicios para equipo de devops",
+      "expected": {
+        "slide_format": "detailed_deck",
+        "format_override": true
+      },
+      "assertions": [
+        "Respects explicit :detailed command",
+        "Skips format selection — uses detailed_deck directly",
+        "Still runs length detection from context"
+      ]
+    },
+    {
+      "id": "EVAL-S-009",
+      "name": "False positive rejection",
+      "input": "The presentation layer handles the slide panel component",
+      "expected": {
+        "activated": false
+      },
+      "assertions": [
+        "Skill does NOT activate",
+        "Recognized as software architecture discussion",
+        "No NotebookLM API calls made"
+      ]
+    },
+    {
+      "id": "EVAL-S-010",
+      "name": "Revision with specific slide instructions",
+      "input": "Revisa el deck: slide 1 necesita mejor titulo, slide 5 esta muy cargada, slide 8 necesita call to action",
+      "expected": {
+        "calls_studio_revise": true,
+        "slide_instructions_count": 3,
+        "slides_targeted": [1, 5, 8]
+      },
+      "assertions": [
+        "Parses 3 specific slide revision requests",
+        "Maps user language to precise instructions",
+        "Executes studio_revise with structured slide_instructions array",
+        "Polls for new artifact after revision",
+        "Presents comparison: original vs revised"
+      ]
+    }
+  ]
+}

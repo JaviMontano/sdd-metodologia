@@ -1,0 +1,184 @@
+{
+  "skill": "nlm-podcast",
+  "version": "1.0.0",
+  "description": "Evaluation cases for NLM Podcast skill",
+  "test_cases": [
+    {
+      "id": "EVAL-P-001",
+      "name": "Principiante intro - tema simple",
+      "input": "Hazme un podcast sobre qué es machine learning para alguien que no sabe nada",
+      "expected": {
+        "format_matrix_match": "PM-01",
+        "audio_format": "deep_dive",
+        "audio_length": "default",
+        "focus_template": "FP-P-001",
+        "language": "es",
+        "creates_notebook": true,
+        "adds_sources": true,
+        "calls_studio_create": true
+      },
+      "assertions": [
+        "Detects audience=principiante",
+        "Detects intent=intro",
+        "Focus prompt contains {TOPIC} replaced with ML concept",
+        "Pre-generation checklist passes all 6 items",
+        "Post-generation report is presented to user"
+      ]
+    },
+    {
+      "id": "EVAL-P-002",
+      "name": "Ejecutivo briefing - decisión tecnológica",
+      "input": "Necesito un audio corto para mi jefe sobre por qué deberíamos migrar a Kubernetes",
+      "expected": {
+        "format_matrix_match": "PM-07",
+        "audio_format": "brief",
+        "audio_length": "short",
+        "focus_template": "FP-P-007",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects audience=ejecutivo from 'mi jefe'",
+        "Detects intent=decisión from 'deberíamos migrar'",
+        "Focus prompt uses Minto structure (conclusion first)",
+        "Duration estimate: 3-5 minutes"
+      ]
+    },
+    {
+      "id": "EVAL-P-003",
+      "name": "Experto debate - tema de frontera",
+      "input": "Create a long debate podcast about LLM reasoning capabilities vs traditional symbolic AI for my research group",
+      "expected": {
+        "format_matrix_match": "PM-05",
+        "audio_format": "debate",
+        "audio_length": "long",
+        "focus_template": "FP-P-005",
+        "language": "en"
+      },
+      "assertions": [
+        "Detects audience=experto from 'research group'",
+        "Detects intent=frontera from cutting-edge topic",
+        "Language detected as English from input",
+        "Focus prompt includes tension and open questions sections"
+      ]
+    },
+    {
+      "id": "EVAL-P-004",
+      "name": "Existing notebook - direct generation",
+      "input": "/nlm:podcast notebook_id=abc123 formato=critique",
+      "expected": {
+        "format_matrix_match": "PM-06",
+        "audio_format": "critique",
+        "audio_length": "default",
+        "focus_template": "FP-P-006",
+        "creates_notebook": false,
+        "uses_existing_notebook": "abc123"
+      },
+      "assertions": [
+        "Does NOT create new notebook",
+        "Uses provided notebook_id directly",
+        "Respects explicit format override",
+        "Runs pre-generation checklist on existing notebook"
+      ]
+    },
+    {
+      "id": "EVAL-P-005",
+      "name": "Team alignment - equipo",
+      "input": "Genera un podcast para alinear a mi equipo de desarrollo sobre la nueva arquitectura de microservicios",
+      "expected": {
+        "format_matrix_match": "PM-08",
+        "audio_format": "deep_dive",
+        "audio_length": "default",
+        "focus_template": "FP-P-008",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects audience=equipo from 'mi equipo'",
+        "Detects intent=alineación from 'alinear'",
+        "Focus prompt includes role-differentiated content",
+        "Focus prompt includes team discussion questions"
+      ]
+    },
+    {
+      "id": "EVAL-P-006",
+      "name": "False positive rejection - music playback",
+      "input": "Play the podcast on Spotify",
+      "expected": {
+        "activated": false
+      },
+      "assertions": [
+        "Skill does NOT activate",
+        "Recognized as false positive: 'spotify' + 'play'",
+        "No NotebookLM API calls made"
+      ]
+    },
+    {
+      "id": "EVAL-P-007",
+      "name": "Intermediate comparison - debate format",
+      "input": "Quiero un podcast comparando React vs Vue para alguien que ya sabe JavaScript",
+      "expected": {
+        "format_matrix_match": "PM-04",
+        "audio_format": "debate",
+        "audio_length": "default",
+        "focus_template": "FP-P-004",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects audience=intermedio from 'ya sabe JavaScript'",
+        "Detects intent=comparación from 'comparando'",
+        "Focus prompt includes steel-man for both positions",
+        "Focus prompt includes decision framework"
+      ]
+    },
+    {
+      "id": "EVAL-P-008",
+      "name": "Motivational hook - principiante",
+      "input": "Dame un audio cortito y motivador sobre por qué aprender a programar en 2026",
+      "expected": {
+        "format_matrix_match": "PM-02",
+        "audio_format": "brief",
+        "audio_length": "short",
+        "focus_template": "FP-P-002",
+        "language": "es"
+      },
+      "assertions": [
+        "Detects audience=principiante from topic and tone",
+        "Detects intent=motivación from 'motivador'",
+        "Detects length preference from 'cortito'",
+        "Focus prompt emphasizes curiosity over teaching"
+      ]
+    },
+    {
+      "id": "EVAL-P-009",
+      "name": "Custom meta-prompt - no matrix match",
+      "input": "Hazme un podcast estilo storytelling sobre la historia del internet para adolescentes de 15 años",
+      "expected": {
+        "format_matrix_match": "META-PROMPT",
+        "focus_template": "META-PROMPT",
+        "language": "es"
+      },
+      "assertions": [
+        "No exact PM-XX match — falls to meta-prompt",
+        "Meta-prompt generates custom focus with storytelling structure",
+        "Audience calibrated to adolescentes (not standard levels)",
+        "Custom focus prompt ≤5000 chars"
+      ]
+    },
+    {
+      "id": "EVAL-P-010",
+      "name": "Generation failure recovery",
+      "input": "Genera podcast sobre quantum computing",
+      "setup": "Simulate studio_create returning status=failed",
+      "expected": {
+        "retries": true,
+        "simplified_focus": true,
+        "max_retries": 1
+      },
+      "assertions": [
+        "Detects generation failure from studio_status",
+        "Simplifies focus prompt on retry",
+        "Suggests reducing sources if retry also fails",
+        "Reports failure clearly to user with recovery options"
+      ]
+    }
+  ]
+}
