@@ -31,6 +31,11 @@ PIPELINE PHASES
   /sdd:07-implement     Execute implementation                     [alias: /sdd:impl]  [GATE]
   /sdd:08-issues        Export tasks to GitHub Issues               [alias: /sdd:issues]
 
+WORKFLOW (Friction Removers)
+  /sdd:a                Auto-advance to next phase                 [alias: /sdd:advance]
+  /sdd:resume           Restore context after absence
+  /sdd:export           Export feature artifacts as Markdown/HTML
+
 UTILITIES
   /sdd:bugfix           Bug report + fix tasks                     [alias: /sdd:fix]
   /sdd:feature          Create, select, or list features
@@ -47,11 +52,19 @@ WORKSPACE
 KNOWLEDGE & MEMORY
   /sdd:capture          Capture session inputs to RAG memory files
   /sdd:memory           Browse and search RAG memory archive
+  /sdd:graph            Build knowledge graph with orphan detection
 
-SENTINEL (Autonomous Heartbeat)
-  /sdd:sentinel         Start/stop/status heartbeat agent
+INTELLIGENCE
+  /sdd:sentinel         Autonomous heartbeat agent
   /sdd:insights         Health trends, risks, recommendations
+  /sdd:qa               Generate QA plan with DoD
+
+EXPERIENCE
+  /sdd:tour             Guided onboarding (8 steps)
+  /sdd:demo             Generate demo project + dashboard
+  /sdd:seed             Seed demo data
 
 [GATE] = Critical gate — halts pipeline on violations. Never skip.
+Orchestrator: agents/sdd-orchestrator.md
 Upstream: intent-integrity-chain/kit (MIT) · Brand: MetodologIA (GPL-3.0)
 ```

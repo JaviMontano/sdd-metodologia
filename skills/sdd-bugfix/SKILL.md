@@ -11,6 +11,13 @@ context-scope:
   always: [CONSTITUTION.md, .specify/context.json]
   load: [spec.md, tasks.md]
   never: [plan.md, analysis.md]
+allowed-tools:
+  - Bash(bash scripts/*)
+  - Bash(node scripts/*)
+  - Read
+  - Write
+  - Edit
+  - TodoWrite
 ---
 
 # SDD Bugfix

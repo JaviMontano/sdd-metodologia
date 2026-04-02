@@ -11,6 +11,13 @@ context-scope:
   always: [CONSTITUTION.md, .specify/context.json]
   load: [spec.md, plan.md]
   never: [tasks.md, "*.feature", analysis.md]
+allowed-tools:
+  - Bash(bash scripts/*)
+  - Bash(node scripts/*)
+  - Read
+  - Write
+  - Edit
+  - TodoWrite
 ---
 
 # SDD Phase 3 — Checklist [GATE G1]

@@ -2,7 +2,7 @@
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 self-contained SDD skills · 9 pipeline phases · 39 commands · 39 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
+> 12 self-contained SDD skills · 1 orchestrator agent · 9 pipeline phases · 43 commands · 39 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -62,6 +62,14 @@ SDD runs a **per-prompt heartbeat** via `UserPromptSubmit` hook. On every user p
 | `/sdd:graph` | Build knowledge graph (Constitution→FR→TS→Tasks traceability) |
 | `/sdd:qa` | Generate/refresh QA-PLAN.md (DoD, acceptance criteria, gate status) |
 | `/sdd:dashboard` | Generate Command Center (multi-HTML micro-frontend) |
+
+## Workflow Commands (Friction Removers)
+
+| Command | Description |
+|---------|-------------|
+| `/sdd:a` | **Auto-advance** to next pipeline phase (reads state, checks gates, executes) |
+| `/sdd:resume` | **Restore context** after absence (state + last events + health + next action) |
+| `/sdd:export` | **Export** feature artifacts as consolidated Markdown or branded HTML |
 
 ## Utility Commands
 

@@ -11,6 +11,13 @@ context-scope:
   always: [.specify/context.json]
   load: [PREMISE.md]
   never: [spec.md, plan.md, tasks.md, "*.feature"]
+allowed-tools:
+  - Bash(bash scripts/*)
+  - Bash(node scripts/*)
+  - Read
+  - Write
+  - Edit
+  - TodoWrite
 ---
 
 # SDD Phase 0 — Constitution

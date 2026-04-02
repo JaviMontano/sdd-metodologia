@@ -11,6 +11,13 @@ context-scope:
   always: [.specify/context.json]
   load: [PREMISE.md, CONSTITUTION.md]
   never: [spec.md, plan.md, tasks.md]
+allowed-tools:
+  - Bash(bash scripts/*)
+  - Bash(node scripts/*)
+  - Read
+  - Write
+  - Edit
+  - TodoWrite
 ---
 
 # SDD Core — Spec Driven Development by MetodologIA
