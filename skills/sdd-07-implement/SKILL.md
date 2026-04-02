@@ -39,7 +39,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-07-implement/SKILL.md with $ARGUMENTS
+Run the skill at iikit-07-implement (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: task dispatch, red-green-refactor cycle, feature file immutability enforcement, task commits with trailers, parallel task execution via subagents, dependency satisfaction tracking.

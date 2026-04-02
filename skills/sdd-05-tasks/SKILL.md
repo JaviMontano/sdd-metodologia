@@ -24,7 +24,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-05-tasks/SKILL.md with $ARGUMENTS
+Run the skill at iikit-05-tasks (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: dependency ordering, parallel markers [P], story labels [USn], Tessl convention query, T-NNN identifiers.

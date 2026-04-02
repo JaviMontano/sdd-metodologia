@@ -27,7 +27,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream IIKit core skill:
 ```
-Run the skill at .claude/skills/iikit-core/SKILL.md with $ARGUMENTS
+Run the skill at iikit-core (absorbed) with $ARGUMENTS
 ```
 
 **Step 2**: Apply SDD extensions after upstream completes:

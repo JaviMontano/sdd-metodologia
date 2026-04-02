@@ -2,7 +2,7 @@
 
 > **SDD by MetodologIA** — Spec Driven Development with Neo-Swiss branding.
 > Specification-driven development with cryptographic BDD verification + ambient intelligence.
-> 12 SDD skills + 12 IIKit skills · 9 pipeline phases · 39 commands · 30 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
+> 12 self-contained SDD skills · 9 pipeline phases · 39 commands · 39 scripts · Per-prompt heartbeat · Knowledge graph · ALM Command Center · Per-task workspace sessions
 > Upstream engine: [intent-integrity-chain/kit](https://github.com/intent-integrity-chain/kit) (MIT)
 > Brand layer: GPL-3.0 · Javier Montano · MetodologIA
 
@@ -169,11 +169,10 @@ workspace/
 
 ## Skills Architecture
 
-SDD uses a **dual-layer skill system**:
-- **12 SDD skills** (`skills/sdd-*/SKILL.md`): Enhanced wrappers with gates, phase-complete, context-scope, BDD verification, workspace routing, and dashboard refresh
-- **12 IIKit skills** (`.claude/skills/iikit-*/SKILL.md`): Upstream core logic from Intent Integrity Kit (MIT)
-
-Each SDD skill delegates core execution to its IIKit counterpart, then applies SDD extensions. Commands reference SDD skills, which in turn call IIKit skills.
+SDD is **self-contained** — all 12 skills live in `skills/sdd-*/` with absorbed upstream logic, references, and templates from IIC/kit:
+- **12 SDD skills** (`skills/sdd-*/SKILL.md`): Full execution flow with gates, phase-complete, context-scope, BDD verification, workspace routing, and dashboard refresh
+- **Upstream absorbed**: References, templates, and key scripts migrated from IIC/kit into `references/`, `references/templates/`, and `scripts/upstream-*.sh`
+- **No dependency on `.claude/skills/iikit-*/`** — upstream is fully contained
 
 ## Scripts (30)
 

@@ -25,7 +25,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-06-analyze/SKILL.md with $ARGUMENTS
+Run the skill at iikit-06-analyze (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: 8 detection passes (duplication, ambiguity, underspec, constitution alignment, phase separation, coverage gaps, inconsistency, prose range), feature file traceability, health score calculation.

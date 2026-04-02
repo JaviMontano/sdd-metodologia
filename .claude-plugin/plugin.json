@@ -1,6 +1,6 @@
 {
   "name": "sdd-metodologia",
-  "version": "3.6.0",
+  "version": "3.6.2",
   "description": "SDD \u2014 Spec Driven Development by MetodologIA. Specification-driven AI development with mandatory quality gates, cryptographic BDD assertion hashing, schema validation, autonomous heartbeat sentinel, per-task workspace sessions, insights engine, and Neo-Swiss lifecycle dashboard. Powered by IIC/kit.",
   "author": {
     "name": "Javier Monta\u00f1o \u00b7 MetodologIA",
