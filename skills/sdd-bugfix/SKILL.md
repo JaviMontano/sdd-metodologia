@@ -32,7 +32,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-bugfix/SKILL.md with $ARGUMENTS
+Run the skill at iikit-bugfix (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: bug report structure (BUG-ID, severity, reproduction), GitHub issue inbound (#number), T-B prefix tasks, BDD/TDD flow for bug test cases.

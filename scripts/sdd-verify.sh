@@ -111,7 +111,7 @@ else
   # ─── Check 6: BDD assertion integrity ───
   echo ""
   echo -e "${WHITE}6. Assertion Integrity${RESET}"
-  UPSTREAM_TESTIFY="$ROOT_DIR/.claude/skills/iikit-core/scripts/bash/testify-tdd.sh"
+  UPSTREAM_TESTIFY="$ROOT_DIR/scripts/upstream-testify-tdd.sh"
   if [[ -x "$UPSTREAM_TESTIFY" ]] && [[ -d "$SPECS_DIR" ]]; then
     ACTIVE=""
     [[ -f "$PROJECT_PATH/.specify/active-feature" ]] && ACTIVE=$(cat "$PROJECT_PATH/.specify/active-feature" | tr -d '[:space:]')
@@ -174,7 +174,7 @@ else
 fi
 
 CMD_COUNT=$(ls "$ROOT_DIR/commands"/*.md 2>/dev/null | wc -l | tr -d ' ')
-SKILL_COUNT=$(find "$ROOT_DIR/.claude/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(find "$ROOT_DIR/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 SCRIPT_COUNT=$(ls "$ROOT_DIR/scripts"/*.sh "$ROOT_DIR/scripts"/*.js 2>/dev/null | wc -l | tr -d ' ')
 pass "$CMD_COUNT commands, $SKILL_COUNT skills, $SCRIPT_COUNT scripts"
 

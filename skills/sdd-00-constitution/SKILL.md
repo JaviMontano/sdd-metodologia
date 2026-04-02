@@ -25,7 +25,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-00-constitution/SKILL.md with $ARGUMENTS
+Run the skill at iikit-00-constitution (absorbed) with $ARGUMENTS
 ```
 
 **Step 2**: SDD extensions after CONSTITUTION.md is created:

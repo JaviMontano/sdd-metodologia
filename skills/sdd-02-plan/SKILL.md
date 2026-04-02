@@ -25,7 +25,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-02-plan/SKILL.md with $ARGUMENTS
+Run the skill at iikit-02-plan (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: Tessl tile discovery, research phase, data-model.md, contracts/, constitution check, phase separation.

@@ -25,7 +25,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-04-testify/SKILL.md with $ARGUMENTS
+Run the skill at iikit-04-testify (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: Gherkin .feature generation, TDD assessment, @TS-XXX/@FR-XXX/@SC-XXX tags, Background/Scenario Outline/Rule constructs, SC-XXX coverage.

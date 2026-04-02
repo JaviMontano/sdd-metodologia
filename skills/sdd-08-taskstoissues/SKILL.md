@@ -32,7 +32,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-08-taskstoissues/SKILL.md with $ARGUMENTS
+Run the skill at iikit-08-taskstoissues (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: issue creation, label assignment, parallel dispatch, cross-reference linking.

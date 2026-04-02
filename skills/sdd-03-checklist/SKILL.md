@@ -32,7 +32,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-03-checklist/SKILL.md with $ARGUMENTS
+Run the skill at iikit-03-checklist (absorbed) with $ARGUMENTS
 ```
 
 **Step 2**: SDD extensions:

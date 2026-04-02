@@ -25,7 +25,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-01-specify/SKILL.md with $ARGUMENTS
+Run the skill at iikit-01-specify (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: bug-fix intent detection, feature numbering, branch creation, spec quality checklist.

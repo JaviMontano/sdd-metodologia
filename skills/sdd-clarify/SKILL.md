@@ -27,7 +27,7 @@ $ARGUMENTS
 
 **Step 1**: Delegate to upstream:
 ```
-Run the skill at .claude/skills/iikit-clarify/SKILL.md with $ARGUMENTS
+Run the skill at iikit-clarify (absorbed) with $ARGUMENTS
 ```
 
 Upstream handles: auto-detect artifact type (spec, plan, checklist, testify, tasks, constitution), structured questions per ambiguity-taxonomies.md, integration of answers into artifact with Clarifications section.
