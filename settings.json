@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(node *)",
-      "Bash(bash scripts/*)"
+      "Bash(bash scripts/*)",
+      "Bash(python3 scripts/*)"
     ]
   }
 }

@@ -1,0 +1,36 @@
+{
+  "templateId": "requirements-matrix",
+  "version": "1.0.0",
+  "format": "xlsx",
+  "brand": "Neo-Swiss",
+  "description": "Requirements matrix with FR-NNN rows, status, priority, test coverage",
+  "sheets": [
+    {
+      "name": "Requirements",
+      "freeze": "A2",
+      "columns": [
+        {"header": "ID", "width": 12, "key": "id"},
+        {"header": "Requirement", "width": 60, "key": "description"},
+        {"header": "Priority", "width": 12, "key": "priority"},
+        {"header": "Source Principle", "width": 20, "key": "principle"},
+        {"header": "Test Specs", "width": 20, "key": "testSpecs"},
+        {"header": "Tasks", "width": 20, "key": "tasks"},
+        {"header": "Status", "width": 14, "key": "status"}
+      ],
+      "statusValues": ["Draft", "Approved", "Tested", "Implemented", "Shipped"]
+    }
+  ],
+  "styles": {
+    "headerFont": "Poppins",
+    "headerFontSize": 11,
+    "headerFill": "#122562",
+    "headerFontColor": "#F8F9FC",
+    "bodyFont": "Trebuchet MS",
+    "bodyFontSize": 10,
+    "altRowFill": "#F0F2F5",
+    "statusDone": "#137DC5",
+    "statusProgress": "#FFD700",
+    "statusTodo": "#808080",
+    "noGreen": true
+  }
+}

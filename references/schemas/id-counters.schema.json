@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ID Counters",
+  "description": "Deterministic ID counter state for SDD artifact generation",
+  "type": "object",
+  "required": ["version", "counters"],
+  "properties": {
+    "version": { "type": "string" },
+    "counters": {
+      "type": "object",
+      "properties": {
+        "FR": { "type": "integer", "minimum": 0 },
+        "SC": { "type": "integer", "minimum": 0 },
+        "US": { "type": "integer", "minimum": 0 },
+        "TS": { "type": "integer", "minimum": 0 },
+        "T": { "type": "integer", "minimum": 0 },
+        "BUG": { "type": "integer", "minimum": 0 },
+        "CHK": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "allocations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "lastUpdated": { "type": "string" }
+  }
+}

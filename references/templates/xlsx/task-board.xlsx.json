@@ -1,0 +1,37 @@
+{
+  "templateId": "task-board",
+  "version": "1.0.0",
+  "format": "xlsx",
+  "brand": "Neo-Swiss",
+  "description": "Task board with ID, description, status, owner, priority, story reference",
+  "sheets": [
+    {
+      "name": "Tasks",
+      "freeze": "A2",
+      "columns": [
+        {"header": "ID", "width": 10, "key": "id"},
+        {"header": "Task", "width": 50, "key": "description"},
+        {"header": "Story", "width": 10, "key": "story"},
+        {"header": "Priority", "width": 10, "key": "priority"},
+        {"header": "Status", "width": 14, "key": "status"},
+        {"header": "Parallel", "width": 8, "key": "parallel"},
+        {"header": "Depends On", "width": 16, "key": "dependsOn"},
+        {"header": "FR Ref", "width": 12, "key": "frRef"}
+      ],
+      "statusValues": ["Todo", "In Progress", "Done", "Blocked"]
+    }
+  ],
+  "styles": {
+    "headerFont": "Poppins",
+    "headerFontSize": 11,
+    "headerFill": "#122562",
+    "headerFontColor": "#F8F9FC",
+    "bodyFont": "Trebuchet MS",
+    "bodyFontSize": 10,
+    "statusDone": "#137DC5",
+    "statusProgress": "#FFD700",
+    "statusBlocked": "#BBA0CC",
+    "statusTodo": "#808080",
+    "noGreen": true
+  }
+}

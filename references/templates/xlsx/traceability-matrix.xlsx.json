@@ -1,0 +1,43 @@
+{
+  "templateId": "traceability-matrix",
+  "version": "1.0.0",
+  "format": "xlsx",
+  "brand": "Neo-Swiss",
+  "description": "Cross-artifact traceability: Principle → FR → TS → T with coverage %",
+  "sheets": [
+    {
+      "name": "Traceability",
+      "freeze": "A2",
+      "columns": [
+        {"header": "Principle", "width": 20, "key": "principle"},
+        {"header": "FR ID", "width": 12, "key": "frId"},
+        {"header": "Requirement", "width": 40, "key": "frDescription"},
+        {"header": "TS IDs", "width": 20, "key": "testSpecs"},
+        {"header": "T IDs", "width": 20, "key": "tasks"},
+        {"header": "Test Coverage", "width": 14, "key": "coverage"},
+        {"header": "Status", "width": 14, "key": "status"}
+      ]
+    },
+    {
+      "name": "Coverage Summary",
+      "columns": [
+        {"header": "Metric", "width": 30, "key": "metric"},
+        {"header": "Value", "width": 15, "key": "value"},
+        {"header": "Target", "width": 15, "key": "target"},
+        {"header": "Status", "width": 15, "key": "status"}
+      ]
+    }
+  ],
+  "styles": {
+    "headerFont": "Poppins",
+    "headerFontSize": 11,
+    "headerFill": "#122562",
+    "headerFontColor": "#F8F9FC",
+    "bodyFont": "Trebuchet MS",
+    "bodyFontSize": 10,
+    "coverageFull": "#137DC5",
+    "coveragePartial": "#FFD700",
+    "coverageNone": "#808080",
+    "noGreen": true
+  }
+}
