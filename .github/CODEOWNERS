@@ -1,0 +1,22 @@
+# SDD — Spec Driven Development by MetodologIA
+# CODEOWNERS — defines who reviews PRs per path
+#
+# Co-creators: Javier Montaño & Katherin Oquendo
+
+# Default: all files require Javier's review
+* @JaviMontano
+
+# Core pipeline
+scripts/          @JaviMontano
+skills/           @JaviMontano
+commands/         @JaviMontano
+agents/           @JaviMontano
+
+# References and design
+references/       @JaviMontano
+landing.html      @JaviMontano
+
+# Tests and CI
+tests/            @JaviMontano
+.github/          @JaviMontano
+evals/            @JaviMontano

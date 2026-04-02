@@ -1,5 +1,107 @@
 # Changelog
 
+## v3.7.0 (2026-04-02)
+
+### Added
+- `/sdd:a` auto-advance command (reads state, checks gates, executes next phase)
+- `/sdd:resume` context restoration after absence
+- `/sdd:export` feature artifact export (Markdown/HTML)
+- Orchestrator agent (`agents/sdd-orchestrator.md`)
+- `allowed-tools` declarations in all 12 skills
+- PR template, CONTRIBUTING.md, CODEOWNERS, QA-STRATEGY.md
+- PR gate CI workflow (`.github/workflows/pr-gate.yml`)
+
+## v3.6.3 (2026-03-31)
+
+### Added
+- Backcasting remediation: data-model + research templates
+- @TS-NNN and @SC-NNN tag validation in .feature files
+- Circular dependency detection (DFS) in tasks validation
+- issue-map.json and sentinel-state.json schemas
+- Validator types: 7 → 9
+
+## v3.6.2 (2026-03-31)
+
+### Changed
+- **IIKit absorption**: removed 433 upstream files (229,816 lines)
+- 12 SDD skills now self-contained with absorbed refs/templates
+- 9 upstream scripts migrated to `scripts/upstream-*.sh`
+- verify-brand.sh graceful skip of IIKit template checks
+- sdd-verify.sh counts skills from `skills/` not `.claude/skills/`
+
+## v3.6.0 (2026-03-31)
+
+### Added
+- Progressive context loading (`context-scope` in all 9 commands)
+- Quick Flow triage (`sdd-quick-flow-triage.sh`) with AP-06 guard
+- G1 alignment checklist (FR→plan mapping)
+- Pre-commit hook for assertion integrity
+- Specification rot detection in heartbeat
+- Definition of Done enforcement (`sdd-dod-check.sh`)
+- CI/CD template (`templates/sdd-gate.yml`)
+
+## v3.5.1 (2026-03-31)
+
+### Fixed
+- 18 stale version references aligned (v3.0/v3.3/v3.4 → v3.5)
+- Gate positions corrected: G1@Phase3, G2@Phase7, G3@Phase8
+- Script count: 23 → 27 in CLAUDE.md header
+- Phase-complete wired in all 9 commands (was only 2)
+- Schema validation integrated into gate-check
+- Pipeline state section in sdd-status.sh
+- Gate + hash data in dashboard generator
+
+### Fixed
+- sdd-validate-artifact.sh: manual schema fallback when jsonschema absent
+- sdd-session-log.sh: fcntl.flock for macOS (10/10 concurrent writes)
+- sdd-init.sh: RED variable defined
+
+## v3.5.0 (2026-03-29)
+
+### Added
+- Mandatory quality gates G1/G2/G3 (hard stops, not advisory)
+- `sdd-gate-check.sh` — gate enforcement engine
+- `sdd-phase-complete.sh` — pipeline state tracking
+- `sdd-validate-artifact.sh` — schema + content validation (7 types)
+- `sdd-assertion-hash.sh` — SHA-256 .feature hashing
+- JSON schemas: context, session, gate-results
+- Knowledge graph bidirectional orphan detection
+
+### Changed
+- sdd-workspace.sh: slug 60→40 chars, atomic writes
+- sdd-rag-capture.sh: 10MB guard, symlink resolution, binary detection
+- sdd-heartbeat-lite.sh: stat-based scan (bounded 50 files)
+- sdd-session-log.sh: fcntl concurrency
+- sdd-init.sh: post-init validation, error surfacing
+- sdd-prereqs.sh: fail-fast on empty feature, content checks
+
+## v3.4.0 (2026-03-29)
+
+### Added
+- Per-task workspace sessions (`sdd-workspace.sh`)
+- Workspace-aware RAG capture routing
+- Workspace-aware session logging (dual-write)
+- Heartbeat workspace nudge
+- Dashboard workspace page (session cards)
+- `/sdd:workspace` command + menu entry
+- FORK.md enhanced fork documentation
+- Neo-Swiss aesthetic v2.0 + Brand Voice v3.0
+
+## v3.3.0 (2026-03-22)
+
+### Added
+- Initial MetodologIA fork from IIC/kit v2.7.16
+- Neo-Swiss branding (dark theme, gold/navy/blue palette)
+- Ambient heartbeat (UserPromptSubmit hook, <100ms)
+- ALM Command Center (10-page micro-frontend)
+- RAG memory system
+- 12 IIKit skills with brand overlay
+- 23 SDD scripts
+
+---
+
+*Upstream changelog (IIC/kit) follows below.*
+
 ## v2.7.13
 
 - **Premise card grid**: Constitution tab shows premise as a responsive card grid with click-to-expand.

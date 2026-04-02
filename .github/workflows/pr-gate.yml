@@ -1,0 +1,53 @@
+name: SDD PR Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  sdd-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: SDD Plugin Verification
+        run: bash scripts/sdd-verify.sh .
+
+      - name: Assertion Hash Integrity
+        run: |
+          if [ -f ".specify/assertion-hashes.json" ]; then
+            bash scripts/sdd-assertion-hash.sh verify .
+          else
+            echo "No assertion hashes — skipping"
+          fi
+
+      - name: Schema Validation
+        run: |
+          if [ -f ".specify/context.json" ]; then
+            bash scripts/sdd-validate-artifact.sh context .specify/context.json .
+          fi
+
+      - name: Brand Compliance
+        run: bash scripts/verify-brand.sh
+
+      - name: Shell Script Syntax
+        run: |
+          for f in scripts/*.sh; do
+            bash -n "$f" 2>&1 && echo "OK: $f" || echo "FAIL: $f"
+          done
+
+      - name: Node Script Validation
+        run: |
+          for f in scripts/*.js; do
+            node --check "$f" 2>&1 && echo "OK: $f" || echo "FAIL: $f"
+          done
