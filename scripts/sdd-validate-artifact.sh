@@ -172,6 +172,53 @@ validate_tasks() {
   # Check for dependency markers
   if grep -qiE '(depends|dependency|bloqueado|blocked|→|requires)' "$file"; then
     pass "Contains dependency information"
+    # B-03: Cycle detection via Python DFS
+    if command -v python3 &>/dev/null; then
+      CYCLE_RESULT=$(python3 -c "
+import re, sys
+with open('$file') as f:
+    content = f.read()
+
+# Parse task IDs and their dependencies
+tasks = set(re.findall(r'T-\d{3,4}', content))
+deps = {}
+for line in content.split('\n'):
+    task_match = re.search(r'(T-\d{3,4})', line)
+    if not task_match:
+        continue
+    task = task_match.group(1)
+    # Find dependencies: "depends on T-NNN", "blocked by T-NNN", "→ T-NNN"
+    dep_matches = re.findall(r'(?:depends?\s+on|blocked\s+by|requires|→)\s*(T-\d{3,4})', line, re.IGNORECASE)
+    if dep_matches:
+        deps[task] = dep_matches
+
+# DFS cycle detection
+visited = set()
+stack = set()
+def has_cycle(node):
+    visited.add(node)
+    stack.add(node)
+    for neighbor in deps.get(node, []):
+        if neighbor in stack:
+            return True
+        if neighbor not in visited and has_cycle(neighbor):
+            return True
+    stack.discard(node)
+    return False
+
+for task in deps:
+    if task not in visited:
+        if has_cycle(task):
+            print("CYCLE")
+            sys.exit(0)
+print('ACYCLIC')
+" 2>/dev/null || echo "SKIP")
+      if [[ "$CYCLE_RESULT" == "CYCLE" ]]; then
+        fail "Circular dependency detected in task graph"
+      else
+        pass "Task dependency graph is acyclic"
+      fi
+    fi
   else
     warn "No dependency markers found"
   fi
@@ -207,6 +254,21 @@ validate_feature() {
   else
     warn "No @FR-NNN tags — traceability gap"
   fi
+
+  # B-02: Must have @TS-NNN test spec tags
+  if grep -qE '@TS-[0-9]{3}' "$file"; then
+    TS_COUNT=$(grep -coE '@TS-[0-9]{3}' "$file" 2>/dev/null || echo "0")
+    pass "Tagged with test spec IDs (@TS-NNN): $TS_COUNT"
+  else
+    warn "No @TS-NNN tags — test spec traceability gap"
+  fi
+
+  # B-02: Check for @SC-NNN success criteria tags
+  if grep -qE '@SC-[0-9]{3}' "$file"; then
+    pass "Tagged with success criteria (@SC-NNN)"
+  else
+    warn "No @SC-NNN tags (optional)"
+  fi
 }
 
 # ─── Dispatch ───
@@ -214,6 +276,8 @@ case "$TYPE" in
   context) validate_json "$FILE" "context" ;;
   session) validate_json "$FILE" "session" ;;
   gate-results) validate_json "$FILE" "gate-results" ;;
+  issue-map) validate_json "$FILE" "issue-map" ;;
+  sentinel-state) validate_json "$FILE" "sentinel-state" ;;
   spec) validate_spec "$FILE" ;;
   plan) validate_plan "$FILE" ;;
   tasks) validate_tasks "$FILE" ;;
