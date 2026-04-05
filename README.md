@@ -1,156 +1,99 @@
-# SDD — Spec Driven Development
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:122562,100:137DC5&height=220&section=header&text=SDD%20%E2%80%94%20Spec%20Driven%20Development&fontSize=32&fontColor=FFD700&fontAlignY=35&desc=La%20especificaci%C3%B3n%20precede%20al%20c%C3%B3digo&descSize=16&descColor=ffffff&descAlignY=55" width="100%" />
+</p>
 
-> **by metodolog*IA***
-
-[![Version](https://img.shields.io/badge/version-3.5.0-FFD700?style=flat-square&labelColor=122562)](https://github.com/JaviMontano/sdd-metodologia)
-[![License](https://img.shields.io/badge/license-GPL--3.0-137DC5?style=flat-square&labelColor=122562)](LICENSE)
-[![Commands](https://img.shields.io/badge/commands-39-FFD700?style=flat-square&labelColor=122562)]()
-[![Scripts](https://img.shields.io/badge/scripts-27-137DC5?style=flat-square&labelColor=122562)]()
-[![Upstream](https://img.shields.io/badge/upstream-IIC%2Fkit-137DC5?style=flat-square&labelColor=122562)](https://github.com/intent-integrity-chain/kit)
-
-Desarrollo de software dirigido por especificación con puertas de calidad mandatorias, hashing criptográfico de aserciones BDD, validación de esquemas, inteligencia ambiental y estética Neo-Swiss de MetodologIA. SDD conduce el desarrollo desde principios de gobernanza hasta issues en GitHub — o vitaminiza tu proceso operativo buscando, creando y desplegando habilidades.
-
----
-
-## Inicio Rápido
-
-```bash
-/sdd:tour              # Onboarding guiado (8 pasos interactivos)
-/sdd:demo              # Generar proyecto demo + dashboard
-/sdd:init              # Inicializar un proyecto real
-/sdd:menu              # Paleta de comandos — los 39 comandos
-```
-
-## Características
-
-### Pipeline de 9 Fases con Puertas Mandatorias
-Constitución → Especificar → Planificar → Checklist → Testificar → Tareas → Analizar → Implementar → Issues. Tres puertas de calidad (G1, G2, G3) **detienen el pipeline** ante violaciones — no son advertencias. Cada fase actualiza `context.json` con `completedPhases[]` para prevenir saltos.
-
-### Hashing Criptográfico de Aserciones
-SHA-256 sobre bloques de escenarios en archivos `.feature`. Se genera en la Fase 4 (Testificar) y se verifica en la Fase 7 (Implementar). Si un `.feature` se modifica después del hashing, la puerta G3 detecta la manipulación y detiene el pipeline.
-
-### Validación de Esquemas
-Esquemas JSON para `context.json`, `session.json` y `gate-results.json`. Validadores de contenido para `spec.md` (patrones FR-NNN), `plan.md` (secciones de modelo de datos y arquitectura), `tasks.md` (identificadores T-NNN y dependencias).
-
-### Heartbeat Ambiental
-Inteligencia por prompt vía hook `UserPromptSubmit`. Se ejecuta en < 100ms en cada prompt. Escaneo por `stat` limitado a 50 archivos. Detecta artefactos obsoletos, archivos faltantes y regresión de salud — silencioso cuando todo está bien.
-
-### Grafo de Conocimiento con Detección de Huérfanos
-Trazabilidad bidireccional: Principios → Requisitos (FR) → Pruebas (TS) → Tareas (T). Detecta huérfanos en ambas direcciones: requisitos sin pruebas, tareas con FR inexistentes, pruebas con FR rotos. Se renderiza como SVG de fuerza dirigida en el dashboard.
-
-### ALM — Application Lifecycle Manager
-ALM visual como micro-frontend: 10 páginas interconectadas que rastrean el pipeline SDD completo. Medidor de salud, tablero de pipeline, mapa de historias, trazabilidad de pruebas, sparklines de insights, explorador de workspace con sesiones por tarea. Funciona en cualquier proyecto donde SDD esté inicializado.
-
-### Sesiones de Workspace por Tarea
-Cada tarea crea una carpeta fechada (`workspace/yyyy-mm-dd-nombre/`) con inputs, archivos RAG, logs y tasklog. El workspace activo enruta automáticamente las capturas RAG y los logs de sesión. Escrituras atómicas (patrón `mv`) y concurrencia por `flock`.
-
-### Memoria RAG con Guardas de Seguridad
-Los inputs se capturan como `rag-memory-of-{slug}.md` con detección MIME, límite de 10 MB, resolución de symlinks y detección de archivos binarios. Enrutamiento consciente del workspace activo.
+<p align="center">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-1.0.0-137DC5?style=for-the-badge" alt="Versión" />
+  <img src="https://img.shields.io/badge/licencia-GPL--3.0-blue?style=for-the-badge" alt="Licencia" />
+  <img src="https://img.shields.io/badge/plugin-IIKit%20integrado-FFD700?style=for-the-badge&labelColor=1E3258" alt="IIKit" />
+  <img src="https://img.shields.io/badge/dashboard-interactivo-BBA0CC?style=for-the-badge&labelColor=1E3258" alt="Dashboard" />
+</p>
 
 ---
 
-## Pipeline
+## Descripción
 
-| Fase | Comando | Alias | Puerta |
-|------|---------|-------|--------|
-| Init | `/sdd:core` | `/sdd:init` | — |
-| 0 | `/sdd:00-constitution` | — | — |
-| 1 | `/sdd:01-specify` | `/sdd:spec` | — |
-| 2 | `/sdd:02-plan` | `/sdd:plan` | — |
-| 3 | `/sdd:03-checklist` | `/sdd:check` | **G1** |
-| 4 | `/sdd:04-testify` | `/sdd:test` | — |
-| 5 | `/sdd:05-tasks` | `/sdd:tasks` | — |
-| 6 | `/sdd:06-analyze` | `/sdd:analyze` | — |
-| 7 | `/sdd:07-implement` | `/sdd:impl` | **G2** |
-| 8 | `/sdd:08-issues` | `/sdd:issues` | **G3** |
-
-**Utilidades:** `/sdd:clarify` `/sdd:bugfix` `/sdd:feature` `/sdd:workspace` `/sdd:verify` `/sdd:hooks` `/sdd:sync`
-**Inteligencia:** `/sdd:sentinel` `/sdd:insights` `/sdd:graph` `/sdd:qa` `/sdd:dashboard`
-**Memoria:** `/sdd:capture` `/sdd:memory`
-**Experiencia:** `/sdd:tour` `/sdd:demo` `/sdd:seed` `/sdd:menu`
+**SDD (Spec Driven Development)** es un plugin de desarrollo dirigido por especificación. Cierra la brecha entre la intención y el código con verificación criptográfica en cada paso. Compatible con Claude Code, OpenAI Codex, Google Gemini y OpenCode.
 
 ---
 
 ## Instalación
 
-```bash
-git clone https://github.com/JaviMontano/sdd-metodologia.git ~/.claude/plugins/sdd-metodologia
+Agrega como plugin de Claude Code:
+
+```json
+{
+  "mcpServers": {
+    "sdd": {
+      "command": "claude",
+      "args": ["mcp", "serve", "--plugin", "mao-sdd"]
+    }
+  }
+}
 ```
 
 ---
 
-## Arquitectura
+## Características Principales
+
+| Característica | Descripción |
+| --- | --- |
+| **Pipeline completo** | specify → plan → checklist → test → tasks → analyze → implement |
+| **IIKit integrado** | Intent-Integrity Chain para trazabilidad criptográfica |
+| **Dashboard interactivo** | Visualización en tiempo real del estado del proyecto |
+| **Verificación de integridad** | Cada artefacto firmado y verificable |
+| **Multi-plataforma** | Claude Code, OpenAI Codex, Google Gemini, OpenCode |
+
+---
+
+## Pipeline SDD
 
 ```
-sdd-metodologia/
-├── .claude-plugin/plugin.json     # Manifiesto v3.5.0
-├── AGENTS.md (→ CLAUDE.md)        # Orquestador
-├── FORK.md                        # Documentación del fork mejorado
-├── CONSTITUTION.md                # Gobernanza del framework
-├── commands/                      # 39 definiciones de comandos
-├── scripts/
-│   ├── sdd-gate-check.sh          # Puertas mandatorias G1/G2/G3
-│   ├── sdd-phase-complete.sh      # Actualizador de estado del pipeline
-│   ├── sdd-validate-artifact.sh   # Validación de esquemas y contenido
-│   ├── sdd-assertion-hash.sh      # Hashing SHA-256 de aserciones BDD
-│   ├── sdd-heartbeat-lite.sh      # Heartbeat por prompt (< 100ms)
-│   ├── sdd-workspace.sh           # Sesiones de workspace por tarea
-│   ├── sdd-knowledge-graph.js     # Grafo de trazabilidad bidireccional
-│   ├── sdd-sentinel.sh            # Ciclo completo del sentinel
-│   ├── sdd-insights.js            # Puntuaciones de salud
-│   ├── sdd-rag-capture.sh         # Memoria RAG (10MB, symlink, binario)
-│   ├── sdd-session-log.sh         # Log con concurrencia flock
-│   ├── command-center/            # Micro-frontend ALM (10 páginas)
-│   └── ...                        # 15 scripts adicionales
-├── references/
-│   ├── design-tokens.json         # Tokens Neo-Swiss v2.0 (paleta + voz)
-│   ├── schemas/                   # Esquemas JSON (context, session, gates)
-│   └── data-schemas.md            # Esquemas de datos
-├── .claude/skills/                # 12 skills IIKit
-├── hooks/hooks.json               # 4 eventos de hook
-└── landing.html                   # Página de aterrizaje
+01-specify   ─── Captura de intención y especificación formal
+02-plan      ─── Descomposición en plan de implementación
+03-checklist ─── Lista de verificación pre-implementación
+04-testify   ─── Diseño de tests antes del código
+05-tasks     ─── Generación de tareas atómicas
+06-analyze   ─── Análisis de impacto y dependencias
+07-implement ─── Implementación con trazabilidad completa
 ```
 
 ---
 
-## Hooks
+## IIKit — Intent-Integrity Chain
 
-| Evento | Script | Propósito |
-|--------|--------|-----------|
-| `UserPromptSubmit` | `sdd-heartbeat-lite.sh` | Chequeo de salud por prompt |
-| `PostToolUse (Write\|Edit)` | `sdd-session-log.sh` | Pista de auditoría + dual-write |
-| `SessionStart` | `sdd-heartbeat-lite.sh --init` | Restauración de contexto |
-| `PreCompact` | `sdd-session-log.sh` | Instantánea de estado |
+El corazón de SDD es el **IIKit**, que garantiza que cada línea de código se pueda rastrear hasta la intención original del usuario. Cada artefacto generado incluye un hash de integridad que conecta la especificación con la implementación.
 
 ---
 
-## Marca: Neo-Swiss Clean and Soft Explainer
+## Autor
 
-| Token | Valor |
-|-------|-------|
-| Body | `#1F2833` (charcoal) |
-| Superficies | `#122562` (navy) |
-| Gold | `#FFD700` (acentos, CTAs) |
-| Blue | `#137DC5` (nunca verde) |
-| Lavender | `#BBA0CC` (texto secundario) |
-| Gray | `#808080` (muted, disabled) |
-| Titulares | Poppins |
-| Cuerpo | Trebuchet MS |
-| Notas | Futura |
-| Código | JetBrains Mono |
-| Tarjetas | Glassmorphism `blur(16px) saturate(180%)` |
-| Grid | Swiss 8px |
+<p align="center">
+  <img src="https://github.com/ejemplo-deo-repo/mao-brand-assets/blob/main/team_javier-montano.webp?raw=true" width="120" style="border-radius: 50%;" alt="Javier Montaño" />
+</p>
+
+<p align="center">
+  <strong>Javier Montaño</strong><br/>
+  PreSales Architect · Fundador de MetodologIA · JM Labs<br/>
+  <a href="https://github.com/JaviMontano">github.com/JaviMontano</a>
+</p>
 
 ---
 
-## Créditos
+## Parte del Ecosistema MetodologIA / JM Labs
 
-- **Co-creadores**: Javier Montaño & Katherin Oquendo
-- **Upstream**: [Intent Integrity Chain / Kit](https://github.com/intent-integrity-chain/kit) (MIT)
-- **Marca**: MetodologIA (GPL-3.0)
-- **Estética**: Neo-Swiss Clean and Soft Explainer
-- **Potenciado por**: Claude Code, Antigravity & Agente Pristino
+| Repositorio | Descripción |
+| --- | --- |
+| [mao-discovery-framework](https://github.com/JaviMontano/mao-discovery-framework) | Framework universal de discovery |
+| [mao-iic](https://github.com/JaviMontano/mao-iic) | Intent-Integrity Chain (núcleo criptográfico) |
+| [mao-pm-apex](https://github.com/JaviMontano/mao-pm-apex) | Gestión de proyectos agéntica |
 
-*Construido con mucho amor.*
+---
 
-*SDD v3.5 · Spec Driven Development · by metodologIA*
+<p align="center">
+  Creado por <a href="https://github.com/JaviMontano">Javier Montaño</a> · MetodologIA · GPL-3.0
+</p>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:122562,100:137DC5&height=120&section=footer" width="100%" />
+</p>
